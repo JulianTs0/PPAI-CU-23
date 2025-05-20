@@ -54,7 +54,7 @@ public class EventoSismico {
         // TODO: Implementar
     }
 
-    public void uobtenerUbicacion() {
+    public void obtenerUbicacion() {
         // TODO: Implementar
     }
 
