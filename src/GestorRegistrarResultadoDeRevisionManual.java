@@ -1,6 +1,8 @@
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Collections; // Necesario para Collections.sort
+import java.util.Comparator;  // Necesario para Comparator
 
 public class GestorRegistrarResultadoDeRevisionManual {
 
@@ -10,7 +12,9 @@ public class GestorRegistrarResultadoDeRevisionManual {
     private String nombreAlcance;
     private String nombreClasificacion;
     private String nombreOrigen;
-    private LocalDateTime fechaHoraRevision; 
+    private LocalDateTime fechaHoraRevision;
+
+    private EventoSismico eventoSeleccionado;
 
     private PantallaRegistrarResultadoDeRevisionManual pantalla;
     private List<EventoSismico> todosLosEventosDelSistema; // NUEVO: Atributo para almacenar todos los eventos
@@ -85,7 +89,8 @@ public class GestorRegistrarResultadoDeRevisionManual {
 
         // El gestor obtiene la lista de filas para la grilla.
         // Ahora, el método 'buscarEventosSismicosAutodetectadosNoRevisados' devuelve la lista.
-        List<Object[]> eventosParaGrilla = buscarEventosSismicosAutodetectadosNoRevisados();
+        this.eventosParaGrilla = buscarEventosSismicosAutodetectadosNoRevisados();
+        ordenarFechaHoraDeOcurrencia();
 
         if (pantalla != null) {
             pantalla.actualizarEstadoPantalla("Eventos pendientes cargados. Hay " + eventosParaGrilla.size() + " eventos para revisar.");
@@ -146,8 +151,28 @@ public class GestorRegistrarResultadoDeRevisionManual {
         System.out.println("Gestor: Finalizada la búsqueda y preparación de eventos pendientes (sin ordenar). Total filas generadas: " + filasParaGrilla.size());
         return filasParaGrilla; // Devuelve la lista de Object[]
     }
+  
+    public void ordenarFechaHoraDeOcurrencia() {
+        System.out.println("Gestor: Ejecutando método ordenarFechaHoraDeOcurrencia...");
 
-    public void ordenarFechaHoraDeOcurrencia() {}
+        if (this.eventosParaGrilla == null || this.eventosParaGrilla.isEmpty()) {
+            System.out.println("Gestor: La lista de eventos para la grilla está vacía o no ha sido cargada. No se puede ordenar.");
+            return;
+        }
+
+        Collections.sort(this.eventosParaGrilla, new Comparator<Object[]>() {
+            @Override
+            public int compare(Object[] fila1, Object[] fila2) {
+                LocalDateTime fechaHora1 = (LocalDateTime) fila1[0];
+                LocalDateTime fechaHora2 = (LocalDateTime) fila2[0];
+                return fechaHora1.compareTo(fechaHora2);
+            }
+        });
+        System.out.println("Gestor: Lista de eventos para la grilla ordenada por fecha y hora de ocurrencia.");
+        // Si la pantalla ya estuviera mostrando estos datos, necesitaría un "refrescar" o "actualizar"
+        // pantalla.actualizarGrilla();
+    }
+
     public void tomarEventoSismicoARevisar() {}
     public void buscarSesionActual() {}
     public void getFechaActual() {}
