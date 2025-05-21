@@ -169,6 +169,23 @@ public class Playground {
         evento5.addCambioDeEstado(ce1_e5);
         eventosSismicos.add(evento5);
 
+        // --- Evento Sísmico 6 (Nuevo evento pendiente) ---
+        LocalDateTime fechaHoraOcurrencia6 = LocalDateTime.of(2025, 5, 21, 16, 45, 0); // Fecha y hora actual
+        LocalDateTime fechaHoraFin6 = fechaHoraOcurrencia6.plusMinutes(10); // Un final tentativo
+        EventoSismico evento6 = new EventoSismico(
+          fechaHoraFin6, fechaHoraOcurrencia6,
+          -31.5, -31.6,
+          -64.2, -64.3,
+          2.9, "Local", "Leve", "Tectónico",
+          clasifLeve, origenTectonico, alcanceLocal, estadoPendiente // Asigna estadoPendiente directamente
+       );
+
+      // Añadir un CambioDeEstado inicial para reflejar que está pendiente
+      // Nota: La fechaFin del CambioDeEstado es null porque es el estado actual.
+      CambioDeEstado ce1_e6 = new CambioDeEstado(fechaHoraOcurrencia6.minusSeconds(1), null, estadoPendiente, emp1);
+        evento6.addCambioDeEstado(ce1_e6);
+        eventosSismicos.add(evento6);
+
         // 3. Imprimir información de los Eventos Sísmicos creados (esto se puede dejar o quitar si solo quieres la GUI)
         System.out.println("--- Detalles de los Eventos Sísmicos Creados ---\n");
         for (int i = 0; i < eventosSismicos.size(); i++) {
@@ -218,13 +235,15 @@ public class Playground {
                     null, // fechaHoraOcurrencia
                     0.0,  // latitudEpicentro
                     0.0,  // longitudEpicentro
+                    0.0,  // latitudHipocentro (nuevo)
+                    0.0,  // longitudHipocentro (nuevo)
                     0.0,  // magnitud
-                    null, // fechaHoraBloqueado
                     null, // nombreAlcance
                     null, // nombreClasificacion
                     null, // nombreOrigen
                     null, // fechaHoraRevision
-                    pantallaInstancia // Aquí se inyecta la referencia de la Pantalla en el Gestor (tipo concreto)
+                    pantallaInstancia, // Aquí se inyecta la referencia de la Pantalla en el Gestor (tipo concreto) 
+                    eventosSismicos
                 );
 
                 // 3. Cierra el ciclo: inyecta la instancia del Gestor en la Pantalla usando el setter.

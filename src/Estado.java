@@ -28,14 +28,9 @@ public class Estado {
 
     // --- Métodos solicitados (void y vacíos) ---
 
-    /**
-     * Este método está definido pero no realiza ninguna acción.
-     * Su implementación se espera en el futuro.
-     */
-    public void sosPendienteRevision() {
-        // Método vacío por solicitud.
+    public boolean esPendienteDeRevision() {
+        return "Pendiente de Revisión".equals(this.nombreEstado);
     }
-
     /**
      * Este método está definido pero no realiza ninguna acción.
      * Su implementación se espera en el futuro.

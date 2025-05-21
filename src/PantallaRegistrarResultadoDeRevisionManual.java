@@ -189,4 +189,9 @@ public class PantallaRegistrarResultadoDeRevisionManual extends JFrame {
     public void clasificarDatosPorEstacionSismologica() {
         // Lógica para clasificar datos
     }
+
+  public void actualizarEstadoPantalla(String nuevoEstado) {
+        System.out.println("Pantalla: Recibido del Gestor - Nuevo estado: " + nuevoEstado);
+        // Aquí podrías actualizar un JLabel en tu interfaz de usuario
+    }
 }

@@ -192,22 +192,22 @@ public class EventoSismico {
 
     // --- Métodos solicitados (void y vacíos) ---
 
-    /**
-     * Este método está definido pero no realiza ninguna acción.
-     * Su implementación se espera en el futuro.
-     */
-    public void esPendienteDeRevision() {
-        // Método vacío por solicitud.
+   public boolean esPendienteDeRevision() {
+        // Ejecuta el método esPendienteDeRevision() de su instancia de Estado
+        if (estadoActual != null) {
+            return estadoActual.esPendienteDeRevision();
+        }
+        return false; // Si no hay estado, no está pendiente de revisión
     }
 
-    /**
-     * Este método está definido pero no realiza ninguna acción.
-     * Su implementación se espera en el futuro.
-     */
-    public void obtenerUbicacion() {
-        // Método vacío por solicitud.
+    public double[] obtenerUbicacion() {
+        return new double[]{
+            this.latitudEpicentro,
+            this.longitudEpicentro,
+            this.latitudHipocentro,
+            this.longitudHipocentro
+        };
     }
-
     /**
      * Este método está definido pero no realiza ninguna acción.
      * Su implementación se espera en el futuro.
