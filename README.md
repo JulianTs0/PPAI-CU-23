@@ -5,6 +5,6 @@ Vale
 
 ### Ejecucion en Linux
 
-javac -d ./bin ./src/PantallaRegistrarResultadoDeRevisionManual.java
+javac -d ./bin/ ./src/*.java
 
-java -cp bin PantallaRegistrarResultadoDeRevisionManual
+java -cp ./bin/ Playground

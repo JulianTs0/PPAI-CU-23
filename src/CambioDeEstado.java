@@ -3,23 +3,26 @@ import java.time.LocalDateTime; // Importa la clase LocalDateTime
 public class CambioDeEstado {
 
     // Atributos
-    private LocalDateTime fechaHoraInicio; // Cambiado a LocalDateTime
-    private LocalDateTime fechaHoraFin;    // Cambiado a LocalDateTime
+    private LocalDateTime fechaHoraInicio;
+    private LocalDateTime fechaHoraFin;
 
     // --- Asociación 1:1 con la clase Estado ---
     private Estado estado; // Un CambioDeEstado se asocia a un solo Estado
-    // ------------------------------------------
+
+    // --- NUEVA Asociación 1:1 con la clase Empleado ---
+    private Empleado responsableInspeccion; // Atributo para el empleado responsable de la inspección
+    // ----------------------------------------------------
 
     // Constructor con todos los parámetros
-    // Ahora recibe LocalDateTime en lugar de String
-    public CambioDeEstado(LocalDateTime fechaHoraInicio, LocalDateTime fechaHoraFin, Estado estado) {
+    // Ahora incluye el Empleado responsable de la inspección
+    public CambioDeEstado(LocalDateTime fechaHoraInicio, LocalDateTime fechaHoraFin, Estado estado, Empleado responsableInspeccion) {
         this.fechaHoraInicio = fechaHoraInicio;
         this.fechaHoraFin = fechaHoraFin;
-        this.estado = estado; // Inicializa la asociación
+        this.estado = estado;
+        this.responsableInspeccion = responsableInspeccion; // Inicializa la nueva asociación
     }
 
     // Getters y Setters
-    // Los tipos de retorno y parámetro ahora son LocalDateTime
     public LocalDateTime getFechaHoraInicio() {
         return fechaHoraInicio;
     }
@@ -36,13 +39,21 @@ public class CambioDeEstado {
         this.fechaHoraFin = fechaHoraFin;
     }
 
-    // --- Getter y Setter para la Asociación con Estado ---
     public Estado getEstado() {
         return estado;
     }
 
     public void setEstado(Estado estado) {
         this.estado = estado;
+    }
+
+    // --- Getter y Setter para la Asociación con Empleado (responsableInspeccion) ---
+    public Empleado getResponsableInspeccion() {
+        return responsableInspeccion;
+    }
+
+    public void setResponsableInspeccion(Empleado responsableInspeccion) {
+        this.responsableInspeccion = responsableInspeccion;
     }
 
     // --- Métodos solicitados (void y vacíos) ---
@@ -93,10 +104,13 @@ public class CambioDeEstado {
     // --- Método toString() ---
     @Override
     public String toString() {
+        String nombreResponsable = (responsableInspeccion != null ? responsableInspeccion.getNombre() + " " + responsableInspeccion.getApellido() : "N/A");
+
         return "CambioDeEstado{" +
-               "fechaHoraInicio=" + fechaHoraInicio + // LocalDateTime se convierte automáticamente a String legible
+               "fechaHoraInicio=" + fechaHoraInicio +
                ", fechaHoraFin=" + fechaHoraFin +
-               ", estado=" + (estado != null ? estado.getNombreEstado() : "N/A") +
+               ", estado=" + (estado != null ? estado.getNombreEstado() : "N/A") + // Usamos getNombreEstado()
+               ", responsableInspeccion='" + nombreResponsable + '\'' + // Nuevo atributo en toString
                '}';
     }
 }

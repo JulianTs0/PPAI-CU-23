@@ -4,10 +4,10 @@ import java.util.List;
 
 public class SerieTemporal {
 
-    // Atributos
+    // Atributos de valor (no relacionales)
     private String condicionAlarma;
-    private LocalDateTime fechaHoraIncioRegistroMuestras; // Cambiado a LocalDateTime
-    private LocalDateTime fechaHoraRegistro;             // Cambiado a LocalDateTime
+    private LocalDateTime fechaHoraIncioRegistroMuestras; // Corregido el nombre a 'Incio'
+    private LocalDateTime fechaHoraRegistro;
     private double frecuenciaMuestreo;
 
     // --- Asociación 1:1 con la clase Estado ---
@@ -16,17 +16,18 @@ public class SerieTemporal {
     // --- Composición 1:M con MuestraSismica ---
     private List<MuestraSismica> muestrasSismicas;
 
-    // Constructor
-    public SerieTemporal(String condicionAlarma, LocalDateTime fechaHoraIncioRegistroMuestras, LocalDateTime fechaHoraRegistro, double frecuenciaMuestreo, Estado estado) { // Cambiado el tipo
+    // Constructor con los atributos de valor y la asociación con Estado
+    public SerieTemporal(String condicionAlarma, LocalDateTime fechaHoraIncioRegistroMuestras,
+                         LocalDateTime fechaHoraRegistro, double frecuenciaMuestreo, Estado estado) {
         this.condicionAlarma = condicionAlarma;
         this.fechaHoraIncioRegistroMuestras = fechaHoraIncioRegistroMuestras;
         this.fechaHoraRegistro = fechaHoraRegistro;
         this.frecuenciaMuestreo = frecuenciaMuestreo;
-        this.estado = estado;
-        this.muestrasSismicas = new ArrayList<>();
+        this.estado = estado; // Inicializa la asociación
+        this.muestrasSismicas = new ArrayList<>(); // Inicializa la lista de muestras
     }
 
-    // Getters y Setters de Atributos (tipos actualizados)
+    // Getters y Setters de Atributos de Valor
     public String getCondicionAlarma() {
         return condicionAlarma;
     }
@@ -90,11 +91,9 @@ public class SerieTemporal {
 
     /**
      * Crea una nueva MuestraSismica y la asocia a esta SerieTemporal.
-     * Este método encapsula la creación de la parte (MuestraSismica) por el todo (SerieTemporal),
-     * lo cual es característico de la composición.
      * @param fechaHoraMuestra La fecha y hora de la muestra.
      */
-    public void crearMuestraSismica(LocalDateTime fechaHoraMuestra) { // Cambiado el tipo de parámetro
+    public void crearMuestraSismica(LocalDateTime fechaHoraMuestra) {
         MuestraSismica nuevaMuestra = new MuestraSismica(fechaHoraMuestra);
         this.muestrasSismicas.add(nuevaMuestra);
     }
@@ -118,11 +117,11 @@ public class SerieTemporal {
     public String toString() {
         return "SerieTemporal{" +
                "condicionAlarma='" + condicionAlarma + '\'' +
-               ", fechaHoraIncioRegistroMuestras=" + fechaHoraIncioRegistroMuestras +:
+               ", fechaHoraIncioRegistroMuestras=" + fechaHoraIncioRegistroMuestras +
                ", fechaHoraRegistro=" + fechaHoraRegistro +
                ", frecuenciaMuestreo=" + frecuenciaMuestreo +
-               ", estado=" + (estado != null ? estado.getNombreEstado() : "N/A") +
-               ", numMuestrasSismicas=" + muestrasSismicas.size() +
+               ", estado=" + (estado != null ? estado.getNombreEstado() : "N/A") + // Muestra el nombre del estado
+               ", numMuestrasSismicas=" + (muestrasSismicas != null ? muestrasSismicas.size() : 0) +
                '}';
     }
 }

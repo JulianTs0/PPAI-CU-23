@@ -41,7 +41,7 @@ public class DetalleMuestraSismica {
      */
     public String getDatos() {
         // Mejorado para incluir el tipo de dato, ya que la clase lo tiene.
-        return "Valor: " + this.valor + (tipoDeDato != null ? " (Tipo: " + tipoDeDato.getNombre() + ")" : "");
+        return "Valor: " + this.valor + (tipoDeDato != null ? " (Tipo: " + tipoDeDato.getNombreUnidadMedida() + ")" : "");
     }
 
     // --- Método toString() (Añadido) ---
@@ -49,7 +49,7 @@ public class DetalleMuestraSismica {
     public String toString() {
         return "DetalleMuestraSismica{" +
                "valor=" + valor +
-               ", tipoDeDato=" + (tipoDeDato != null ? tipoDeDato.getNombre() : "N/A") + // Muestra el nombre del TipoDeDato
+               ", tipoDeDato=" + (tipoDeDato != null ? tipoDeDato.getNombreUnidadMedida() : "N/A") + // Muestra el nombre del TipoDeDato
                '}';
     }
 }
