@@ -3,10 +3,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GestorRegistrarResultadoDeRevisionManual {
-    private List<LocalDateTime> fechasHorasOcurrencia;
-    private List<double[]> ubicacionesEpicentroHipocentro; // Almacenará [latEpicentro, lonEpicentro, latHipocentro, lonHipocentro]
-    private List<Double> magnitudes;
 
+    private List<Object[]> eventosParaGrilla;
     // --- Atributos del Gestor ---
 
     private String nombreAlcance;
@@ -31,9 +29,7 @@ public class GestorRegistrarResultadoDeRevisionManual {
         this.nombreOrigen = nombreOrigen;
         this.fechaHoraRevision = fechaHoraRevision;
 
-        this.fechasHorasOcurrencia = new ArrayList<>();
-        this.ubicacionesEpicentroHipocentro = new ArrayList<>();
-        this.magnitudes = new ArrayList<>();
+        this.eventosParaGrilla = new ArrayList<>();
 
         this.pantalla = pantalla;
         this.todosLosEventosDelSistema = todosLosEventosDelSistema; // Asigna la lista de eventos
@@ -74,16 +70,9 @@ public class GestorRegistrarResultadoDeRevisionManual {
         this.fechaHoraRevision = fechaHoraRevision;
     }
 
-    public List<LocalDateTime> getFechasHorasOcurrencia() {
-        return fechasHorasOcurrencia;
-    }
-
-    public List<double[]> getUbicacionesEpicentroHipocentro() {
-        return ubicacionesEpicentroHipocentro;
-    }
-
-    public List<Double> getMagnitudes() {
-        return magnitudes;
+   
+    public List<Object[]> getEventosParaGrilla() {
+        return eventosParaGrilla;
     }
 
     // --- Métodos del Gestor (vacíos) ---
@@ -94,30 +83,33 @@ public class GestorRegistrarResultadoDeRevisionManual {
             pantalla.actualizarEstadoPantalla("Iniciando búsqueda de eventos pendientes...");
         }
 
-        // El gestor ahora opera sobre la lista de eventos que YA LE FUE INYECTADA
-        buscarEventosSismicosAutodetectadosNoRevisados(); // Ya no necesita pasar la lista como argumento
+        // El gestor obtiene la lista de filas para la grilla.
+        // Ahora, el método 'buscarEventosSismicosAutodetectadosNoRevisados' devuelve la lista.
+        List<Object[]> eventosParaGrilla = buscarEventosSismicosAutodetectadosNoRevisados();
 
         if (pantalla != null) {
-            pantalla.actualizarEstadoPantalla("Eventos pendientes cargados. Hay " + fechasHorasOcurrencia.size() + " eventos para revisar.");
-            // Aquí el Gestor debería pedirle a la Pantalla que muestre estos datos en la grilla.
-            // Por ejemplo: pantalla.mostrarDatosEnGrilla(fechasHorasOcurrenciaList, ubicacionesEpicentroHipocentroList, magnitudesList);
-      }
+            pantalla.actualizarEstadoPantalla("Eventos pendientes cargados. Hay " + eventosParaGrilla.size() + " eventos para revisar.");
+            // Aquí el Gestor pediría a la Pantalla que muestre estos datos en la grilla.
+            // La Pantalla necesitará ser modificada para aceptar List<Object[]>
+            // Por ejemplo: pantalla.mostrarDatosEnGrilla(eventosParaGrilla);
+            // Esto lo haremos más adelante, por ahora es solo conceptual.
+        }
     }
+    
+    public List<Object[]> buscarEventosSismicosAutodetectadosNoRevisados() {
+        System.out.println("Gestor: Ejecutando método buscarEventosSismicosAutodetectadosNoRevisados...");
 
-    public void buscarEventosSismicosAutodetectadosNoRevisados() {
-        // Limpiar listas antes de cada búsqueda
-        this.fechasHorasOcurrencia.clear();
-        this.ubicacionesEpicentroHipocentro.clear();
-        this.magnitudes.clear();
-
-        System.out.println("Gestor: Buscando eventos sísmicos autodetectados no revisados...");
+        // Esta es la lista que construiremos y devolveremos.
+        List<Object[]> filasParaGrilla = new ArrayList<>();
 
         // Usa el atributo todosLosEventosDelSistema que fue inyectado
         if (this.todosLosEventosDelSistema == null || this.todosLosEventosDelSistema.isEmpty()) {
             System.out.println("Gestor: No se encontraron eventos sísmicos en el sistema.");
-            return;
+            return filasParaGrilla; // Devuelve una lista vacía
         }
 
+        // Paso 1: Filtrar eventos pendientes
+        List<EventoSismico> eventosPendientesFiltrados = new ArrayList<>();
         for (EventoSismico evento : this.todosLosEventosDelSistema) { // Itera sobre el atributo
             System.out.println("Gestor: Evaluando evento: " + evento.toString());
 
@@ -128,23 +120,31 @@ public class GestorRegistrarResultadoDeRevisionManual {
                 continue;
             }
 
-            System.out.println("Gestor: Evento SÍ está pendiente de revisión. Procesando datos...");
-
-            LocalDateTime fechaHora = evento.getFechaHoraOcurrencia();
-            this.fechasHorasOcurrencia.add(fechaHora);
-            System.out.println("Gestor: Fecha y Hora Ocurrencia: " + fechaHora);
-
-            double[] ubicacion = evento.obtenerUbicacion();
-            this.ubicacionesEpicentroHipocentro.add(ubicacion);
-            System.out.println("Gestor: Ubicación [LatEpic, LonEpic, LatHip, LonHip]: " + ubicacion[0] + ", " + ubicacion[1] + ", " + ubicacion[2] + ", " + ubicacion[3]);
-
-            double magnitudEvento = evento.getValorMagnitud();
-            this.magnitudes.add(magnitudEvento);
-            System.out.println("Gestor: Magnitud: " + magnitudEvento);
-
-            System.out.println("Gestor: Datos de evento sísmico pendiente de revisión guardados.");
+            System.out.println("Gestor: Evento SÍ está pendiente de revisión. Agregando a la lista de resultados...");
+            eventosPendientesFiltrados.add(evento);
         }
-        System.out.println("Gestor: Finalizada la búsqueda de eventos pendientes.");
+
+        // Paso 2 (anteriormente Paso 3): Crear los Object[] a partir de los eventos filtrados y agregarlos a la lista final
+        for (EventoSismico evento : eventosPendientesFiltrados) {
+            LocalDateTime fechaHora = evento.getFechaHoraOcurrencia();
+            double[] ubicacion = evento.obtenerUbicacion(); // Espera [latEpicentro, lonEpicentro, latHipocentro, lonHipocentro]
+            double magnitudEvento = evento.getValorMagnitud();
+
+            // Creamos un array de Object con los datos para la grilla y la referencia al objeto original
+            Object[] rowData = new Object[]{
+                fechaHora,                      // [0] Fecha y Hora Ocurrencia (LocalDateTime)
+                ubicacion[0],                   // [1] Latitud Epicentro (double)
+                ubicacion[1],                   // [2] Longitud Epicentro (double)
+                ubicacion[2],                   // [3] Latitud Hipocentro (double)  <-- CORREGIDO
+                ubicacion[3],                   // [4] Longitud Hipocentro (double) <-- CORREGIDO
+                magnitudEvento,                 // [5] Magnitud (double)
+                evento                          // [6] ¡La referencia al EventoSismico original!
+            };
+            filasParaGrilla.add(rowData);
+            System.out.println("Gestor: Fila para grilla creada para " + fechaHora + " y agregada.");
+        }
+        System.out.println("Gestor: Finalizada la búsqueda y preparación de eventos pendientes (sin ordenar). Total filas generadas: " + filasParaGrilla.size());
+        return filasParaGrilla; // Devuelve la lista de Object[]
     }
 
     public void ordenarFechaHoraDeOcurrencia() {}
