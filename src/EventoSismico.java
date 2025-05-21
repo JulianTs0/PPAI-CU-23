@@ -17,7 +17,7 @@ public class EventoSismico {
 
     // --- Asociaciones 1:1 ---
     private ClasificacionSismo clasificacionSismo; // Asociación con ClasificacionSismo
-    private OrigenSismo origenSismo;             // Asociación con OrigenSismo
+    private OrigenDeGeneracion origenSismo;             // Asociación con OrigenSismo
     private AlcanceSismo alcanceSismo;           // Asociación con AlcanceSismo
     private Estado estadoActual;                 // Asociación con Estado (atributo referencial)
 
@@ -31,7 +31,7 @@ public class EventoSismico {
                          double longitudEpicentro, double longitudHipocentro,
                          double valorMagnitud, String nombreAlcance,
                          String nombreClasificacion, String nombreOrigen,
-                         ClasificacionSismo clasificacionSismo, OrigenSismo origenSismo,
+                         ClasificacionSismo clasificacionSismo, OrigenDeGeneracion origenSismo,
                          AlcanceSismo alcanceSismo, Estado estadoActual) {
         this.fechaHoraFin = fechaHoraFin;
         this.fechaHoraOcurrencia = fechaHoraOcurrencia;
@@ -143,11 +143,11 @@ public class EventoSismico {
         this.clasificacionSismo = clasificacionSismo;
     }
 
-    public OrigenSismo getOrigenSismo() {
+    public OrigenDeGeneracion getOrigenDeGeneracion() {
         return origenSismo;
     }
 
-    public void setOrigenSismo(OrigenSismo origenSismo) {
+    public void setOrigenSismo(OrigenDeGeneracion origenSismo) {
         this.origenSismo = origenSismo;
     }
 

@@ -35,4 +35,4 @@ public class Empleado {
     public void getNombreCompleto() {
         // Método vacío por solicitud.
     }
-    
+}

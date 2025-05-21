@@ -1,9 +1,11 @@
+import java.time.LocalDate;
+
 public class EstacionSismologica {
 
     // Atributos
     private String codigoEstacion;
     private String documentoCertificacionAdquirido;
-    private String fechaSolicitudCertificacion; // Usamos LocalDate para fechas
+    private LocalDate fechaSolicitudCertificacion; // Usamos LocalDate para fechas
     private double latitud;
     private double longitud;
     private String nombre;
@@ -39,11 +41,11 @@ public class EstacionSismologica {
         this.documentoCertificacionAdquirido = documentoCertificacionAdquirido;
     }
 
-    public String getFechaSolicitudCertificacion() {
+    public LocalDate getFechaSolicitudCertificacion() {
         return fechaSolicitudCertificacion;
     }
 
-    public void setFechaSolicitudCertificacion(String fechaSolicitudCertificacion) {
+    public void setFechaSolicitudCertificacion(LocalDate fechaSolicitudCertificacion) {
         this.fechaSolicitudCertificacion = fechaSolicitudCertificacion;
     }
 
