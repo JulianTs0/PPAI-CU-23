@@ -1,18 +1,22 @@
+import java.time.LocalDateTime; // Importa la clase LocalDateTime
+
 public class Sesion {
     // --- Atributos de la Sesión ---
-    private String fechaHora;
+    private LocalDateTime fechaHora; // Cambiado a LocalDateTime
     private String responsable;
 
     // --- Constructor ---
-    public Sesion(String fechaHora, String responsable) {
+    // Ahora el constructor recibe LocalDateTime
+    public Sesion(LocalDateTime fechaHora, String responsable) {
         this.fechaHora = fechaHora;
         this.responsable = responsable;
     }
     // --- Getters y Setters ---
-    public String getFechaHora() {
+    // El tipo de retorno y parámetro ahora es LocalDateTime
+    public LocalDateTime getFechaHora() {
         return fechaHora;
     }
-    public void setFechaHora(String fechaHora) {
+    public void setFechaHora(LocalDateTime fechaHora) {
         this.fechaHora = fechaHora;
     }
     public String getResponsable() {
@@ -30,7 +34,7 @@ public class Sesion {
     @Override
     public String toString() {
         return "Sesion{" +
-               "fechaHora='" + fechaHora + '\'' +
+               "fechaHora=" + fechaHora + // LocalDateTime se imprimirá de forma legible
                ", responsable='" + responsable + '\'' +
                '}';
     }

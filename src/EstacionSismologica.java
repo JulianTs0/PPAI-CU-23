@@ -1,11 +1,11 @@
-import java.time.LocalDate;
+import java.time.LocalDateTime; // Cambiado de LocalDate a LocalDateTime
 
 public class EstacionSismologica {
 
     // Atributos
     private String codigoEstacion;
     private String documentoCertificacionAdquirido;
-    private LocalDate fechaSolicitudCertificacion; // Usamos LocalDate para fechas
+    private LocalDateTime fechaSolicitudCertificacion; // Cambiado a LocalDateTime
     private double latitud;
     private double longitud;
     private String nombre;
@@ -13,7 +13,7 @@ public class EstacionSismologica {
 
     // Constructor con todos los parámetros
     public EstacionSismologica(String codigoEstacion, String documentoCertificacionAdquirido,
-                               LocalDate fechaSolicitudCertificacion, double latitud, double longitud,
+                               LocalDateTime fechaSolicitudCertificacion, double latitud, double longitud,
                                String nombre, String nroCertificacionAdquisicion) {
         this.codigoEstacion = codigoEstacion;
         this.documentoCertificacionAdquirido = documentoCertificacionAdquirido;
@@ -41,11 +41,12 @@ public class EstacionSismologica {
         this.documentoCertificacionAdquirido = documentoCertificacionAdquirido;
     }
 
-    public LocalDate getFechaSolicitudCertificacion() {
+    // El tipo de retorno y parámetro ahora es LocalDateTime
+    public LocalDateTime getFechaSolicitudCertificacion() {
         return fechaSolicitudCertificacion;
     }
 
-    public void setFechaSolicitudCertificacion(LocalDate fechaSolicitudCertificacion) {
+    public void setFechaSolicitudCertificacion(LocalDateTime fechaSolicitudCertificacion) {
         this.fechaSolicitudCertificacion = fechaSolicitudCertificacion;
     }
 
@@ -81,7 +82,7 @@ public class EstacionSismologica {
         this.nroCertificacionAdquisicion = nroCertificacionAdquisicion;
     }
 
-    // --- Método toString() (Añadido) ---
+    // --- Método toString() ---
     @Override
     public String toString() {
         return "EstacionSismologica{" +
@@ -89,7 +90,7 @@ public class EstacionSismologica {
                ", nombre='" + nombre + '\'' +
                ", latitud=" + latitud +
                ", longitud=" + longitud +
-               ", fechaSolicitudCertificacion=" + fechaSolicitudCertificacion +
+               ", fechaSolicitudCertificacion=" + fechaSolicitudCertificacion + // Se imprimirá como LocalDateTime
                '}';
     }
 }

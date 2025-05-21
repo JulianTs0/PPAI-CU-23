@@ -1,34 +1,38 @@
+import java.time.LocalDateTime; // Importa la clase LocalDateTime
+
 public class CambioDeEstado {
 
     // Atributos
-    private String fechaHoraInicio;
-    private String fechaHoraFin;
+    private LocalDateTime fechaHoraInicio; // Cambiado a LocalDateTime
+    private LocalDateTime fechaHoraFin;    // Cambiado a LocalDateTime
 
     // --- Asociación 1:1 con la clase Estado ---
     private Estado estado; // Un CambioDeEstado se asocia a un solo Estado
     // ------------------------------------------
 
     // Constructor con todos los parámetros
-    public CambioDeEstado(String fechaHoraInicio, String fechaHoraFin, Estado estado) {
+    // Ahora recibe LocalDateTime en lugar de String
+    public CambioDeEstado(LocalDateTime fechaHoraInicio, LocalDateTime fechaHoraFin, Estado estado) {
         this.fechaHoraInicio = fechaHoraInicio;
         this.fechaHoraFin = fechaHoraFin;
         this.estado = estado; // Inicializa la asociación
     }
 
     // Getters y Setters
-    public String getFechaHoraInicio() {
+    // Los tipos de retorno y parámetro ahora son LocalDateTime
+    public LocalDateTime getFechaHoraInicio() {
         return fechaHoraInicio;
     }
 
-    public void setFechaHoraInicio(String fechaHoraInicio) {
+    public void setFechaHoraInicio(LocalDateTime fechaHoraInicio) {
         this.fechaHoraInicio = fechaHoraInicio;
     }
 
-    public String getFechaHoraFin() {
+    public LocalDateTime getFechaHoraFin() {
         return fechaHoraFin;
     }
 
-    public void setFechaHoraFin(String fechaHoraFin) {
+    public void setFechaHoraFin(LocalDateTime fechaHoraFin) {
         this.fechaHoraFin = fechaHoraFin;
     }
 
@@ -62,6 +66,17 @@ public class CambioDeEstado {
     /**
      * Este método está definido pero no realiza ninguna acción.
      * Su implementación se espera en el futuro.
+     * (Este método ya existía como setter, pero lo mantengo vacío aquí como un método adicional, si esa es la intención).
+     */
+    public void setFechaHoraFin() {
+        // Método vacío por solicitud. Si este método debería ser el setter de fechaHoraFin,
+        // ya existe el setter "public void setFechaHoraFin(LocalDateTime fechaHoraFin)".
+        // Se mantiene como un método void sin parámetros y sin acción.
+    }
+
+    /**
+     * Este método está definido pero no realiza ninguna acción.
+     * Su implementación se espera en el futuro.
      */
     public void sosCambioEstadoActual() {
         // Método vacío por solicitud.
@@ -79,9 +94,9 @@ public class CambioDeEstado {
     @Override
     public String toString() {
         return "CambioDeEstado{" +
-               "fechaHoraInicio='" + fechaHoraInicio + '\'' +
-               ", fechaHoraFin='" + fechaHoraFin + '\'' +
-               ", estado=" + (estado != null ? estado.getNombreEstado() : "N/A") + // Muestra el nombre del estado si no es null
+               "fechaHoraInicio=" + fechaHoraInicio + // LocalDateTime se convierte automáticamente a String legible
+               ", fechaHoraFin=" + fechaHoraFin +
+               ", estado=" + (estado != null ? estado.getNombreEstado() : "N/A") +
                '}';
     }
 }

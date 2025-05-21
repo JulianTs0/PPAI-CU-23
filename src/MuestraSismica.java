@@ -1,27 +1,29 @@
+import java.time.LocalDateTime; // Importa la clase LocalDateTime
 import java.util.ArrayList;
 import java.util.List;
 
 public class MuestraSismica {
 
     // Atributos
-    private String fechaHoraMuestra;
+    private LocalDateTime fechaHoraMuestra; // Cambiado a LocalDateTime
 
     // Composición: Relación de uno a muchos con DetalleMuestraSismica
     private List<DetalleMuestraSismica> detallesMuestra;
 
     // Constructor
-    public MuestraSismica(String fechaHoraMuestra) {
+    // Ahora el constructor recibe LocalDateTime
+    public MuestraSismica(LocalDateTime fechaHoraMuestra) {
         this.fechaHoraMuestra = fechaHoraMuestra;
         this.detallesMuestra = new ArrayList<>(); // Inicializa la lista vacía al crear la MuestraSismica
     }
 
-    // Getter para fechaHoraMuestra
-    public String getFechaHoraMuestra() {
+    // Getter para fechaHoraMuestra (tipo actualizado)
+    public LocalDateTime getFechaHoraMuestra() {
         return fechaHoraMuestra;
     }
 
-    // Setter para fechaHoraMuestra (si es necesario modificarla después de la creación)
-    public void setFechaHoraMuestra(String fechaHoraMuestra) {
+    // Setter para fechaHoraMuestra (tipo actualizado)
+    public void setFechaHoraMuestra(LocalDateTime fechaHoraMuestra) {
         this.fechaHoraMuestra = fechaHoraMuestra;
     }
 
@@ -29,7 +31,6 @@ public class MuestraSismica {
 
     /**
      * Permite agregar un DetalleMuestraSismica a esta muestra.
-     * Ya no imprime nada, solo realiza la acción.
      * @param detalle El objeto DetalleMuestraSismica a añadir.
      */
     public void addDetalle(DetalleMuestraSismica detalle) {
@@ -49,7 +50,6 @@ public class MuestraSismica {
 
     /**
      * Crea un nuevo DetalleMuestraSismica y lo asocia a esta MuestraSismica.
-     * No retorna nada (void) y ya no imprime mensajes.
      * @param valor El valor del detalle de la muestra.
      * @param tipoDeDato El tipo de dato asociado a este detalle.
      */
@@ -66,11 +66,11 @@ public class MuestraSismica {
         // Este método está intencionalmente vacío según tu solicitud.
     }
 
-    // --- Método toString() (Añadido) ---
+    // --- Método toString() ---
     @Override
     public String toString() {
         return "MuestraSismica{" +
-               "fechaHoraMuestra='" + fechaHoraMuestra + '\'' +
+               "fechaHoraMuestra=" + fechaHoraMuestra + // LocalDateTime se imprimirá de forma legible
                ", cantidadDetalles=" + detallesMuestra.size() +
                '}';
     }

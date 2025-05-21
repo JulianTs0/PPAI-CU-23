@@ -1,10 +1,11 @@
+import java.time.LocalDateTime; // Importa la clase LocalDateTime
 import java.util.ArrayList;
 import java.util.List;
 
 public class Sismografo {
 
     // Atributos
-    private String fechaAdquisicion;
+    private LocalDateTime fechaAdquisicion; // Cambiado a LocalDateTime
     private String identificadorSismografo;
     private String nroSerie;
     private String nombre;
@@ -23,29 +24,29 @@ public class Sismografo {
     // Asociación 1:M con SerieTemporal
     private List<SerieTemporal> seriesTemporales;
 
-    // --- Constructor Principal (el único ahora) ---
+    // --- Constructor Principal ---
 
     // Constructor con todos los parámetros principales y asociaciones 1:1
-    public Sismografo(String fechaAdquisicion, String identificadorSismografo,
+    public Sismografo(LocalDateTime fechaAdquisicion, String identificadorSismografo, // Cambiado el tipo
                       String nroSerie, String nombre,
                       EstacionSismologica estacionSismologica, Estado estadoActual) {
         this.fechaAdquisicion = fechaAdquisicion;
         this.identificadorSismografo = identificadorSismografo;
         this.nroSerie = nroSerie;
         this.nombre = nombre;
-        this.estacionSismologica = estacionSismologica; // Inicializa la asociación 1:1
-        this.estadoActual = estadoActual;             // Inicializa la asociación 1:1
-        this.cambiosDeEstado = new ArrayList<>();     // Inicializa la lista de cambios
-        this.seriesTemporales = new ArrayList<>();    // Inicializa la lista de series
+        this.estacionSismologica = estacionSismologica;
+        this.estadoActual = estadoActual;
+        this.cambiosDeEstado = new ArrayList<>();
+        this.seriesTemporales = new ArrayList<>();
     }
 
-    // --- Getters y Setters de Atributos ---
+    // --- Getters y Setters de Atributos (tipo actualizado) ---
 
-    public String getFechaAdquisicion() {
+    public LocalDateTime getFechaAdquisicion() {
         return fechaAdquisicion;
     }
 
-    public void setFechaAdquisicion(String fechaAdquisicion) {
+    public void setFechaAdquisicion(LocalDateTime fechaAdquisicion) {
         this.fechaAdquisicion = fechaAdquisicion;
     }
 
@@ -127,13 +128,14 @@ public class Sismografo {
         // Método vacío por solicitud.
     }
 
-    // --- Método toString() (Añadido) ---
+    // --- Método toString() ---
     @Override
     public String toString() {
         return "Sismografo{" +
                "identificadorSismografo='" + identificadorSismografo + '\'' +
                ", nombre='" + nombre + '\'' +
                ", nroSerie='" + nroSerie + '\'' +
+               ", fechaAdquisicion=" + fechaAdquisicion + // LocalDateTime se imprimirá de forma legible
                ", estacionSismologica=" + (estacionSismologica != null ? estacionSismologica.getNombre() : "N/A") +
                ", estadoActual=" + (estadoActual != null ? estadoActual.getNombreEstado() : "N/A") +
                ", numCambiosDeEstado=" + cambiosDeEstado.size() +

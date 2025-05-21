@@ -1,3 +1,4 @@
+import java.time.LocalDateTime; // Importa la clase LocalDateTime
 import java.util.ArrayList;
 import java.util.List;
 
@@ -5,30 +6,27 @@ public class SerieTemporal {
 
     // Atributos
     private String condicionAlarma;
-    private String fechaHoraIncioRegistroMuestras;
-    private String fechaHoraRegistro;
+    private LocalDateTime fechaHoraIncioRegistroMuestras; // Cambiado a LocalDateTime
+    private LocalDateTime fechaHoraRegistro;             // Cambiado a LocalDateTime
     private double frecuenciaMuestreo;
 
     // --- Asociación 1:1 con la clase Estado ---
     private Estado estado;
 
     // --- Composición 1:M con MuestraSismica ---
-    // Una SerieTemporal "contiene" una o más MuestraSismica.
     private List<MuestraSismica> muestrasSismicas;
-    // ------------------------------------------
 
     // Constructor
-    public SerieTemporal(String condicionAlarma, String fechaHoraIncioRegistroMuestras,
-                         String fechaHoraRegistro, double frecuenciaMuestreo, Estado estado) {
+    public SerieTemporal(String condicionAlarma, LocalDateTime fechaHoraIncioRegistroMuestras, LocalDateTime fechaHoraRegistro, double frecuenciaMuestreo, Estado estado) { // Cambiado el tipo
         this.condicionAlarma = condicionAlarma;
         this.fechaHoraIncioRegistroMuestras = fechaHoraIncioRegistroMuestras;
         this.fechaHoraRegistro = fechaHoraRegistro;
         this.frecuenciaMuestreo = frecuenciaMuestreo;
         this.estado = estado;
-        this.muestrasSismicas = new ArrayList<>(); // Inicializa la lista para la composición
+        this.muestrasSismicas = new ArrayList<>();
     }
 
-    // Getters y Setters de Atributos
+    // Getters y Setters de Atributos (tipos actualizados)
     public String getCondicionAlarma() {
         return condicionAlarma;
     }
@@ -37,19 +35,19 @@ public class SerieTemporal {
         this.condicionAlarma = condicionAlarma;
     }
 
-    public String getFechaHoraIncioRegistroMuestras() {
+    public LocalDateTime getFechaHoraIncioRegistroMuestras() {
         return fechaHoraIncioRegistroMuestras;
     }
 
-    public void setFechaHoraIncioRegistroMuestras(String fechaHoraIncioRegistroMuestras) {
+    public void setFechaHoraIncioRegistroMuestras(LocalDateTime fechaHoraIncioRegistroMuestras) {
         this.fechaHoraIncioRegistroMuestras = fechaHoraIncioRegistroMuestras;
     }
 
-    public String getFechaHoraRegistro() {
+    public LocalDateTime getFechaHoraRegistro() {
         return fechaHoraRegistro;
     }
 
-    public void setFechaHoraRegistro(String fechaHoraRegistro) {
+    public void setFechaHoraRegistro(LocalDateTime fechaHoraRegistro) {
         this.fechaHoraRegistro = fechaHoraRegistro;
     }
 
@@ -77,13 +75,11 @@ public class SerieTemporal {
      * @return Una lista de objetos MuestraSismica (copia defensiva).
      */
     public List<MuestraSismica> getMuestrasSismicas() {
-        // Devuelve una copia defensiva para proteger la lista interna
         return new ArrayList<>(this.muestrasSismicas);
     }
 
     /**
      * Añade una MuestraSismica a la serie temporal.
-     * No imprime nada, solo realiza la acción.
      * @param muestra La MuestraSismica a añadir.
      */
     public void addMuestraSismica(MuestraSismica muestra) {
@@ -98,7 +94,7 @@ public class SerieTemporal {
      * lo cual es característico de la composición.
      * @param fechaHoraMuestra La fecha y hora de la muestra.
      */
-    public void crearMuestraSismica(String fechaHoraMuestra) {
+    public void crearMuestraSismica(LocalDateTime fechaHoraMuestra) { // Cambiado el tipo de parámetro
         MuestraSismica nuevaMuestra = new MuestraSismica(fechaHoraMuestra);
         this.muestrasSismicas.add(nuevaMuestra);
     }
@@ -122,11 +118,11 @@ public class SerieTemporal {
     public String toString() {
         return "SerieTemporal{" +
                "condicionAlarma='" + condicionAlarma + '\'' +
-               ", fechaHoraIncioRegistroMuestras='" + fechaHoraIncioRegistroMuestras + '\'' +
-               ", fechaHoraRegistro='" + fechaHoraRegistro + '\'' +
+               ", fechaHoraIncioRegistroMuestras=" + fechaHoraIncioRegistroMuestras +:
+               ", fechaHoraRegistro=" + fechaHoraRegistro +
                ", frecuenciaMuestreo=" + frecuenciaMuestreo +
                ", estado=" + (estado != null ? estado.getNombreEstado() : "N/A") +
-               ", numMuestrasSismicas=" + muestrasSismicas.size() + // Incluye el conteo de muestras
+               ", numMuestrasSismicas=" + muestrasSismicas.size() +
                '}';
     }
 }
