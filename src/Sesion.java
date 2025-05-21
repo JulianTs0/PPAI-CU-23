@@ -1,41 +1,42 @@
-import java.time.LocalDateTime; // Importa la clase LocalDateTime
+import java.time.LocalDateTime;
 
 public class Sesion {
     // --- Atributos de la Sesión ---
-    private LocalDateTime fechaHora; // Cambiado a LocalDateTime
-    private String responsable;
+    private LocalDateTime fechaHora;
+    private Empleado empleado; // Ahora solo tenemos la asociación directa al Empleado
 
     // --- Constructor ---
-    // Ahora el constructor recibe LocalDateTime
-    public Sesion(LocalDateTime fechaHora, String responsable) {
+    // El constructor ahora solo necesita la fecha/hora y el objeto Empleado
+    public Sesion(LocalDateTime fechaHora, Empleado empleado) {
         this.fechaHora = fechaHora;
-        this.responsable = responsable;
+        this.empleado = empleado; // Asigna el Empleado recibido
     }
+
     // --- Getters y Setters ---
-    // El tipo de retorno y parámetro ahora es LocalDateTime
     public LocalDateTime getFechaHora() {
         return fechaHora;
     }
+
     public void setFechaHora(LocalDateTime fechaHora) {
         this.fechaHora = fechaHora;
     }
-    public String getResponsable() {
-        return responsable;
-    }
-    public void setResponsable(String responsable) {
-        this.responsable = responsable;
-    }
-    // --- Métodos solicitados (void y vacíos) ---
-    public void obtenerEmpleado(){
-        // Método vacío por solicitud.
+
+    // Getter para obtener el objeto Empleado asociado
+    public Empleado getEmpleado() {
+        return empleado;
     }
 
-    // --- Método toString() (Añadido) ---
+    // Setter para establecer el objeto Empleado asociado
+    public void setEmpleado(Empleado empleado) {
+        this.empleado = empleado;
+    }
+
+    // --- Método toString() ---
     @Override
     public String toString() {
         return "Sesion{" +
-               "fechaHora=" + fechaHora + // LocalDateTime se imprimirá de forma legible
-               ", responsable='" + responsable + '\'' +
+               "fechaHora=" + fechaHora +
+               ", empleado=" + (empleado != null ? empleado.getNombre() : "N/A") + // Muestra algo del empleado si existe
                '}';
     }
 }

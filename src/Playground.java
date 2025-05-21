@@ -186,6 +186,8 @@ public class Playground {
         evento6.addCambioDeEstado(ce1_e6);
         eventosSismicos.add(evento6);
 
+        Sesion sesionActual = new Sesion(LocalDateTime.now(), emp1);
+
         // 3. Imprimir información de los Eventos Sísmicos creados (esto se puede dejar o quitar si solo quieres la GUI)
         System.out.println("--- Detalles de los Eventos Sísmicos Creados ---\n");
         for (int i = 0; i < eventosSismicos.size(); i++) {
