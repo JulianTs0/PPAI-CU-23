@@ -91,7 +91,7 @@ public class PantallaRegistrarResultadoDeRevisionManual extends JFrame {
 
         JPanel panelInferior = new JPanel(new BorderLayout()); // Cambiado a BorderLayout para contener el nuevo panel del botón
         panelInferior.add(panelBotonSeleccionar, BorderLayout.WEST); // Añade el panel del botón a la izquierda de la parte inferior
-        panelInferior.add(new JLabel("Aquí irán otros elementos después del botón seleccionar"), BorderLayout.CENTER); // Otros elementos
+        panelInferior.add(new JLabel("Otros elementos"), BorderLayout.CENTER); // Otros elementos
 
         panelRegistroManual.add(new JScrollPane(grillaEventoSismico), BorderLayout.CENTER);
         panelRegistroManual.add(panelInferior, BorderLayout.SOUTH); // El panelInferior ahora contiene el botón
