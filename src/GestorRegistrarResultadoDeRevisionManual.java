@@ -173,10 +173,46 @@ public class GestorRegistrarResultadoDeRevisionManual {
     }
 
     public void tomarSeleccionEventoSismico(int indiceFilaSeleccionada) {
-        System.out.println("\n--- Gestor: Método tomarSeleccionEventoSismico (versión muy básica) ejecutado ---");
-        // Simplemente imprime el parámetro recibido
-        System.out.println("Gestor: El índice de la fila seleccionada es: " + indiceFilaSeleccionada);
-        pantalla.actualizarEstadoPantalla("Fila seleccionada (índice): " + indiceFilaSeleccionada);
+        System.out.println("\n--- Gestor: Método tomarSeleccionEventoSismico (desarrollado) ejecutado ---");
+        System.out.println("Gestor: Recibido índice de fila seleccionada: " + indiceFilaSeleccionada);
+
+        // Validar que el índice sea válido para evitar errores.
+        if (this.eventosParaGrilla == null || indiceFilaSeleccionada < 0 || indiceFilaSeleccionada >= this.eventosParaGrilla.size()) {
+            System.err.println("Gestor: ERROR - Índice de fila no válido o lista de eventos para grilla vacía.");
+            this.eventoSeleccionado = null; // Asegura que no haya un evento seleccionado incorrectamente
+            pantalla.actualizarEstadoPantalla("Error: Selección de evento no válida.");
+            return;
+        }
+
+        // Obtener el array de Object que representa la fila seleccionada
+        Object[] filaSeleccionada = this.eventosParaGrilla.get(indiceFilaSeleccionada);
+
+        // El EventoSismico original está almacenado en el índice [6] de ese Object[]
+        // Se realiza un casting para recuperarlo como EventoSismico
+        this.eventoSeleccionado = (EventoSismico) filaSeleccionada[6];
+
+        if (this.eventoSeleccionado != null) {
+            System.out.println("Gestor: ¡EventoSismico seleccionado y establecido correctamente!");
+            System.out.println("Gestor: Detalles del Evento Sísmico seleccionado:");
+            System.out.println("  Fecha y Hora: " + this.eventoSeleccionado.getFechaHoraOcurrencia());
+            System.out.println("  Magnitud: " + this.eventoSeleccionado.getValorMagnitud());
+            System.out.println("  Ubicación Epicentro: Lat " + this.eventoSeleccionado.obtenerUbicacion()[0] +
+                               " Lon " + this.eventoSeleccionado.obtenerUbicacion()[1]);
+            // Puedes agregar más detalles si EventoSismico tiene un buen toString() o más getters
+            System.out.println("  Objeto EventoSismico: " + this.eventoSeleccionado.toString());
+
+            // Actualizar la pantalla con un mensaje que confirme la selección
+            pantalla.actualizarEstadoPantalla("Evento " + this.eventoSeleccionado.getFechaHoraOcurrencia().toLocalTime() +
+                                              " (Mag: " + this.eventoSeleccionado.getValorMagnitud() + ") seleccionado.");
+
+            // A partir de este punto, this.eventoSeleccionado puede ser utilizado
+            // para continuar con el resto de la lógica del caso de uso (ej. mostrar datos, etc.)
+            // Por ejemplo:
+            // this.mostrarDatosDetalladosEnPantalla();
+        } else {
+            System.err.println("Gestor: ERROR - El objeto EventoSismico en el índice [6] era nulo.");
+            pantalla.actualizarEstadoPantalla("Error: Evento no recuperado correctamente.");
+        }
         System.out.println("--- Fin del método tomarSeleccionEventoSismico ---");
     }
 
