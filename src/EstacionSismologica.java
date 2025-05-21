@@ -81,4 +81,15 @@ public class EstacionSismologica {
         this.nroCertificacionAdquisicion = nroCertificacionAdquisicion;
     }
 
+    // --- Método toString() (Añadido) ---
+    @Override
+    public String toString() {
+        return "EstacionSismologica{" +
+               "codigoEstacion='" + codigoEstacion + '\'' +
+               ", nombre='" + nombre + '\'' +
+               ", latitud=" + latitud +
+               ", longitud=" + longitud +
+               ", fechaSolicitudCertificacion=" + fechaSolicitudCertificacion +
+               '}';
+    }
 }

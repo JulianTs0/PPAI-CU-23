@@ -126,4 +126,18 @@ public class Sismografo {
     public void soyTuSerieTemporal() {
         // Método vacío por solicitud.
     }
+
+    // --- Método toString() (Añadido) ---
+    @Override
+    public String toString() {
+        return "Sismografo{" +
+               "identificadorSismografo='" + identificadorSismografo + '\'' +
+               ", nombre='" + nombre + '\'' +
+               ", nroSerie='" + nroSerie + '\'' +
+               ", estacionSismologica=" + (estacionSismologica != null ? estacionSismologica.getNombre() : "N/A") +
+               ", estadoActual=" + (estadoActual != null ? estadoActual.getNombreEstado() : "N/A") +
+               ", numCambiosDeEstado=" + cambiosDeEstado.size() +
+               ", numSeriesTemporales=" + seriesTemporales.size() +
+               '}';
+    }
 }

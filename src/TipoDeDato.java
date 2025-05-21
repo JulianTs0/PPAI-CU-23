@@ -4,12 +4,7 @@ public class TipoDeDato {
     private String denominacion;
     private String nombreUnidadMedida;
 
-    // Constructor (Nota: el nombre 'new' es una palabra reservada en Java.
-    // Usaremos un nombre convencional como 'TipoDeDato' para el constructor,
-    // o 'nuevoTipoDeDato' si se buscaba algo similar a la función 'new' en otros contextos).
-    // Si el requisito es estrictamente 'new()', no se puede, pero si te refieres
-    // a la función de creación de objetos, el nombre del constructor debe coincidir con la clase.
-    // Opto por el nombre estándar de constructor para la clase.
+    // Constructor
     public TipoDeDato(String denominacion, String nombreUnidadMedida) {
         this.denominacion = denominacion;
         this.nombreUnidadMedida = nombreUnidadMedida;
@@ -42,4 +37,12 @@ public class TipoDeDato {
         return "Denominación: " + this.denominacion + ", Unidad de Medida: " + this.nombreUnidadMedida;
     }
 
+    // --- Método toString() (Añadido) ---
+    @Override
+    public String toString() {
+        return "TipoDeDato{" +
+               "denominacion='" + denominacion + '\'' +
+               ", nombreUnidadMedida='" + nombreUnidadMedida + '\'' +
+               '}';
+    }
 }

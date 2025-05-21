@@ -27,4 +27,12 @@ public class AlcanceSismo {
         this.nombre = nombre;
     }
 
+    // --- Método toString() ---
+    @Override
+    public String toString() {
+        return "AlcanceSismo{" +
+               "descripcion='" + descripcion + '\'' +
+               ", nombre='" + nombre + '\'' +
+               '}';
+    }
 }

@@ -40,6 +40,16 @@ public class DetalleMuestraSismica {
      * @return Una cadena formateada con los datos del detalle y su tipo.
      */
     public String getDatos() {
-        return "Valor: " + this.valor;
+        // Mejorado para incluir el tipo de dato, ya que la clase lo tiene.
+        return "Valor: " + this.valor + (tipoDeDato != null ? " (Tipo: " + tipoDeDato.getNombre() + ")" : "");
+    }
+
+    // --- Método toString() (Añadido) ---
+    @Override
+    public String toString() {
+        return "DetalleMuestraSismica{" +
+               "valor=" + valor +
+               ", tipoDeDato=" + (tipoDeDato != null ? tipoDeDato.getNombre() : "N/A") + // Muestra el nombre del TipoDeDato
+               '}';
     }
 }

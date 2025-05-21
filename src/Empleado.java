@@ -35,4 +35,14 @@ public class Empleado {
     public void getNombreCompleto() {
         // Método vacío por solicitud.
     }
+
+    // --- Método toString() (Añadido) ---
+    @Override
+    public String toString() {
+        return "Empleado{" +
+               "nombre='" + nombre + '\'' +
+               ", apellido='" + apellido + '\'' +
+               ", cargo='" + cargo + '\'' +
+               '}';
+    }
 }

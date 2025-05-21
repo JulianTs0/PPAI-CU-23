@@ -1,5 +1,5 @@
-import java.util.ArrayList; // Para la relación de composición con múltiples elementos
-import java.util.List;      // Para la interfaz List
+import java.util.ArrayList;
+import java.util.List;
 
 public class MuestraSismica {
 
@@ -64,8 +64,14 @@ public class MuestraSismica {
      */
     public void getDatos() {
         // Este método está intencionalmente vacío según tu solicitud.
-        // Aquí es donde en el futuro implementarías la lógica para "obtener"
-        // los datos, sin usar System.out.println() para mantener la lógica
-        // de la clase separada de la presentación.
+    }
+
+    // --- Método toString() (Añadido) ---
+    @Override
+    public String toString() {
+        return "MuestraSismica{" +
+               "fechaHoraMuestra='" + fechaHoraMuestra + '\'' +
+               ", cantidadDetalles=" + detallesMuestra.size() +
+               '}';
     }
 }
