@@ -15,6 +15,7 @@ public class GestorRegistrarResultadoDeRevisionManual {
     private LocalDateTime fechaHoraRevision;
 
     private EventoSismico eventoSeleccionado;
+    private Sesion sesionActual;
 
     private PantallaRegistrarResultadoDeRevisionManual pantalla;
     private List<EventoSismico> todosLosEventosDelSistema; // NUEVO: Atributo para almacenar todos los eventos
@@ -27,7 +28,8 @@ public class GestorRegistrarResultadoDeRevisionManual {
             String nombreOrigen,
             LocalDateTime fechaHoraRevision,
             PantallaRegistrarResultadoDeRevisionManual pantalla,
-            List<EventoSismico> todosLosEventosDelSistema) { // NUEVO PARÁMETRO
+            List<EventoSismico> todosLosEventosDelSistema,
+            Sesion sesionActual) { // NUEVO PARÁMETRO
         this.nombreAlcance = nombreAlcance;
         this.nombreClasificacion = nombreClasificacion;
         this.nombreOrigen = nombreOrigen;
@@ -37,6 +39,7 @@ public class GestorRegistrarResultadoDeRevisionManual {
 
         this.pantalla = pantalla;
         this.todosLosEventosDelSistema = todosLosEventosDelSistema; // Asigna la lista de eventos
+        this.sesionActual = sesionActual;
         System.out.println("GestorRegistrarResultadoDeRevisionManual: Instancia (Constructor Largo) creada con valores iniciales y referencia a Pantalla y Eventos.");
     }
 
@@ -77,6 +80,10 @@ public class GestorRegistrarResultadoDeRevisionManual {
    
     public List<Object[]> getEventosParaGrilla() {
         return eventosParaGrilla;
+    }
+
+    public Sesion getSesionActual() {
+        return sesionActual;
     }
 
     // --- Métodos del Gestor (vacíos) ---
@@ -216,7 +223,8 @@ public class GestorRegistrarResultadoDeRevisionManual {
         System.out.println("--- Fin del método tomarSeleccionEventoSismico ---");
     }
 
-    public void buscarSesionActual() {}
+    public void obtenerEmpleadoActual() {}
+
     public void getFechaActual() {}
     public void buscarEstadoBloqueadoEnRevision() {}
     public void buscarDatosDelEventoSismicoSeleccionado() {}
