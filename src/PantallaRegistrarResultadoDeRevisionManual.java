@@ -4,7 +4,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
+import javax.swing.JTextField; // Aunque no se usa en este código, se mantiene por si lo usas después.
 import javax.swing.SwingUtilities;
 import java.awt.CardLayout;
 
@@ -33,7 +33,7 @@ public class PantallaRegistrarResultadoDeRevisionManual extends JFrame {
     // --- Constructor ---
     public PantallaRegistrarResultadoDeRevisionManual() {
         // Configuración básica de la ventana (JFrame)
-        this.setTitle("Registro de Resultado de Revisión Manual");
+        this.setTitle("Anterior caso de uso");
         this.setSize(800, 600);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLocationRelativeTo(null);
@@ -97,10 +97,11 @@ public class PantallaRegistrarResultadoDeRevisionManual extends JFrame {
      * Su implementación se espera en el futuro.
      */
     public void habilitarVentana() {
-        // Cambia la "tarjeta" visible en el CardLayout a la de "RegistroManual".
-        cardLayout.show(panelContenedorVistas, "RegistroManual");
-    }
-
+      // Cambia la "tarjeta" visible en el CardLayout a la de "RegistroManual".
+      cardLayout.show(panelContenedorVistas, "RegistroManual");
+      // ¡Aquí está el cambio!
+      this.setTitle("Registrar Resultado Manual"); // Cambia el título de la ventana
+    }    
     public void mostrarEventoSismicoOrdenados() {
         // Lógica para ordenar y mostrar eventos sísmicos en la grilla
     }
@@ -139,15 +140,5 @@ public class PantallaRegistrarResultadoDeRevisionManual extends JFrame {
 
     public void clasificarDatosPorEstacionSismologica() {
         // Lógica para clasificar datos
-    }
-
-    // --- Método main: El punto de entrada de la aplicación ---
-    public static void main(String[] args) {
-      SwingUtilities.invokeLater(new Runnable() {
-          @Override
-            public void run() {
-              PantallaRegistrarResultadoDeRevisionManual pantalla = new PantallaRegistrarResultadoDeRevisionManual();
-            }
-      });
     }
 }
