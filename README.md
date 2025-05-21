@@ -25,3 +25,7 @@ Al final de todo esta el metodo Main que crea la pantalla el gestor y la depende
 
 Uso swing, es para hacer ventanas de escritorio. La clase pantalla se extiende (herencia) de una
 que ya me provee la libreria
+
+# Recurden la regla de ORO
+
+No arregles lo que ya funciona
