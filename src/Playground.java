@@ -209,11 +209,26 @@ public class Playground {
         // --- Cargar la instancia de la Pantalla ---
         SwingUtilities.invokeLater(new Runnable() {
             @Override
-            public void run() {
-                // Se crea y se hace visible la pantalla.
-                // Como PantallaRegistrarResultadoDeRevisionManual ya tiene setVisible(true) en su constructor,
-                // solo necesitamos instanciarla aquí.
-                new PantallaRegistrarResultadoDeRevisionManual();
+              public void run() {
+                // 1. Crea la instancia de la Pantalla.
+                PantallaRegistrarResultadoDeRevisionManual pantallaInstancia = new PantallaRegistrarResultadoDeRevisionManual(null);
+
+                // 2. Crea la instancia del Gestor, pasándole la 'pantallaInstancia' DIRECTAMENTE.
+                GestorRegistrarResultadoDeRevisionManual gestorInstancia = new GestorRegistrarResultadoDeRevisionManual(
+                    null, // fechaHoraOcurrencia
+                    0.0,  // latitudEpicentro
+                    0.0,  // longitudEpicentro
+                    0.0,  // magnitud
+                    null, // fechaHoraBloqueado
+                    null, // nombreAlcance
+                    null, // nombreClasificacion
+                    null, // nombreOrigen
+                    null, // fechaHoraRevision
+                    pantallaInstancia // Aquí se inyecta la referencia de la Pantalla en el Gestor (tipo concreto)
+                );
+
+                // 3. Cierra el ciclo: inyecta la instancia del Gestor en la Pantalla usando el setter.
+                pantallaInstancia.setGestor(gestorInstancia);
             }
         });
     }

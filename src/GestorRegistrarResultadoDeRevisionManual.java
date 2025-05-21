@@ -12,6 +12,8 @@ public class GestorRegistrarResultadoDeRevisionManual {
     private String nombreOrigen;
     private LocalDateTime fechaHoraRevision;
 
+    private PantallaRegistrarResultadoDeRevisionManual pantalla;
+
     // Constructor
     public GestorRegistrarResultadoDeRevisionManual(
             LocalDateTime fechaHoraOcurrencia,
@@ -22,7 +24,8 @@ public class GestorRegistrarResultadoDeRevisionManual {
             String nombreAlcance,
             String nombreClasificacion,
             String nombreOrigen,
-            LocalDateTime fechaHoraRevision) {
+            LocalDateTime fechaHoraRevision,
+            PantallaRegistrarResultadoDeRevisionManual pantalla) {
         this.fechaHoraOcurrencia = fechaHoraOcurrencia;
         this.latitudEpicentro = latitudEpicentro;
         this.longitudEpicentro = longitudEpicentro;
@@ -32,6 +35,7 @@ public class GestorRegistrarResultadoDeRevisionManual {
         this.nombreClasificacion = nombreClasificacion;
         this.nombreOrigen = nombreOrigen;
         this.fechaHoraRevision = fechaHoraRevision;
+        this.pantalla = pantalla;
     }
 
     // --- Getters y Setters ---
@@ -110,7 +114,16 @@ public class GestorRegistrarResultadoDeRevisionManual {
 
     // --- Métodos del Gestor (vacíos) ---
 
-    public void registrarNuevaRevisionManual() {}
+    public void registrarNuevaRevisionManual() {
+        System.out.println("GestorRegistrarResultadoDeRevisionManual: Método registrarNuevaRevisionManual ejecutado.");
+        if (pantalla != null) {
+            // Llama a un método específico de PantallaRegistrarResultadoDeRevisionManual
+            // Asegúrate de que el método exista en tu clase Pantalla.
+          System.out.println("Pantalla no vacia");
+
+        }
+    }
+
     public void buscarEventosSismicosAutodetectadosNoRevisados() {}
     public void ordenarFechaHoraDeOcurrencia() {}
     public void tomarEventoSismicoARevisar() {}

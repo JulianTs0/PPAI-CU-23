@@ -32,69 +32,66 @@ public class PantallaRegistrarResultadoDeRevisionManual extends JFrame {
     protected JPanel panelContenedorVistas; // Panel que contendrá las diferentes "pantallas"
     protected java.awt.CardLayout cardLayout; // El Layout Manager para alternar vistas
 
+    private GestorRegistrarResultadoDeRevisionManual gestor;
 
     // --- Constructor ---
-  public PantallaRegistrarResultadoDeRevisionManual() {
-    // Ya no necesitamos un atributo para la lista de eventos aquí si se inicializa vacía
-    // private List<EventoSismico> eventosSismicos;
+    public PantallaRegistrarResultadoDeRevisionManual(GestorRegistrarResultadoDeRevisionManual gestor) {
+        this.gestor = gestor; // Asigna la instancia del gestor (dependencia)
 
-    // Configuración básica de la ventana (JFrame)
-    this.setTitle("Registro de Resultado de Revisión Manual");
-    this.setSize(800, 600);
-    this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    this.setLocationRelativeTo(null);
+        // Configuración básica de la ventana (JFrame)
+        this.setTitle("Registro de Resultado de Revisión Manual");
+        this.setSize(800, 600);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setLocationRelativeTo(null);
 
-    // Inicialización de los componentes del Front-end
-    btnRegistrarResultadoManual = new JButton("Registrar Resultado Manual");
-    btnRegistrarResultadoManual.addActionListener(e -> opcionRegistrarResultadoManual());
+        // Inicialización de los componentes del Front-end
+        btnRegistrarResultadoManual = new JButton("Registrar Resultado Manual");
+        btnRegistrarResultadoManual.addActionListener(e -> opcionRegistrarResultadoManual());
 
-    // La grilla se inicializa aquí, pero sus datos se cargarán (o no) en habilitarVentana()
-    grillaEventoSismico = new JTable();
+        grillaEventoSismico = new JTable(); // Se inicializa vacía, se configura en habilitarVentana()
 
-    labelFechahoraOcurrencia = new JLabel("Fecha y Hora de Ocurrencia");
-    labelLongitudHipocentro = new JLabel("Longitud Hipocentro");
-    labelLatitudHipocentro = new JLabel("Latitud Hipocentro");
-    labelLongitudEpicentro = new JLabel("Longitud Epicentro");
-    labelLatitudEpicentro = new JLabel("Latitud Epicentro");
-    labelMagnitud = new JLabel("Magnitud");
-    btnOpcionVisualizarMapa = new JButton("Visualizar Mapa");
-    btnOpcionModificarDatos = new JButton("Modificar Datos");
-    checkboxOpcionesEvento = new JCheckBox("Opciones de Evento");
-    labelNombreAlcance = new JLabel("Nombre Alcance:");
-    labelNombreClasificacion = new JLabel("Nombre Clasificación:");
-    labelNombreOrigen = new JLabel("Nombre Origen:");
+        labelFechahoraOcurrencia = new JLabel("Fecha y Hora de Ocurrencia:");
+        labelLongitudHipocentro = new JLabel("Longitud Hipocentro:");
+        labelLatitudHipocentro = new JLabel("Latitud Hipocentro:");
+        labelLongitudEpicentro = new JLabel("Longitud Epicentro:");
+        labelLatitudEpicentro = new JLabel("Latitud Epicentro:");
+        labelMagnitud = new JLabel("Magnitud:");
+        btnOpcionVisualizarMapa = new JButton("Visualizar Mapa");
+        btnOpcionModificarDatos = new JButton("Modificar Datos");
+        checkboxOpcionesEvento = new JCheckBox("Opciones de Evento");
+        labelNombreAlcance = new JLabel("Nombre Alcance:");
+        labelNombreClasificacion = new JLabel("Nombre Clasificación:");
+        labelNombreOrigen = new JLabel("Nombre Origen:");
 
-    // Configuración de CardLayout
-    cardLayout = new java.awt.CardLayout();
-    panelContenedorVistas = new JPanel(cardLayout);
+        // Configuración de CardLayout
+        cardLayout = new java.awt.CardLayout();
+        panelContenedorVistas = new JPanel(cardLayout);
 
-    // *** Definición de las "vistas" o "paneles" ***
-    JPanel panelInicial = new JPanel();
-    panelInicial.add(btnRegistrarResultadoManual);
+        // *** Definición de las "vistas" o "paneles" ***
+        JPanel panelInicial = new JPanel();
+        panelInicial.add(btnRegistrarResultadoManual);
 
-    // El panel de registro manual ahora se preparará para la tabla
-    JPanel panelRegistroManual = new JPanel(new BorderLayout(10, 10)); // Usamos BorderLayout para la tabla y otros elementos
-    panelRegistroManual.setBorder(javax.swing.BorderFactory.createEmptyBorder(20, 20, 20, 20)); // Márgenes a los costados
+        JPanel panelRegistroManual = new JPanel(new BorderLayout(10, 10));
+        panelRegistroManual.setBorder(javax.swing.BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
-    // Placeholder para los elementos que irán abajo de la tabla
-    JPanel panelInferior = new JPanel();
-    panelInferior.add(new JLabel("Aquí irán otros elementos después de la tabla")); // Ejemplo
+        JPanel panelInferior = new JPanel();
+        panelInferior.add(new JLabel("Aquí irán otros elementos después de la tabla"));
 
-    panelRegistroManual.add(new JScrollPane(grillaEventoSismico), BorderLayout.CENTER); // Tabla centrada y vertical
-    panelRegistroManual.add(panelInferior, BorderLayout.SOUTH); // Elementos de abajo
+        panelRegistroManual.add(new JScrollPane(grillaEventoSismico), BorderLayout.CENTER);
+        panelRegistroManual.add(panelInferior, BorderLayout.SOUTH);
 
-    // Añadir las vistas al panelContenedorVistas, cada una con un nombre de "tarjeta"
-    panelContenedorVistas.add(panelInicial, "Inicial");
-    panelContenedorVistas.add(panelRegistroManual, "RegistroManual");
+        // Añadir las vistas al panelContenedorVistas
+        panelContenedorVistas.add(panelInicial, "Inicial");
+        panelContenedorVistas.add(panelRegistroManual, "RegistroManual");
 
-    // Añadir el panel contenedor de vistas al JFrame
-    this.add(panelContenedorVistas);
+        // Añadir el panel contenedor de vistas al JFrame
+        this.add(panelContenedorVistas);
 
-    // Mostrar la primera vista (la inicial) al iniciar
-    cardLayout.show(panelContenedorVistas, "Inicial");
+        // Mostrar la primera vista (la inicial) al iniciar
+        cardLayout.show(panelContenedorVistas, "Inicial");
 
-    this.setVisible(true);
-  }
+        this.setVisible(true);
+    }
 
     // --- Métodos de la Pantalla (vacíos como solicitado) ---
 
@@ -102,8 +99,13 @@ public class PantallaRegistrarResultadoDeRevisionManual extends JFrame {
      * Este método se encarga de iniciar el caso de uso y **habilita la ventana directamente**.
      */
     public void opcionRegistrarResultadoManual() {
-        // Llama a habilitarVentana() para que cambie la vista.
-        this.habilitarVentana();
+        this.habilitarVentana(); // La pantalla se habilita/configura visualmente
+        // ¡Aquí la pantalla DELEGA al gestor!
+        if (gestor != null) { // Siempre es buena práctica verificar que la dependencia no sea nula
+            gestor.registrarNuevaRevisionManual(); // Llamada al método del gestor
+        } else {
+            System.err.println("Error: El Gestor no ha sido inicializado en la Pantalla.");
+        }
     }
 
     /**
@@ -142,6 +144,10 @@ public class PantallaRegistrarResultadoDeRevisionManual extends JFrame {
 
       // Opcional: Ajustar el tamaño de las columnas para que se adapten al contenido (actualmente vacío)
       grillaEventoSismico.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+    }
+
+    public void setGestor(GestorRegistrarResultadoDeRevisionManual gestor) {
+        this.gestor = gestor;
     }
 
     public void mostrarEventoSismicoOrdenados() {
