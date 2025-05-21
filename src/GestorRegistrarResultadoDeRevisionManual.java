@@ -8,12 +8,7 @@ public class GestorRegistrarResultadoDeRevisionManual {
     private List<Double> magnitudes;
 
     // --- Atributos del Gestor ---
-    private LocalDateTime fechaHoraOcurrencia;
-    private double latitudEpicentro;
-    private double longitudEpicentro;
-    private double latitudHipocentro;  // Incluido como atributo principal
-    private double longitudHipocentro; // Incluido como atributo principal
-    private double magnitud;
+
     private String nombreAlcance;
     private String nombreClasificacion;
     private String nombreOrigen;
@@ -25,24 +20,12 @@ public class GestorRegistrarResultadoDeRevisionManual {
 
     // Constructor
     public GestorRegistrarResultadoDeRevisionManual(
-            LocalDateTime fechaHoraOcurrencia,
-            double latitudEpicentro,
-            double longitudEpicentro,
-            double latitudHipocentro,
-            double longitudHipocentro,
-            double magnitud,
             String nombreAlcance,
             String nombreClasificacion,
             String nombreOrigen,
             LocalDateTime fechaHoraRevision,
             PantallaRegistrarResultadoDeRevisionManual pantalla,
             List<EventoSismico> todosLosEventosDelSistema) { // NUEVO PARÁMETRO
-        this.fechaHoraOcurrencia = fechaHoraOcurrencia;
-        this.latitudEpicentro = latitudEpicentro;
-        this.longitudEpicentro = longitudEpicentro;
-        this.latitudHipocentro = latitudHipocentro;
-        this.longitudHipocentro = longitudHipocentro;
-        this.magnitud = magnitud;
         this.nombreAlcance = nombreAlcance;
         this.nombreClasificacion = nombreClasificacion;
         this.nombreOrigen = nombreOrigen;
@@ -58,46 +41,6 @@ public class GestorRegistrarResultadoDeRevisionManual {
     }
 
     // --- Getters y Setters ---
-
-    public LocalDateTime getFechaHoraOcurrencia() {
-        return fechaHoraOcurrencia;
-    }
-
-    public void setFechaHoraOcurrencia(LocalDateTime fechaHoraOcurrencia) {
-        this.fechaHoraOcurrencia = fechaHoraOcurrencia;
-    }
-
-    public double getLatitudEpicentro() {
-        return latitudEpicentro;
-    }
-
-    public void setLatitudEpicentro(double latitudEpicentro) {
-        this.latitudEpicentro = latitudEpicentro;
-    }
-
-    public double getLongitudEpicentro() {
-        return longitudEpicentro;
-    }
-
-    public void setLongitudEpicentro(double longitudEpicentro) {
-        this.longitudEpicentro = longitudEpicentro;
-    }
-
-    public double getLatitudHipocentro() { return latitudHipocentro; } // Nuevo getter
-    
-    public void setLatitudHipocentro(double latitudHipocentro) { this.latitudHipocentro = latitudHipocentro; } // Nuevo setter
-    
-    public double getLongitudHipocentro() { return longitudHipocentro; } // Nuevo getter
-    
-    public void setLongitudHipocentro(double longitudHipocentro) { this.longitudHipocentro = longitudHipocentro; } // Nuevo setter
- 
-    public double getMagnitud() {
-        return magnitud;
-    }
-
-    public void setMagnitud(double magnitud) {
-        this.magnitud = magnitud;
-    }
 
     public String getNombreAlcance() {
         return nombreAlcance;
@@ -226,12 +169,6 @@ public class GestorRegistrarResultadoDeRevisionManual {
     @Override
     public String toString() {
         return "GestorRegistrarResultadoDeRevisionManual{" +
-               "fechaHoraOcurrencia=" + fechaHoraOcurrencia +
-               ", latitudEpicentro=" + latitudEpicentro +
-               ", longitudEpicentro=" + longitudEpicentro +
-               ", latitudHipocentro=" + latitudHipocentro +   // Incluido en toString
-               ", longitudHipocentro=" + longitudHipocentro + // Incluido en toString
-               ", magnitud=" + magnitud +
                ", nombreAlcance='" + nombreAlcance + '\'' +
                ", nombreClasificacion='" + nombreClasificacion + '\'' +
                ", nombreOrigen='" + nombreOrigen + '\'' +

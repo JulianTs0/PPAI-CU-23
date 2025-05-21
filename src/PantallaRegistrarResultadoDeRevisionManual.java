@@ -23,8 +23,8 @@ public class PantallaRegistrarResultadoDeRevisionManual extends JFrame {
     protected JLabel labelLatitudEpicentro;
     protected JLabel labelMagnitud;
     protected JButton btnOpcionVisualizarMapa;
-    protected JButton btnOpcionModificarDatos;
-protected JCheckBox checkboxOpcionesEvento;
+    protected JButton btnOpcionModificarDatos;  
+    protected JCheckBox checkboxOpcionesEvento;
     protected JLabel labelNombreAlcance;
     protected JLabel labelNombreClasificacion;
     protected JLabel labelNombreOrigen;

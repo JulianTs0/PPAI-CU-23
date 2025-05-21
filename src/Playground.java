@@ -231,13 +231,7 @@ public class Playground {
                 PantallaRegistrarResultadoDeRevisionManual pantallaInstancia = new PantallaRegistrarResultadoDeRevisionManual(null);
 
                 // 2. Crea la instancia del Gestor, pasándole la 'pantallaInstancia' DIRECTAMENTE.
-                GestorRegistrarResultadoDeRevisionManual gestorInstancia = new GestorRegistrarResultadoDeRevisionManual(
-                    null, // fechaHoraOcurrencia
-                    0.0,  // latitudEpicentro
-                    0.0,  // longitudEpicentro
-                    0.0,  // latitudHipocentro (nuevo)
-                    0.0,  // longitudHipocentro (nuevo)
-                    0.0,  // magnitud
+                GestorRegistrarResultadoDeRevisionManual gestorInstancia = new GestorRegistrarResultadoDeRevisionManual( 
                     null, // nombreAlcance
                     null, // nombreClasificacion
                     null, // nombreOrigen
