@@ -4,9 +4,6 @@ public class Estado {
     private String ambito;
     private String nombreEstado;
 
-    // Constructor (Nota: el nombre 'new()' no es válido para un constructor en Java.
-    // El constructor debe tener el mismo nombre que la clase.
-    // Se ha implementado el constructor con parámetros como el único constructor disponible).
     public Estado(String ambito, String nombreEstado) {
         this.ambito = ambito;
         this.nombreEstado = nombreEstado;
