@@ -172,7 +172,14 @@ public class GestorRegistrarResultadoDeRevisionManual {
         // pantalla.actualizarGrilla();
     }
 
-    public void tomarEventoSismicoARevisar() {}
+    public void tomarSeleccionEventoSismico(int indiceFilaSeleccionada) {
+        System.out.println("\n--- Gestor: Método tomarSeleccionEventoSismico (versión muy básica) ejecutado ---");
+        // Simplemente imprime el parámetro recibido
+        System.out.println("Gestor: El índice de la fila seleccionada es: " + indiceFilaSeleccionada);
+        pantalla.actualizarEstadoPantalla("Fila seleccionada (índice): " + indiceFilaSeleccionada);
+        System.out.println("--- Fin del método tomarSeleccionEventoSismico ---");
+    }
+
     public void buscarSesionActual() {}
     public void getFechaActual() {}
     public void buscarEstadoBloqueadoEnRevision() {}

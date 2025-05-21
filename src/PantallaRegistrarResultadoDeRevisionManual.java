@@ -31,6 +31,7 @@ public class PantallaRegistrarResultadoDeRevisionManual extends JFrame {
     protected JLabel labelNombreAlcance;
     protected JLabel labelNombreClasificacion;
     protected JLabel labelNombreOrigen;
+    protected JButton btnSeleccionarEvento;
 
     protected JPanel panelContenedorVistas; // Panel que contendrá las diferentes "pantallas"
     protected java.awt.CardLayout cardLayout; // El Layout Manager para alternar vistas
@@ -69,22 +70,31 @@ public class PantallaRegistrarResultadoDeRevisionManual extends JFrame {
         labelNombreClasificacion = new JLabel("Nombre Clasificación:");
         labelNombreOrigen = new JLabel("Nombre Origen:");
 
+        btnSeleccionarEvento = new JButton("Seleccionar Evento");
+        btnSeleccionarEvento.addActionListener(e -> tomarEventoSismicoARevisar());
+        btnSeleccionarEvento.setEnabled(false); // Inicialmente deshabilitado, se habilita al seleccionar una fila
+
         // Configuración de CardLayout
         cardLayout = new java.awt.CardLayout();
         panelContenedorVistas = new JPanel(cardLayout);
 
-        // *** Definición de las "vistas" o "paneles" ***
+        // --- Definición de las "vistas" o "paneles" ---
         JPanel panelInicial = new JPanel();
         panelInicial.add(btnRegistrarResultadoManual);
 
         JPanel panelRegistroManual = new JPanel(new BorderLayout(10, 10));
         panelRegistroManual.setBorder(javax.swing.BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
-        JPanel panelInferior = new JPanel();
-        panelInferior.add(new JLabel("Aquí irán otros elementos después de la tabla"));
+        // Panel para el botón "Seleccionar Evento"
+        JPanel panelBotonSeleccionar = new JPanel(new BorderLayout()); // Usamos BorderLayout para posicionar a la izquierda
+        panelBotonSeleccionar.add(btnSeleccionarEvento, BorderLayout.WEST); // Lo posicionamos a la izquierda
+
+        JPanel panelInferior = new JPanel(new BorderLayout()); // Cambiado a BorderLayout para contener el nuevo panel del botón
+        panelInferior.add(panelBotonSeleccionar, BorderLayout.WEST); // Añade el panel del botón a la izquierda de la parte inferior
+        panelInferior.add(new JLabel("Aquí irán otros elementos después del botón seleccionar"), BorderLayout.CENTER); // Otros elementos
 
         panelRegistroManual.add(new JScrollPane(grillaEventoSismico), BorderLayout.CENTER);
-        panelRegistroManual.add(panelInferior, BorderLayout.SOUTH);
+        panelRegistroManual.add(panelInferior, BorderLayout.SOUTH); // El panelInferior ahora contiene el botón
 
         // Añadir las vistas al panelContenedorVistas
         panelContenedorVistas.add(panelInicial, "Inicial");
@@ -150,6 +160,13 @@ public class PantallaRegistrarResultadoDeRevisionManual extends JFrame {
 
       // Opcional: Ajustar el tamaño de las columnas para que se adapten al contenido (actualmente vacío)
       grillaEventoSismico.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+
+      grillaEventoSismico.getSelectionModel().addListSelectionListener(e -> {
+            if (!e.getValueIsAdjusting()) { // Solo nos interesa el estado final de la selección
+                boolean hayFilaSeleccionada = grillaEventoSismico.getSelectedRow() != -1;
+                btnSeleccionarEvento.setEnabled(hayFilaSeleccionada);
+            }
+      });
     }
 
     public void setGestor(GestorRegistrarResultadoDeRevisionManual gestor) {
@@ -189,10 +206,27 @@ public class PantallaRegistrarResultadoDeRevisionManual extends JFrame {
             System.out.println("Pantalla: Añadida fila a la grilla para el evento: " + rowForTable[1]);
         }
         System.out.println("Pantalla: Grilla 'grillaEventoSismico' actualizada completamente.");
+        btnSeleccionarEvento.setEnabled(false);
     }
 
     public void tomarEventoSismicoARevisar() {
-        // Lógica para seleccionar un evento sísmico de la grilla
+        System.out.println("Pantalla: Método tomarEventoSismicoARevisar() ejecutado por el botón.");
+        int selectedRow = grillaEventoSismico.getSelectedRow();
+
+        if (selectedRow != -1) { // Verifica que haya una fila seleccionada
+            System.out.println("Pantalla: Fila seleccionada en la grilla: " + selectedRow);
+            if (gestor != null) {
+                // Delega al gestor, pasándole el índice de la fila seleccionada
+                gestor.tomarSeleccionEventoSismico(selectedRow);
+                // Aquí podrías deshabilitar el botón o la tabla, o avanzar a la siguiente vista
+                // para indicar que el evento ha sido "tomado".
+            } else {
+                System.err.println("Error: El Gestor no está disponible para procesar la selección.");
+            }
+        } else {
+            System.out.println("Pantalla: No hay ninguna fila seleccionada en la grilla. Por favor, seleccione un evento.");
+            // Podrías mostrar un mensaje de error al usuario aquí
+        }
     }
 
     public void mostrarDatosEventoSismico() {
