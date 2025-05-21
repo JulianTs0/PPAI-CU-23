@@ -90,14 +90,13 @@ public class GestorRegistrarResultadoDeRevisionManual {
         // El gestor obtiene la lista de filas para la grilla.
         // Ahora, el método 'buscarEventosSismicosAutodetectadosNoRevisados' devuelve la lista.
         this.eventosParaGrilla = buscarEventosSismicosAutodetectadosNoRevisados();
+
         ordenarFechaHoraDeOcurrencia();
 
         if (pantalla != null) {
             pantalla.actualizarEstadoPantalla("Eventos pendientes cargados. Hay " + eventosParaGrilla.size() + " eventos para revisar.");
-            // Aquí el Gestor pediría a la Pantalla que muestre estos datos en la grilla.
-            // La Pantalla necesitará ser modificada para aceptar List<Object[]>
-            // Por ejemplo: pantalla.mostrarDatosEnGrilla(eventosParaGrilla);
-            // Esto lo haremos más adelante, por ahora es solo conceptual.
+            
+            pantalla.mostrarEventoSismicoOrdenados(this.eventosParaGrilla);
         }
     }
     

@@ -10,6 +10,9 @@ import javax.swing.JScrollPane; // ¡NUEVA! Para la tabla con scroll
 import javax.swing.table.DefaultTableModel; // ¡NUEVA! Para el modelo de la tabla
 import java.awt.CardLayout;
 import java.awt.BorderLayout; // ¡NUEVA! Para el layout del panel
+import java.time.LocalDateTime; // Necesario para LocalDateTime
+import java.time.format.DateTimeFormatter; // Para formatear la fecha/hora
+import java.util.List; // Necesario para List
 
 public class PantallaRegistrarResultadoDeRevisionManual extends JFrame {
 
@@ -33,6 +36,9 @@ public class PantallaRegistrarResultadoDeRevisionManual extends JFrame {
     protected java.awt.CardLayout cardLayout; // El Layout Manager para alternar vistas
 
     private GestorRegistrarResultadoDeRevisionManual gestor;
+
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
 
     // --- Constructor ---
     public PantallaRegistrarResultadoDeRevisionManual(GestorRegistrarResultadoDeRevisionManual gestor) {
@@ -150,8 +156,39 @@ public class PantallaRegistrarResultadoDeRevisionManual extends JFrame {
         this.gestor = gestor;
     }
 
-    public void mostrarEventoSismicoOrdenados() {
-        // Lógica para ordenar y mostrar eventos sísmicos en la grilla
+    public void mostrarEventoSismicoOrdenados(List<Object[]> eventosOrdenados) {
+        System.out.println("Pantalla: Recibiendo " + eventosOrdenados.size() + " eventos ordenados para mostrar en la grilla.");
+        DefaultTableModel model = (DefaultTableModel) grillaEventoSismico.getModel();
+
+        // Limpiar todas las filas existentes en la tabla
+        model.setRowCount(0);
+
+        int numeroFila = 1; // Para la columna "Nro."
+        for (Object[] eventoData : eventosOrdenados) {
+            // Los índices de 'eventoData' corresponden a cómo los preparaste en el Gestor:
+            // [0] = LocalDateTime fechaHoraOcurrencia
+            // [1] = double latitudEpicentro
+            // [2] = double longitudEpicentro
+            // [3] = double latitudHipocentro
+            // [4] = double longitudHipocentro
+            // [5] = double magnitud
+            // [6] = EventoSismico original (NO lo mostramos directamente en la tabla)
+
+            // Crea un nuevo array con los datos que realmente se mostrarán en la JTable
+            // Asegúrate de que el orden de estos datos coincida con las 'columnNames' definidas en habilitarVentana()
+            Object[] rowForTable = new Object[7];
+            rowForTable[0] = numeroFila++;
+            rowForTable[1] = ((LocalDateTime) eventoData[0]).format(DATE_TIME_FORMATTER); // Formatear fecha y hora
+            rowForTable[2] = eventoData[1]; // Latitud Epicentro
+            rowForTable[3] = eventoData[2]; // Longitud Epicentro
+            rowForTable[4] = eventoData[3]; // Latitud Hipocentro
+            rowForTable[5] = eventoData[4]; // Longitud Hipocentro
+            rowForTable[6] = eventoData[5]; // Magnitud
+
+            model.addRow(rowForTable);
+            System.out.println("Pantalla: Añadida fila a la grilla para el evento: " + rowForTable[1]);
+        }
+        System.out.println("Pantalla: Grilla 'grillaEventoSismico' actualizada completamente.");
     }
 
     public void tomarEventoSismicoARevisar() {
