@@ -4,9 +4,12 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.JPanel;
-import javax.swing.JTextField; // Aunque no se usa en este código, se mantiene por si lo usas después.
+import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
+import javax.swing.JScrollPane; // ¡NUEVA! Para la tabla con scroll
+import javax.swing.table.DefaultTableModel; // ¡NUEVA! Para el modelo de la tabla
 import java.awt.CardLayout;
+import java.awt.BorderLayout; // ¡NUEVA! Para el layout del panel
 
 public class PantallaRegistrarResultadoDeRevisionManual extends JFrame {
 
@@ -31,56 +34,67 @@ public class PantallaRegistrarResultadoDeRevisionManual extends JFrame {
 
 
     // --- Constructor ---
-    public PantallaRegistrarResultadoDeRevisionManual() {
-        // Configuración básica de la ventana (JFrame)
-        this.setTitle("Anterior caso de uso");
-        this.setSize(800, 600);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setLocationRelativeTo(null);
+  public PantallaRegistrarResultadoDeRevisionManual() {
+    // Ya no necesitamos un atributo para la lista de eventos aquí si se inicializa vacía
+    // private List<EventoSismico> eventosSismicos;
 
-        // Inicialización de los componentes del Front-end
-        btnRegistrarResultadoManual = new JButton("Registrar Resultado Manual");
-        // === El ActionListener ahora llama de nuevo a opcionRegistrarResultadoManual() ===
-        btnRegistrarResultadoManual.addActionListener(e -> opcionRegistrarResultadoManual());
-        // ==============================================================================
+    // Configuración básica de la ventana (JFrame)
+    this.setTitle("Registro de Resultado de Revisión Manual");
+    this.setSize(800, 600);
+    this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    this.setLocationRelativeTo(null);
 
-        grillaEventoSismico = new JTable(); // Necesitaría un TableModel para datos reales
-        labelFechahoraOcurrencia = new JLabel("Fecha y Hora de Ocurrencia:");
-        labelLongitudHipocentro = new JLabel("Longitud Hipocentro:");
-        labelLatitudHipocentro = new JLabel("Latitud Hipocentro:");
-        labelLongitudEpicentro = new JLabel("Longitud Epicentro:");
-        labelLatitudEpicentro = new JLabel("Latitud Epicentro:");
-        labelMagnitud = new JLabel("Magnitud:");
-        btnOpcionVisualizarMapa = new JButton("Visualizar Mapa");
-        btnOpcionModificarDatos = new JButton("Modificar Datos");
-        checkboxOpcionesEvento = new JCheckBox("Opciones de Evento");
-        labelNombreAlcance = new JLabel("Nombre Alcance:");
-        labelNombreClasificacion = new JLabel("Nombre Clasificación:");
-        labelNombreOrigen = new JLabel("Nombre Origen:");
+    // Inicialización de los componentes del Front-end
+    btnRegistrarResultadoManual = new JButton("Registrar Resultado Manual");
+    btnRegistrarResultadoManual.addActionListener(e -> opcionRegistrarResultadoManual());
 
-        // Configuración de CardLayout
-        cardLayout = new java.awt.CardLayout();
-        panelContenedorVistas = new JPanel(cardLayout);
+    // La grilla se inicializa aquí, pero sus datos se cargarán (o no) en habilitarVentana()
+    grillaEventoSismico = new JTable();
 
-        // *** Definición de las "vistas" o "paneles" ***
-        JPanel panelInicial = new JPanel();
-        panelInicial.add(btnRegistrarResultadoManual);
+    labelFechahoraOcurrencia = new JLabel("Fecha y Hora de Ocurrencia");
+    labelLongitudHipocentro = new JLabel("Longitud Hipocentro");
+    labelLatitudHipocentro = new JLabel("Latitud Hipocentro");
+    labelLongitudEpicentro = new JLabel("Longitud Epicentro");
+    labelLatitudEpicentro = new JLabel("Latitud Epicentro");
+    labelMagnitud = new JLabel("Magnitud");
+    btnOpcionVisualizarMapa = new JButton("Visualizar Mapa");
+    btnOpcionModificarDatos = new JButton("Modificar Datos");
+    checkboxOpcionesEvento = new JCheckBox("Opciones de Evento");
+    labelNombreAlcance = new JLabel("Nombre Alcance:");
+    labelNombreClasificacion = new JLabel("Nombre Clasificación:");
+    labelNombreOrigen = new JLabel("Nombre Origen:");
 
-        JPanel panelRegistroManual = new JPanel();
-        // Aquí irían los componentes específicos para el formulario de registro manual
+    // Configuración de CardLayout
+    cardLayout = new java.awt.CardLayout();
+    panelContenedorVistas = new JPanel(cardLayout);
 
-        // Añadir las vistas al panelContenedorVistas, cada una con un nombre de "tarjeta"
-        panelContenedorVistas.add(panelInicial, "Inicial");
-        panelContenedorVistas.add(panelRegistroManual, "RegistroManual");
+    // *** Definición de las "vistas" o "paneles" ***
+    JPanel panelInicial = new JPanel();
+    panelInicial.add(btnRegistrarResultadoManual);
 
-        // Añadir el panel contenedor de vistas al JFrame
-        this.add(panelContenedorVistas);
+    // El panel de registro manual ahora se preparará para la tabla
+    JPanel panelRegistroManual = new JPanel(new BorderLayout(10, 10)); // Usamos BorderLayout para la tabla y otros elementos
+    panelRegistroManual.setBorder(javax.swing.BorderFactory.createEmptyBorder(20, 20, 20, 20)); // Márgenes a los costados
 
-        // Mostrar la primera vista (la inicial) al iniciar
-        cardLayout.show(panelContenedorVistas, "Inicial");
+    // Placeholder para los elementos que irán abajo de la tabla
+    JPanel panelInferior = new JPanel();
+    panelInferior.add(new JLabel("Aquí irán otros elementos después de la tabla")); // Ejemplo
 
-        this.setVisible(true); // Hace la ventana visible inmediatamente al construir el objeto
-    }
+    panelRegistroManual.add(new JScrollPane(grillaEventoSismico), BorderLayout.CENTER); // Tabla centrada y vertical
+    panelRegistroManual.add(panelInferior, BorderLayout.SOUTH); // Elementos de abajo
+
+    // Añadir las vistas al panelContenedorVistas, cada una con un nombre de "tarjeta"
+    panelContenedorVistas.add(panelInicial, "Inicial");
+    panelContenedorVistas.add(panelRegistroManual, "RegistroManual");
+
+    // Añadir el panel contenedor de vistas al JFrame
+    this.add(panelContenedorVistas);
+
+    // Mostrar la primera vista (la inicial) al iniciar
+    cardLayout.show(panelContenedorVistas, "Inicial");
+
+    this.setVisible(true);
+  }
 
     // --- Métodos de la Pantalla (vacíos como solicitado) ---
 
@@ -99,9 +113,37 @@ public class PantallaRegistrarResultadoDeRevisionManual extends JFrame {
     public void habilitarVentana() {
       // Cambia la "tarjeta" visible en el CardLayout a la de "RegistroManual".
       cardLayout.show(panelContenedorVistas, "RegistroManual");
-      // ¡Aquí está el cambio!
-      this.setTitle("Registrar Resultado Manual"); // Cambia el título de la ventana
-    }    
+      this.setTitle("Ejemplo"); // Cambia el título de la ventana
+
+      // --- Configuración de la grilla (JTable) con modelo vacío ---
+      // Definir los nombres de las columnas usando el texto de los JLabel
+      // IMPORTANTE: Asegúrate de que los JLabel estén inicializados en el constructor antes de llegar aquí.
+      String[] columnNames = {
+          "Nro.", // Mantenemos este para la numeración
+          labelFechahoraOcurrencia.getText(),
+          labelLatitudHipocentro.getText(),
+          labelLongitudHipocentro.getText(),
+          labelLatitudEpicentro.getText(),
+          labelLongitudEpicentro.getText(),
+          labelMagnitud.getText()
+      };
+
+      // Crear un modelo de tabla vacío, solo con las columnas definidas
+      DefaultTableModel tableModel = new DefaultTableModel(columnNames, 0) { // 0 filas iniciales
+          @Override
+          public boolean isCellEditable(int row, int column) {
+              // Hacemos que la tabla no sea editable directamente desde la GUI
+              return false;
+          }
+      };
+
+      // Asignar el modelo a la grilla
+      grillaEventoSismico.setModel(tableModel);
+
+      // Opcional: Ajustar el tamaño de las columnas para que se adapten al contenido (actualmente vacío)
+      grillaEventoSismico.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+    }
+
     public void mostrarEventoSismicoOrdenados() {
         // Lógica para ordenar y mostrar eventos sísmicos en la grilla
     }
