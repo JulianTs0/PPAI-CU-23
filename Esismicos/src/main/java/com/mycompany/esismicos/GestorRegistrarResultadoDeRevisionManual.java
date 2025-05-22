@@ -109,6 +109,7 @@ public class GestorRegistrarResultadoDeRevisionManual {
         }
     }
     
+    // CU-23 PASO-6 
     public List<Object[]> buscarEventosSismicosAutodetectadosNoRevisados() {
         System.out.println("Gestor: Ejecutando método buscarEventosSismicosAutodetectadosNoRevisados...");
 
@@ -159,7 +160,8 @@ public class GestorRegistrarResultadoDeRevisionManual {
         System.out.println("Gestor: Finalizada la búsqueda y preparación de eventos pendientes (sin ordenar). Total filas generadas: " + filasParaGrilla.size());
         return filasParaGrilla; // Devuelve la lista de Object[]
     }
-  
+
+    
     public void ordenarFechaHoraDeOcurrencia() {
         System.out.println("Gestor: Ejecutando método ordenarFechaHoraDeOcurrencia...");
 
@@ -225,7 +227,9 @@ public class GestorRegistrarResultadoDeRevisionManual {
         System.out.println("--- Fin del método tomarSeleccionEventoSismico ---");
     }
 
-    public void obtenerEmpleadoActual() {}
+    public Empleado obtenerEmpleadoActual() {
+        return this.sesionActual.getEmpleado();
+    }
 
     public void getFechaActual() {}
     public void buscarEstadoBloqueadoEnRevision() {}
