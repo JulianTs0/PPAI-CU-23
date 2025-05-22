@@ -15,6 +15,7 @@ public class EventoSismico {
     private double longitudEpicentro;
     private double longitudHipocentro;
     private double valorMagnitud;
+    //eventosParagrilla ?
     private String nombreAlcance;
     private String nombreClasificacion;
     private String nombreOrigen;

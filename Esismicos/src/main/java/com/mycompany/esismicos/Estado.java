@@ -36,15 +36,15 @@ public class Estado {
     }
 
     public boolean esPendienteDeRevision() {
-        return esEstado("Pendiente De Revision");
+        return esEstado(DataBase.estadoPendiente.getNombreEstado());
     }
 
     public boolean esEstadoBLoqueadoARevisar() {
-        return esEstado("Bloqueado a Revisar");
+        return esEstado(null); // NO HAY UN ESTADO BloqueadoARevisar
     }
     
     public boolean esRechazado() {
-        return esEstado("Rechazado");
+        return esEstado(DataBase.estadoRechazado.getNombreEstado());
     }
 
     // COMPARAR ABBITOS
@@ -53,7 +53,7 @@ public class Estado {
     }
 
     public boolean esAmbitoEventoSismico() {
-        return esAmbito("EventoSismico");
+        return esAmbito("");
     }
 
     // --- Método toString() (incluido por tu nueva directriz) ---
