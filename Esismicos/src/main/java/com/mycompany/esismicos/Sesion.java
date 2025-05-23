@@ -33,6 +33,12 @@ public class Sesion {
         this.empleado = empleado;
     }
 
+    public Empleado obtenerEmpleadoActual() {
+        System.out.println("Sesion: Método obtenerEmpleadoActual() ejecutado. Retornando empleado asociado.");
+        // Llama al getter existente y retorna el empleado
+        return this.getEmpleado();
+    }
+
     // --- Método toString() ---
     @Override
     public String toString() {

@@ -18,6 +18,7 @@ public class GestorRegistrarResultadoDeRevisionManual {
 
     private EventoSismico eventoSeleccionado;
     private Sesion sesionActual;
+    private Empleado logeadoEmpleado;
 
     private PantallaRegistrarResultadoDeRevisionManual pantalla;
     private List<EventoSismico> todosLosEventosDelSistema; // NUEVO: Atributo para almacenar todos los eventos
@@ -104,7 +105,7 @@ public class GestorRegistrarResultadoDeRevisionManual {
 
         if (pantalla != null) {
             pantalla.actualizarEstadoPantalla("Eventos pendientes cargados. Hay " + eventosParaGrilla.size() + " eventos para revisar.");
-            
+
             pantalla.mostrarEventoSismicoOrdenados(this.eventosParaGrilla);
         }
     }
@@ -216,10 +217,10 @@ public class GestorRegistrarResultadoDeRevisionManual {
             pantalla.actualizarEstadoPantalla("Evento " + this.eventoSeleccionado.getFechaHoraOcurrencia().toLocalTime() +
                                               " (Mag: " + this.eventoSeleccionado.getValorMagnitud() + ") seleccionado.");
 
-            // A partir de este punto, this.eventoSeleccionado puede ser utilizado
-            // para continuar con el resto de la lógica del caso de uso (ej. mostrar datos, etc.)
-            // Por ejemplo:
-            // this.mostrarDatosDetalladosEnPantalla();
+            // *** AQUÍ es donde se invoca obtenerEmpleadoActual() ***
+            // Se llama después de que el evento ha sido seleccionado (this.eventoSeleccionado ya tiene un valor).
+            System.out.println("Gestor: Invocando obtenerEmpleadoActual() después de la selección del evento.");
+            this.obtenerEmpleadoActual(); // Llama al método del gestor para obtener el empleado de la sesión
         } else {
             System.err.println("Gestor: ERROR - El objeto EventoSismico en el índice [6] era nulo.");
             pantalla.actualizarEstadoPantalla("Error: Evento no recuperado correctamente.");
@@ -227,8 +228,32 @@ public class GestorRegistrarResultadoDeRevisionManual {
         System.out.println("--- Fin del método tomarSeleccionEventoSismico ---");
     }
 
-    public Empleado obtenerEmpleadoActual() {
-        return this.sesionActual.getEmpleado();
+    public void obtenerEmpleadoActual() {
+        System.out.println("\n--- Gestor: Método obtenerEmpleadoActual() ejecutado ---");
+        if (this.sesionActual != null) {
+            // El Gestor le pide a la Sesión su empleado utilizando el método obtenerEmpleadoActual() de la Sesion
+            this.logeadoEmpleado = this.sesionActual.obtenerEmpleadoActual(); // Llama al método de la Sesion
+
+            if (this.logeadoEmpleado != null) {
+                System.out.println("Gestor: Empleado logeado obtenido y guardado: " +
+                        this.logeadoEmpleado.getNombreCompleto() + " (" + this.logeadoEmpleado.getCargo() + ")");
+                // Solo utiliza actualizarEstadoPantalla para mostrar el nombre del empleado
+                if (pantalla != null) {
+                    pantalla.actualizarEstadoPantalla("Empleado de sesión: " + this.logeadoEmpleado.getNombreCompleto());
+                }
+            } else {
+                System.err.println("Gestor: ERROR - La sesión actual no tiene un empleado asociado.");
+                if (pantalla != null) {
+                    pantalla.actualizarEstadoPantalla("Error: Empleado no encontrado en la sesión.");
+                }
+            }
+        } else {
+            System.err.println("Gestor: ERROR - No hay una sesión actual activa en el gestor.");
+            if (pantalla != null) {
+                pantalla.actualizarEstadoPantalla("Error: No hay sesión activa para obtener empleado.");
+            }
+        }
+        System.out.println("--- Fin del método obtenerEmpleadoActual() del Gestor ---");
     }
 
     public void getFechaActual() {}
