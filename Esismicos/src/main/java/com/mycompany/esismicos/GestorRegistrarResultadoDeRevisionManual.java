@@ -15,6 +15,7 @@ public class GestorRegistrarResultadoDeRevisionManual {
     private String nombreClasificacion;
     private String nombreOrigen;
     private LocalDateTime fechaHoraRevision;
+    private LocalDateTime fechaHoraBloqueado;
 
     private EventoSismico eventoSeleccionado;
     private Sesion sesionActual;
@@ -221,6 +222,10 @@ public class GestorRegistrarResultadoDeRevisionManual {
             // Se llama después de que el evento ha sido seleccionado (this.eventoSeleccionado ya tiene un valor).
             System.out.println("Gestor: Invocando obtenerEmpleadoActual() después de la selección del evento.");
             this.obtenerEmpleadoActual(); // Llama al método del gestor para obtener el empleado de la sesión
+
+            System.out.println("Gestor: Invocando getFechaHoraActual() después de obtener el empleado.");
+            this.getFechaHoraActual();
+
         } else {
             System.err.println("Gestor: ERROR - El objeto EventoSismico en el índice [6] era nulo.");
             pantalla.actualizarEstadoPantalla("Error: Evento no recuperado correctamente.");
@@ -256,7 +261,20 @@ public class GestorRegistrarResultadoDeRevisionManual {
         System.out.println("--- Fin del método obtenerEmpleadoActual() del Gestor ---");
     }
 
-    public void getFechaActual() {}
+    public void getFechaHoraActual() {
+        System.out.println("\n--- Gestor: Método getFechaHoraActual() ejecutado ---");
+        // Obtener la fecha y hora actual del sistema y guardarla en el nuevo atributo
+        this.fechaHoraBloqueado = LocalDateTime.now();
+        System.out.println("Gestor: Fecha y hora actual obtenida y guardada en 'fechaHoraBloqueado': " + this.fechaHoraBloqueado);
+
+        // Si necesitas mostrar esto en la pantalla, puedes usar actualizarEstadoPantalla
+        if (pantalla != null) {
+            pantalla.actualizarEstadoPantalla("Fecha y hora de 'bloqueo' registrada: " +
+                    this.fechaHoraBloqueado);
+        }
+        System.out.println("--- Fin del método getFechaHoraActual() ---");
+    }
+
     public void buscarEstadoBloqueadoEnRevision() {}
     public void buscarDatosDelEventoSismicoSeleccionado() {}
     public void clasificarDatosPorEstacionSismologica() {}
