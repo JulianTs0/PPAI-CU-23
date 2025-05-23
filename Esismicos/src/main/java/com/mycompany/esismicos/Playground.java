@@ -67,7 +67,8 @@ public class Playground {
                     null, // fechaHoraRevision
                     pantallaInstancia, // Aquí se inyecta la referencia de la Pantalla en el Gestor (tipo concreto) 
                     DataBase.eventosSismicos,
-                    DataBase.sesionActual
+                    DataBase.sesionActual,
+                    DataBase.estados
                 );
 
                 // 3. Cierra el ciclo: inyecta la instancia del Gestor en la Pantalla usando el setter.

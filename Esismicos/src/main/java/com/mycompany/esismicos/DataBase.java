@@ -8,6 +8,7 @@ public class DataBase {
     
     // Declaración de la lista de eventos sísmicos
     public static List<EventoSismico> eventosSismicos = new ArrayList<>();
+    public static List<Estado> estados = new ArrayList<>();
 
     // 1. Crear instancias de clases base (que no dependen de otras en su constructor)
     // Empleados
@@ -25,7 +26,23 @@ public class DataBase {
         estadoActivoSismografo = new Estado("Sismografo", "Activo"),
         estadoInactivoSismografo = new Estado("Sismografo", "Inactivo"),
         estadoNormalSerie = new Estado("SerieTemporal", "Normal"),
-        estadoAlertaSerie = new Estado("SerieTemporal", "Alerta");
+        estadoAlertaSerie = new Estado("SerieTemporal", "Alerta"),
+        estadoBloqueadoRevision = new Estado("EventoSismico", "Bloqueado A Revisar");
+
+    // --- NUEVO BLOQUE STATIC PARA POBLAR LA LISTA 'estados' ---
+    static {
+        estados.add(estadoPendiente);
+        estados.add(estadoEnRevision);
+        estados.add(estadoRechazado);
+        estados.add(estadoValidado);
+        estados.add(estadoActivoSismografo);
+        estados.add(estadoInactivoSismografo);
+        estados.add(estadoNormalSerie);
+        estados.add(estadoAlertaSerie);
+        estados.add(estadoBloqueadoRevision);
+        System.out.println("DataBase: Lista de estados inicializada con " + estados.size() + " elementos.");
+    }
+    // --- FIN DEL NUEVO BLOQUE STATIC ---
 
 
     // Tipos de Dato para Muestras Sísmicas

@@ -17,6 +17,9 @@ public class GestorRegistrarResultadoDeRevisionManual {
     private LocalDateTime fechaHoraRevision;
     private LocalDateTime fechaHoraBloqueado;
 
+    private List<Estado> todosLosEstadosDelSistema; // <-- NUEVO ATRIBUTO: Colección de estados
+    private Estado estadoBloqueadoARevisar;
+
     private EventoSismico eventoSeleccionado;
     private Sesion sesionActual;
     private Empleado logeadoEmpleado;
@@ -33,7 +36,8 @@ public class GestorRegistrarResultadoDeRevisionManual {
             LocalDateTime fechaHoraRevision,
             PantallaRegistrarResultadoDeRevisionManual pantalla,
             List<EventoSismico> todosLosEventosDelSistema,
-            Sesion sesionActual) { // NUEVO PARÁMETRO
+            Sesion sesionActual,
+            List<Estado> todosLosEstadosDelSistema) { // NUEVO PARÁMETRO
         this.nombreAlcance = nombreAlcance;
         this.nombreClasificacion = nombreClasificacion;
         this.nombreOrigen = nombreOrigen;
@@ -44,6 +48,7 @@ public class GestorRegistrarResultadoDeRevisionManual {
         this.pantalla = pantalla;
         this.todosLosEventosDelSistema = todosLosEventosDelSistema; // Asigna la lista de eventos
         this.sesionActual = sesionActual;
+        this.todosLosEstadosDelSistema = todosLosEstadosDelSistema;
         System.out.println("GestorRegistrarResultadoDeRevisionManual: Instancia (Constructor Largo) creada con valores iniciales y referencia a Pantalla y Eventos.");
     }
 
@@ -226,6 +231,10 @@ public class GestorRegistrarResultadoDeRevisionManual {
             System.out.println("Gestor: Invocando getFechaHoraActual() después de obtener el empleado.");
             this.getFechaHoraActual();
 
+            // --- NUEVO PASO: Buscar el estado "Bloqueado A Revisar" ---
+            System.out.println("Gestor: Invocando buscarEstadoBloqueadoEnRevision().");
+            this.buscarEstadoBloqueadoEnRevision(); // <--- LLAMADA AL NUEVO MÉTODO AQUÍ
+
         } else {
             System.err.println("Gestor: ERROR - El objeto EventoSismico en el índice [6] era nulo.");
             pantalla.actualizarEstadoPantalla("Error: Evento no recuperado correctamente.");
@@ -275,7 +284,58 @@ public class GestorRegistrarResultadoDeRevisionManual {
         System.out.println("--- Fin del método getFechaHoraActual() ---");
     }
 
-    public void buscarEstadoBloqueadoEnRevision() {}
+    /**
+     * Itera sobre la colección de estados para buscar el estado
+     * con ámbito "Evento Sismico" y nombre "Bloqueado A Revisar".
+     * Si lo encuentra, guarda el puntero en 'estadoBloqueadoARevisar'.
+     */
+    public void buscarEstadoBloqueadoEnRevision() {
+        System.out.println("\n--- Gestor: Método buscarEstadoBloqueadoEnRevision() ejecutado ---");
+
+        if (this.todosLosEstadosDelSistema == null || this.todosLosEstadosDelSistema.isEmpty()) {
+            System.err.println("Gestor: ERROR - La colección de estados del sistema está vacía o no ha sido cargada.");
+            if (pantalla != null) {
+                pantalla.actualizarEstadoPantalla("Error: No se pudo buscar estados, la lista de estados está vacía.");
+            }
+            return;
+        }
+
+        // Iterar sobre la colección de estados
+        for (Estado estado : this.todosLosEstadosDelSistema) {
+            System.out.println("Gestor: Evaluando estado: " + estado.getNombreEstado() + " (Ámbito: " + estado.getAmbito() + ")");
+
+            // Paso 1: Comprobar si el ámbito es "Evento Sismico"
+            if (estado.esAmbitoEventoSismico()) {
+                System.out.println("Gestor: El estado '" + estado.getNombreEstado() + "' tiene ámbito 'Evento Sismico'.");
+
+                // Paso 2: Si el ámbito es correcto, comprobar si el nombre es "Bloqueado A Revisar"
+                if (estado.esEstadoBloqueadoARevisar()) {
+                    System.out.println("Gestor: ¡Estado 'Bloqueado A Revisar' encontrado! Nombre: " + estado.getNombreEstado());
+                    // Guarda el puntero del estado encontrado en la variable del gestor
+                    this.estadoBloqueadoARevisar = estado;
+                    if (pantalla != null) {
+                        pantalla.actualizarEstadoPantalla("Estado 'Bloqueado A Revisar' encontrado y guardado.");
+                    }
+                    // Una vez encontrado, podemos salir del bucle si solo esperamos uno
+                    return;
+                } else {
+                    System.out.println("Gestor: El estado no es 'Bloqueado A Revisar'. Saltando al siguiente.");
+                }
+            } else {
+                System.out.println("Gestor: El ámbito del estado '" + estado.getNombreEstado() + "' NO es 'Evento Sismico'. Saltando al siguiente.");
+            }
+        }
+
+        // Si el bucle termina y el estado no se encontró
+        if (this.estadoBloqueadoARevisar == null) {
+            System.err.println("Gestor: ADVERTENCIA - No se encontró el estado 'Bloqueado A Revisar' con ámbito 'Evento Sismico'.");
+            if (pantalla != null) {
+                pantalla.actualizarEstadoPantalla("Advertencia: Estado 'Bloqueado A Revisar' no encontrado.");
+            }
+        }
+        System.out.println("--- Fin del método buscarEstadoBloqueadoEnRevision() ---");
+    }
+
     public void buscarDatosDelEventoSismicoSeleccionado() {}
     public void clasificarDatosPorEstacionSismologica() {}
     public void tomarOpcionVisualizarMapa() {}

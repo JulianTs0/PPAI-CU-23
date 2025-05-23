@@ -39,8 +39,9 @@ public class Estado {
         return esEstado(DataBase.estadoPendiente.getNombreEstado());
     }
 
-    public boolean esEstadoBLoqueadoARevisar() {
-        return esEstado(null); // NO HAY UN ESTADO BloqueadoARevisar
+    public boolean esEstadoBloqueadoARevisar() {
+        System.out.println("Estado: Comprobando si el nombre '" + this.nombreEstado + "' es 'Bloqueado A Revisar'.");
+        return this.nombreEstado != null && this.nombreEstado.equals("Bloqueado A Revisar");
     }
     
     public boolean esRechazado() {
@@ -53,7 +54,8 @@ public class Estado {
     }
 
     public boolean esAmbitoEventoSismico() {
-        return esAmbito("");
+        System.out.println("Estado: Comprobando si el ámbito '" + this.ambito + "' es 'Evento Sismico'.");
+        return this.ambito != null && this.ambito.equals("EventoSismico");
     }
 
     // --- Método toString() (incluido por tu nueva directriz) ---
