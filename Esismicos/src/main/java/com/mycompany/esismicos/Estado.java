@@ -49,6 +49,8 @@ public class Estado {
     }
 
     // COMPARAR ABBITOS
+
+    // ESTE METODO NO CORRESPONDE DEBIDO A QUE NO SE PLANIFICO ASI EN LOS DIAGRAMAS
     public boolean esAmbito(String ambito){
         return this.ambito.equals(ambito);
     }
