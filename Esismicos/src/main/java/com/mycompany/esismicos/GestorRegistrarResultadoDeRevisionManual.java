@@ -235,6 +235,25 @@ public class GestorRegistrarResultadoDeRevisionManual {
             System.out.println("Gestor: Invocando buscarEstadoBloqueadoEnRevision().");
             this.buscarEstadoBloqueadoEnRevision(); // <--- LLAMADA AL NUEVO MÉTODO AQUÍ
 
+            // --- NUEVO PASO: Ejecutar bloquearEnRevision() en el evento seleccionado ---
+            // Se ejecuta si se encontró el estado Bloqueado A Revisar y el evento está seleccionado.
+            if (this.estadoBloqueadoARevisar != null) {
+                System.out.println("Gestor: Invocando bloquearEnRevision() en el EventoSismico seleccionado.");
+                this.eventoSeleccionado.bloquearEnRevision(
+                        this.fechaHoraBloqueado,
+                        this.logeadoEmpleado,
+                        this.estadoBloqueadoARevisar
+                );
+                if (pantalla != null) {
+                    pantalla.actualizarEstadoPantalla("Evento bloqueado para revisión: " + this.eventoSeleccionado.getFechaHoraOcurrencia().toLocalTime());
+                }
+            } else {
+                System.err.println("Gestor: ADVERTENCIA - No se pudo bloquear el evento, estado 'Bloqueado A Revisar' no encontrado.");
+                if (pantalla != null) {
+                    pantalla.actualizarEstadoPantalla("Error: No se pudo bloquear el evento (estado no encontrado).");
+                }
+            }
+
         } else {
             System.err.println("Gestor: ERROR - El objeto EventoSismico en el índice [6] era nulo.");
             pantalla.actualizarEstadoPantalla("Error: Evento no recuperado correctamente.");

@@ -212,12 +212,27 @@ public class EventoSismico {
             this.longitudHipocentro
         };
     }
+
     /**
-     * Este método está definido pero no realiza ninguna acción.
-     * Su implementación se espera en el futuro.
+     * Busca y retorna el CambioDeEstado actual (aquel con fechaHoraFin nula).
+     * Setea la fechaHoraFin de este cambio de estado.
+     * @param fechaFin La fecha y hora para setear en el cambio de estado actual.
+     * @return El CambioDeEstado actual que fue modificado, o null si no se encontró.
      */
-    public void buscarCambioDeEstadoActual() {
-        // Método vacío por solicitud.
+    public CambioDeEstado buscarCambioDeEstadoActual(LocalDateTime fechaFin) {
+        System.out.println("EventoSismico: Buscando el cambio de estado actual para el evento: " + this.fechaHoraOcurrencia);
+        for (CambioDeEstado cambio : this.cambiosDeEstado) {
+            // Usa el método sosCambioEstadoActual() del CambioDeEstado
+            if (cambio.sosCambioEstadoActual()) {
+                System.out.println("EventoSismico: Cambio de estado actual encontrado: " + cambio.getEstado().getNombreEstado());
+                // Setear la fechaHoraFin del cambio de estado actual
+                cambio.setFechaHoraFin(fechaFin);
+                System.out.println("EventoSismico: Fecha y hora fin '" + fechaFin + "' establecida en el cambio de estado actual.");
+                return cambio; // Corta el bucle y retorna el cambio encontrado
+            }
+        }
+        System.out.println("EventoSismico: No se encontró un cambio de estado actual (con fechaHoraFin nula).");
+        return null; // Si no se encuentra ningún cambio de estado actual
     }
 
     /**
@@ -270,19 +285,50 @@ public class EventoSismico {
     }
 
     /**
-     * Este método está definido pero no realiza ninguna acción.
-     * Su implementación se espera en el futuro.
+     * Implementa la lógica para "bloquear" el evento en revisión.
+     * Finaliza el cambio de estado actual del evento y crea uno nuevo
+     * con el estado "Bloqueado A Revisar".
+     * @param fechaHoraBloqueado La fecha y hora en que se bloquea el evento.
+     * @param logeadoEmpleado El empleado que realiza el bloqueo.
+     * @param estadoBloqueadoARevisar La instancia del estado "Bloqueado A Revisar".
      */
-    public void bloquearEnRevision() {
-        // Método vacío por solicitud.
+    public void bloquearEnRevision(LocalDateTime fechaHoraBloqueado, Empleado logeadoEmpleado, Estado estadoBloqueadoARevisar) {
+        System.out.println("\n--- EventoSismico: Método bloquearEnRevision() ejecutado ---");
+        System.out.println("EventoSismico: Bloqueando evento " + this.getFechaHoraOcurrencia() + "...");
+
+        // 1. Ejecutar buscarCambioDeEstadoActual() para finalizar el cambio de estado previo
+        // Se pasa fechaHoraBloqueado para setear la fechaFin del estado actual.
+        CambioDeEstado cambioAnterior = this.buscarCambioDeEstadoActual(fechaHoraBloqueado);
+
+        if (cambioAnterior != null) {
+            System.out.println("EventoSismico: El cambio de estado anterior a '" + cambioAnterior.getEstado().getNombreEstado() + "' ha sido finalizado.");
+        } else {
+            System.err.println("EventoSismico: ADVERTENCIA - No se pudo finalizar el cambio de estado anterior.");
+            return;
+        }
+
+        // 2. Proseguir ejecutando crearCambioEstado()
+        // Pasa fechaHoraBloqueado como fecha de inicio del nuevo cambio de estado
+        this.crearCambioEstado(fechaHoraBloqueado, estadoBloqueadoARevisar, logeadoEmpleado);
+
+        System.out.println("EventoSismico: Evento " + this.getFechaHoraOcurrencia() +
+                " ahora en estado: " + this.getEstadoActual().getNombreEstado() +
+                " (Bloqueado por: " + logeadoEmpleado.getNombreCompleto() +
+                " en " + fechaHoraBloqueado + ")");
+        System.out.println("--- Fin del método bloquearEnRevision() del EventoSismico ---");
     }
 
     /**
      * Este método está definido pero no realiza ninguna acción.
      * Su implementación se espera en el futuro.
      */
-    public void crearCambioEstado() {
-        // Método vacío por solicitud.
+    public void crearCambioEstado(LocalDateTime fechaHoraInicio, Estado estado, Empleado empleado) {
+        System.out.println("EventoSismico: Creando un nuevo CambioDeEstado a '" + estado.getNombreEstado() + "'.");
+        // Se crea un nuevo CambioDeEstado con fechaHoraFin nula (porque es el estado actual)
+        CambioDeEstado nuevoCambio = new CambioDeEstado(fechaHoraInicio, null, estado, empleado);
+        this.addCambioDeEstado(nuevoCambio); // Añade el nuevo cambio a la lista
+        this.setEstadoActual(estado); // Actualiza el estado actual del evento
+        System.out.println("EventoSismico: Nuevo CambioDeEstado creado y añadido. Evento ahora en estado: " + this.getEstadoActual().getNombreEstado());
     }
 
     // --- Método toString() ---

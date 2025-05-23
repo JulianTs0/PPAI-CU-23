@@ -79,20 +79,11 @@ public class CambioDeEstado {
     /**
      * Este método está definido pero no realiza ninguna acción.
      * Su implementación se espera en el futuro.
-     * (Este método ya existía como setter, pero lo mantengo vacío aquí como un método adicional, si esa es la intención).
      */
-    public void setFechaHoraFin() {
-        // Método vacío por solicitud. Si este método debería ser el setter de fechaHoraFin,
-        // ya existe el setter "public void setFechaHoraFin(LocalDateTime fechaHoraFin)".
-        // Se mantiene como un método void sin parámetros y sin acción.
-    }
-
-    /**
-     * Este método está definido pero no realiza ninguna acción.
-     * Su implementación se espera en el futuro.
-     */
-    public void sosCambioEstadoActual() {
-        // Método vacío por solicitud.
+    public boolean sosCambioEstadoActual() {
+        System.out.println("CambioDeEstado: Comprobando si fechaHoraFin es null para el estado '" +
+                (estado != null ? estado.getNombreEstado() : "N/A") + "'.");
+        return this.fechaHoraFin == null;
     }
 
     /**
