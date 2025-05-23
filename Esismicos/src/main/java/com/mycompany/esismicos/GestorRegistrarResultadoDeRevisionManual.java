@@ -78,7 +78,6 @@ public class GestorRegistrarResultadoDeRevisionManual {
     public void setFechaHoraRevision(LocalDateTime fechaHoraRevision) {
         this.fechaHoraRevision = fechaHoraRevision;
     }
-
    
     public List<Object[]> getEventosParaGrilla() {
         return eventosParaGrilla;
@@ -90,6 +89,7 @@ public class GestorRegistrarResultadoDeRevisionManual {
 
     // --- Métodos del Gestor (vacíos) ---
 
+    // ESTO REPRESENTA EL CASO DE USO PRINCIPAL
     public void registrarNuevaRevisionManual() {
         System.out.println("GestorRegistrarResultadoDeRevisionManual: Método registrarNuevaRevisionManual ejecutado.");
         if (pantalla != null) {

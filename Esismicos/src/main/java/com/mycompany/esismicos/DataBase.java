@@ -220,6 +220,51 @@ public class DataBase {
         evento6.addCambioDeEstado(ce1_e6);
         eventosSismicos.add(evento6);
     }
+
+    // --- Evento Sísmico 7 (Nuevo evento pendiente) ---
+    public static LocalDateTime
+            fechaHoraOcurrencia7 = LocalDateTime.of(2024, 2, 13, 2, 45, 0), // Fecha y hora actual
+            fechaHoraFin7 = fechaHoraOcurrencia6.plusMinutes(10); // Un final tentativo
+
+    public static EventoSismico evento7 = new EventoSismico(
+            fechaHoraFin7, fechaHoraOcurrencia7,
+            -31.5, -31.6,
+            -64.2, -64.3,
+            2.9, "Local", "Leve", "Tectónico",
+            clasifLeve, origenTectonico, alcanceLocal, estadoPendiente // Asigna estadoPendiente directamente
+    );
+
+    // Añadir un CambioDeEstado inicial para reflejar que está pendiente
+    // Nota: La fechaFin del CambioDeEstado es null porque es el estado actual.
+    public static CambioDeEstado
+            ce1_e7 = new CambioDeEstado(fechaHoraOcurrencia6.minusSeconds(5), null, estadoPendiente, emp2);
+    static{
+        evento6.addCambioDeEstado(ce1_e7);
+        eventosSismicos.add(evento7);
+    }
+
+    // --- Evento Sísmico 8 (Nuevo evento pendiente) ---
+    public static LocalDateTime
+            fechaHoraOcurrencia8 = LocalDateTime.of(2025, 1, 1, 2, 0, 0), // Fecha y hora actual
+            fechaHoraFin8 = fechaHoraOcurrencia7.plusMinutes(10); // Un final tentativo
+
+    public static EventoSismico evento8 = new EventoSismico(
+            fechaHoraFin8, fechaHoraOcurrencia8,
+            -31.5, -31.6,
+            -64.2, -64.3,
+            2.9, "Local", "Leve", "Tectónico",
+            clasifLeve, origenTectonico, alcanceLocal, estadoPendiente // Asigna estadoPendiente directamente
+    );
+
+    // Añadir un CambioDeEstado inicial para reflejar que está pendiente
+    // Nota: La fechaFin del CambioDeEstado es null porque es el estado actual.
+    public static CambioDeEstado
+            ce1_e8 = new CambioDeEstado(fechaHoraOcurrencia7.minusSeconds(5), null, estadoPendiente, emp3);
+    static{
+        evento6.addCambioDeEstado(ce1_e8);
+        eventosSismicos.add(evento8);
+    }
+
     public static Sesion sesionActual = new Sesion(LocalDateTime.now(), emp1);
-    
+
 }
