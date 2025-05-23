@@ -15,6 +15,10 @@ import java.awt.BorderLayout; // ¡NUEVA! Para el layout del panel
 import java.time.LocalDateTime; // Necesario para LocalDateTime
 import java.time.format.DateTimeFormatter; // Para formatear la fecha/hora
 import java.util.List; // Necesario para List
+import javax.swing.BorderFactory; // Importar para bordes
+import javax.swing.BoxLayout; // Importar para BoxLayout
+import javax.swing.Box; // Importar para Box.createVerticalStrut
+import java.awt.Dimension;
 
 public class PantallaRegistrarResultadoDeRevisionManual extends JFrame {
 
@@ -37,6 +41,10 @@ public class PantallaRegistrarResultadoDeRevisionManual extends JFrame {
 
     protected JPanel panelContenedorVistas; // Panel que contendrá las diferentes "pantallas"
     protected java.awt.CardLayout cardLayout; // El Layout Manager para alternar vistas
+
+    protected JPanel panelDetallesEvento;
+    protected JPanel panelContenidoInferior;
+    protected JPanel panelRegistroManual;
 
     private GestorRegistrarResultadoDeRevisionManual gestor;
 
@@ -84,19 +92,71 @@ public class PantallaRegistrarResultadoDeRevisionManual extends JFrame {
         JPanel panelInicial = new JPanel();
         panelInicial.add(btnRegistrarResultadoManual);
 
-        JPanel panelRegistroManual = new JPanel(new BorderLayout(10, 10));
+        panelRegistroManual = new JPanel(new BorderLayout(10, 10));
         panelRegistroManual.setBorder(javax.swing.BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
         // Panel para el botón "Seleccionar Evento"
         JPanel panelBotonSeleccionar = new JPanel(new BorderLayout()); // Usamos BorderLayout para posicionar a la izquierda
         panelBotonSeleccionar.add(btnSeleccionarEvento, BorderLayout.WEST); // Lo posicionamos a la izquierda
 
-        JPanel panelInferior = new JPanel(new BorderLayout()); // Cambiado a BorderLayout para contener el nuevo panel del botón
-        panelInferior.add(panelBotonSeleccionar, BorderLayout.WEST); // Añade el panel del botón a la izquierda de la parte inferior
-        panelInferior.add(new JLabel("Otros elementos"), BorderLayout.CENTER); // Otros elementos
+        // *** NUEVA ZONA: Panel de Detalles del Evento (abajo de la grilla) ***
+        panelDetallesEvento = new JPanel();
+        panelDetallesEvento.setLayout(new BoxLayout(panelDetallesEvento, BoxLayout.X_AXIS));
+        panelDetallesEvento.setBorder(BorderFactory.createTitledBorder("Detalles del Evento Seleccionado"));
+        // MODIFICADO: Se establece inicialmente invisible
+        panelDetallesEvento.setVisible(false);
 
-        panelRegistroManual.add(new JScrollPane(grillaEventoSismico), BorderLayout.CENTER);
-        panelRegistroManual.add(panelInferior, BorderLayout.SOUTH); // El panelInferior ahora contiene el botón
+        // Sub-panel para la mitad izquierda (Datos de las asociaciones)
+        JPanel panelIzquierdoDetalles = new JPanel();
+        panelIzquierdoDetalles.setLayout(new BoxLayout(panelIzquierdoDetalles, BoxLayout.Y_AXIS)); // Layout vertical para las labels
+        panelIzquierdoDetalles.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Margen interno
+
+        // Título para la sección de datos del evento sísmico
+        JLabel tituloDatosEvento = new JLabel("Datos del Evento Sísmico");
+        tituloDatosEvento.setFont(tituloDatosEvento.getFont().deriveFont(16f)); // Ajustar tamaño de fuente
+        // Alineación del título (opcional, pero útil para BoxLayout)
+        tituloDatosEvento.setAlignmentX(LEFT_ALIGNMENT); // Asegura que el título se alinee a la izquierda
+
+        panelIzquierdoDetalles.add(tituloDatosEvento);
+        panelIzquierdoDetalles.add(Box.createVerticalStrut(10)); // Espacio vertical
+
+        labelNombreClasificacion.setAlignmentX(LEFT_ALIGNMENT); // Alinea a la izquierda
+        labelNombreOrigen.setAlignmentX(LEFT_ALIGNMENT);       // Alinea a la izquierda
+        labelNombreAlcance.setAlignmentX(LEFT_ALIGNMENT);      // Alinea a la izquierda
+
+
+        // Labels para mostrar los nombres de las asociaciones (reutilizando los atributos existentes)
+        panelIzquierdoDetalles.add(labelNombreClasificacion);
+        panelIzquierdoDetalles.add(labelNombreOrigen);
+        panelIzquierdoDetalles.add(labelNombreAlcance);
+
+        panelIzquierdoDetalles.add(Box.createVerticalGlue());
+
+        // Añadir los sub-paneles a la nueva zona de detalles
+        panelDetallesEvento.add(panelIzquierdoDetalles);
+        // Puedes agregar más paneles a la derecha si es necesario en el futuro
+
+
+        // Panel inferior que contendrá el botón de seleccionar y la nueva zona de detalles
+        // YA ESTÁ DECLARADO ARRIBA COMO ATRIBUTO DE INSTANCIA
+        panelContenidoInferior = new JPanel(new BorderLayout(0, 10));
+        panelContenidoInferior.setPreferredSize(new Dimension(0, 250));
+
+        panelContenidoInferior.add(panelBotonSeleccionar, BorderLayout.NORTH);
+        panelContenidoInferior.add(panelDetallesEvento, BorderLayout.CENTER);
+
+        panelRegistroManual.add(new JScrollPane(grillaEventoSismico), BorderLayout.CENTER); // La grilla en el centro
+        panelRegistroManual.add(panelContenidoInferior, BorderLayout.SOUTH); // El panel contenido inferior en la parte inferior
+
+        JScrollPane scrollPane = new JScrollPane(grillaEventoSismico);
+
+        // Panel intermedio para aplicar márgenes a los lados de la tabla
+        JPanel panelTablaConMargenes = new JPanel(new BorderLayout());
+        panelTablaConMargenes.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 20)); // 20px a izquierda y derecha
+        panelTablaConMargenes.add(scrollPane, BorderLayout.CENTER); // El scrollPane ocupa el centro de este panel
+
+        panelRegistroManual.add(panelTablaConMargenes, BorderLayout.CENTER); // Ahora añadimos este panel con márgenes al centro
+        panelRegistroManual.add(panelContenidoInferior, BorderLayout.SOUTH);
 
         // Añadir las vistas al panelContenedorVistas
         panelContenedorVistas.add(panelInicial, "Inicial");
@@ -169,6 +229,12 @@ public class PantallaRegistrarResultadoDeRevisionManual extends JFrame {
                 btnSeleccionarEvento.setEnabled(hayFilaSeleccionada);
             }
       });
+
+        // MODIFICADO: Asegurarse de que el panel de detalles esté oculto
+        // al habilitar la ventana, por si el usuario regresa a esta vista.
+        panelDetallesEvento.setVisible(false);
+        panelContenidoInferior.revalidate(); // Revalida el layout del panel contenedor
+        panelContenidoInferior.repaint();   // Repinta el panel contenedor
     }
 
     public void setGestor(GestorRegistrarResultadoDeRevisionManual gestor) {
@@ -209,6 +275,12 @@ public class PantallaRegistrarResultadoDeRevisionManual extends JFrame {
         }
         System.out.println("Pantalla: Grilla 'grillaEventoSismico' actualizada completamente.");
         btnSeleccionarEvento.setEnabled(false);
+
+        // MODIFICADO: Si hay eventos para mostrar, asegúrate de que el panel de detalles
+        // esté oculto al recargar la grilla, esperando una nueva selección.
+        panelDetallesEvento.setVisible(false);
+        panelContenidoInferior.revalidate();
+        panelContenidoInferior.repaint();
     }
 
     public void tomarEventoSismicoARevisar() {
@@ -231,8 +303,33 @@ public class PantallaRegistrarResultadoDeRevisionManual extends JFrame {
         }
     }
 
-    public void mostrarDatosEventoSismico() {
-        // Lógica para poblar los labels con datos de un evento sísmico
+    public void mostrarDatosEventoSismico(List<String> datos) {
+        System.out.println("Pantalla: Recibidos datos del evento sísmico para mostrar en los labels:");
+        // Asignar los datos a los JLabels
+        if (datos != null && datos.size() >= 3) {
+            // Asumiendo el orden: [0] = Clasificación, [1] = Origen, [2] = Alcance
+            labelNombreClasificacion.setText("Clasificación: " + datos.get(0));
+            labelNombreOrigen.setText("Origen: " + datos.get(1));
+            labelNombreAlcance.setText("Alcance: " + datos.get(2));
+            System.out.println("  - Clasificación: " + datos.get(0));
+            System.out.println("  - Origen: " + datos.get(1));
+            System.out.println("  - Alcance: " + datos.get(2));
+        } else {
+            labelNombreClasificacion.setText("Clasificación: N/A");
+            labelNombreOrigen.setText("Origen: N/A");
+            labelNombreAlcance.setText("Alcance: N/A");
+            System.out.println("  - No se recibieron datos suficientes o válidos para las asociaciones.");
+        }
+
+        // MODIFICADO: Hacer visible el panel de detalles del evento.
+        // Ahora funcionará porque 'panelDetallesEvento' y 'panelContenidoInferior'
+        // son atributos de instancia e inicializados correctamente antes.
+        panelDetallesEvento.setVisible(true);
+        panelContenidoInferior.revalidate(); // Revalida el layout del panel contenedor
+        panelContenidoInferior.repaint();   // Repinta el panel contenedor
+
+        System.out.println("Pantalla: Panel de detalles del evento ahora visible.");
+
     }
 
     public void mostrarOpcionVisualizarMapa() {

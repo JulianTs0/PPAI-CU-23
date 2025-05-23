@@ -254,6 +254,8 @@ public class GestorRegistrarResultadoDeRevisionManual {
                 }
             }
 
+            this.buscarDatosDelEventoSismicoSeleccionado();
+
         } else {
             System.err.println("Gestor: ERROR - El objeto EventoSismico en el índice [6] era nulo.");
             pantalla.actualizarEstadoPantalla("Error: Evento no recuperado correctamente.");
@@ -355,7 +357,40 @@ public class GestorRegistrarResultadoDeRevisionManual {
         System.out.println("--- Fin del método buscarEstadoBloqueadoEnRevision() ---");
     }
 
-    public void buscarDatosDelEventoSismicoSeleccionado() {}
+    public void buscarDatosDelEventoSismicoSeleccionado() {
+        System.out.println("\n--- Gestor: Método buscarDatosDelEventoSismicoSeleccionado() ejecutado ---");
+        if (this.eventoSeleccionado == null) {
+            System.err.println("Gestor: ERROR - No hay un evento sísmico seleccionado. No se pueden buscar datos.");
+            if (pantalla != null) {
+                pantalla.actualizarEstadoPantalla("Error: No hay evento seleccionado para mostrar datos.");
+            }
+            return;
+        }
+
+        System.out.println("Gestor: Invocando tomarDatosDelEventoSismicoSeleccionado() en el evento seleccionado.");
+        // El gestor le pide al evento seleccionado que tome sus datos
+        List<String> datosDelEvento = this.eventoSeleccionado.tomarDatosDelEventoSismicoSeleccionado();
+
+        if (datosDelEvento != null && !datosDelEvento.isEmpty()) {
+            System.out.println("Gestor: Datos del evento obtenidos correctamente. Pasando a la pantalla.");
+            // El gestor le pasa los datos a la pantalla
+            if (pantalla != null) {
+                // NOTA: Tu método mostrarDatosEventoSismico() en Pantalla no recibe parámetros.
+                // Si quieres que muestre estos datos, deberías modificarlo para que acepte un List<String> o similar.
+                // Por ejemplo: pantalla.mostrarDatosEventoSismico(datosDelEvento);
+                // Y dentro de Pantalla: public void mostrarDatosEventoSismico(List<String> datos) { ... }
+                pantalla.mostrarDatosEventoSismico(datosDelEvento);
+                pantalla.actualizarEstadoPantalla("Datos del evento sísmico obtenidos y listos para mostrar.");
+            }
+        } else {
+            System.err.println("Gestor: ADVERTENCIA - El evento seleccionado no retornó datos.");
+            if (pantalla != null) {
+                pantalla.actualizarEstadoPantalla("Advertencia: No se pudieron obtener los datos del evento.");
+            }
+        }
+        System.out.println("--- Fin del método buscarDatosDelEventoSismicoSeleccionado() ---");
+    }
+
     public void clasificarDatosPorEstacionSismologica() {}
     public void tomarOpcionVisualizarMapa() {}
     public void tomarOpcionModificarDatos() {}

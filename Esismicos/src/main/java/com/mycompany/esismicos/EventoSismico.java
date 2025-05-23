@@ -244,11 +244,42 @@ public class EventoSismico {
     }
 
     /**
-     * Este método está definido pero no realiza ninguna acción.
-     * Su implementación se espera en el futuro.
+     * Este método es llamado por el gestor para obtener los datos específicos
+     * del evento sísmico seleccionado, retornando solo los nombres de sus asociaciones.
+     * @return Una lista de cadenas con los nombres de las asociaciones del evento sísmico.
      */
-    public void buscarDatosDelEventoSismicoSeleccionado() {
-        // Método vacío por solicitud.
+    public List<String> tomarDatosDelEventoSismicoSeleccionado() {
+        System.out.println("\n--- EventoSismico: Método tomarDatosDelEventoSismicoSeleccionado() ejecutado ---");
+        List<String> datosEvento = new ArrayList<>();
+
+        // Solo se añaden los nombres de las asociaciones
+        if (this.alcanceSismo != null) {
+            datosEvento.add(this.alcanceSismo.getNombre());
+            System.out.println("EventoSismico: Obtenido nombre de AlcanceSismo: " + this.alcanceSismo.getNombre());
+        } else {
+            datosEvento.add("No especificado"); // O una cadena vacía, según lo que prefieras para "no especificado"
+            System.out.println("EventoSismico: AlcanceSismo es nulo.");
+        }
+
+        if (this.clasificacionSismo != null) {
+            datosEvento.add(this.clasificacionSismo.getNombre());
+            System.out.println("EventoSismico: Obtenido nombre de ClasificacionSismo: " + this.clasificacionSismo.getNombre());
+        } else {
+            datosEvento.add("No especificado");
+            System.out.println("EventoSismico: ClasificacionSismo es nulo.");
+        }
+
+        if (this.origenSismo != null) {
+            datosEvento.add(this.origenSismo.getNombre());
+            System.out.println("EventoSismico: Obtenido nombre de OrigenDeGeneracion: " + this.origenSismo.getNombre());
+        } else {
+            datosEvento.add("No especificado");
+            System.out.println("EventoSismico: OrigenDeGeneracion es nulo.");
+        }
+
+        System.out.println("EventoSismico: Datos de asociaciones recopilados para el evento sísmico seleccionado: " + datosEvento);
+        System.out.println("--- Fin del método tomarDatosDelEventoSismicoSeleccionado() ---");
+        return datosEvento;
     }
 
     /**
