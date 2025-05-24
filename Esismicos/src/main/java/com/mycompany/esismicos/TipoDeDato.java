@@ -30,13 +30,26 @@ public class TipoDeDato {
         this.nombreUnidadMedida = nombreUnidadMedida;
     }
 
-    // Método getDatos()
-    /*
-    Retorna una cadena con la denominación y la unidad de medida del tipo de dato.
-    @return Una cadena formateada con los datos del tipo de dato.
-    */
-    public String getDatos() {
-        return "Denominación: " + this.denominacion + ", Unidad de Medida: " + this.nombreUnidadMedida;
+    /**
+     * Devuelve la denominación y el nombreUnidadMedida de este tipo de dato,
+     * siempre y cuando la denominación sea "velocidad de onda", "frecuencia de onda" o "longitud".
+     *
+     * @return Un array de Object[] que contiene {denominacion, nombreUnidadMedida}
+     * si cumple con la condición, o null si no la cumple.
+     */
+    public Object[] getDatos() {
+        System.out.println("TipoDeDato: Método getDatos() ejecutado para denominación: " + this.denominacion);
+
+        // Aplicar el filtro según lo solicitado
+        if (this.denominacion.equals("velocidad de onda") ||
+                this.denominacion.equals("frecuencia de onda") ||
+                this.denominacion.equals("longitud")) {
+            System.out.println("TipoDeDato: Denominación '" + this.denominacion + "' cumple con el filtro. Retornando datos.");
+            return new Object[]{this.denominacion, this.nombreUnidadMedida};
+        } else {
+            System.out.println("TipoDeDato: Denominación '" + this.denominacion + "' NO cumple con el filtro. Retornando null.");
+            return null; // No cumple con las denominaciones requeridas
+        }
     }
     
     //Metodo esTuDenominacion() 

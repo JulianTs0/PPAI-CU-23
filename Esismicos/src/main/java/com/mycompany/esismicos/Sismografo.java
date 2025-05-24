@@ -126,9 +126,29 @@ public class Sismografo {
         // Método vacío por solicitud.
     }
 
-    public void soyTuSerieTemporal() {
-        // Método vacío por solicitud.
+    /**
+     * Verifica si alguna de sus series temporales es la que se le pasó por parámetro.
+     * Si lo es, devuelve el nombre de su estación sismológica.
+     * @param serieTemporal La SerieTemporal a verificar.
+     * @return El nombre de la estación sismológica si la serie coincide, de lo contrario `null`.
+     */
+    public String soyTuSerieTemporal(SerieTemporal serieTemporal) {
+        System.out.println("Sismografo " + this.identificadorSismografo + ": Verificando si soy el sismógrafo de la serie temporal.");
+        if (serieTemporal == null) {
+            return null;
+        }
+        for (SerieTemporal st : this.seriesTemporales) {
+            if (st.equals(serieTemporal)) { // Comparación de referencias para saber si es la misma instancia
+                System.out.println("Sismografo " + this.identificadorSismografo + ": ¡Sí! Esta SerieTemporal me pertenece.");
+                if (this.estacionSismologica != null) {
+                    return this.estacionSismologica.getNombre();
+                }
+            }
+        }
+        System.out.println("Sismografo " + this.identificadorSismografo + ": Esta SerieTemporal NO me pertenece.");
+        return null;
     }
+
 
     // --- Método toString() ---
     @Override

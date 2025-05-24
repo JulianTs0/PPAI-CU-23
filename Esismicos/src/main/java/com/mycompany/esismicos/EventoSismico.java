@@ -289,19 +289,65 @@ public class EventoSismico {
     }
 
     /**
-     * Este método está definido pero no realiza ninguna acción.
-     * Su implementación se espera en el futuro.
+     * Itera por cada elemento del conjunto de series temporales que tiene el evento.
+     * Por cada serie temporal, ejecuta el método `getDatos()` de la SerieTemporal para recolectar los datos.
+     * Los datos recolectados incluyen: fechaHoraMuestra, valorDetalle,
+     * denominacionTipoDeDato, nombreUnidadMedida.
+     *
+     * @return Una lista de Object[] donde cada Object[] contiene
+     * {fechaHoraMuestra, valorDetalle, denominacionTipoDeDato, nombreUnidadMedidaTipoDeDato}.
      */
-    public void obtenerDatosSerieTemporal() {
-        // Método vacío por solicitud.
+    public List<Object[]> obtenerDatosSerieTemporal() {
+        System.out.println("EventoSismico: Método obtenerDatosSerieTemporal() ejecutado.");
+        List<Object[]> datosRecolectados = new ArrayList<>();
+
+        if (this.seriesTemporales == null || this.seriesTemporales.isEmpty()) {
+            System.out.println("EventoSismico: No hay series temporales asociadas a este evento.");
+            return datosRecolectados;
+        }
+
+        for (SerieTemporal serie : this.seriesTemporales) {
+            System.out.println("EventoSismico: Procesando serie temporal (número de serie: " + serie.getFechaHoraRegistro() + ")."); // Asumiendo un getter de ID o similar
+            // Ejecuta el método getDatos() de la SerieTemporal para obtener sus datos completos
+            List<Object[]> datosDeSerie = serie.getDatos();
+            if (datosDeSerie != null && !datosDeSerie.isEmpty()) {
+                datosRecolectados.addAll(datosDeSerie);
+                System.out.println("EventoSismico: Añadidos " + datosDeSerie.size() + " datos de la serie temporal a la colección principal.");
+            }
+        }
+        System.out.println("EventoSismico: Finalizada recolección de datos de series temporales. Total de datos: " + datosRecolectados.size());
+
+        // --- COMIENZO DE LA MODIFICACIÓN: Mostrar todos los datos recolectados ---
+        System.out.println("\n--- DETALLE DE TODOS LOS DATOS RECOLECTADOS DE SERIES TEMPORALES ---");
+        if (datosRecolectados.isEmpty()) {
+            System.out.println("No se recolectaron datos en ninguna serie temporal.");
+        } else {
+            for (int i = 0; i < datosRecolectados.size(); i++) {
+                Object[] dato = datosRecolectados.get(i);
+                System.out.print("Dato " + (i + 1) + ": [");
+                for (int j = 0; j < dato.length; j++) {
+                    System.out.print(dato[j]);
+                    if (j < dato.length - 1) {
+                        System.out.print(", ");
+                    }
+                }
+                System.out.println("]");
+            }
+        }
+        System.out.println("--- FIN DEL DETALLE DE DATOS ---");
+        // --- FIN DE LA MODIFICACIÓN ---
+
+        return datosRecolectados;
     }
 
     /**
-     * Este método está definido pero no realiza ninguna acción.
-     * Su implementación se espera en el futuro.
+     * Este método por ahora solo se encarga de ejecutar obtenerDatosSerieTemporal().
+     * **MODIFICACIÓN: Nuevo método getSerieTemporal() que delega la acción.**
+     * @return Una lista de Object[] con datos de series temporales.
      */
-    public void getSerieTemporal() {
-        // Método vacío por solicitud.
+    public List<Object[]> getSerieTemporal() {
+        System.out.println("EventoSismico: Método getSerieTemporal() ejecutado. Delegando a obtenerDatosSerieTemporal().");
+        return obtenerDatosSerieTemporal();
     }
 
     /**

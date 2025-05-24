@@ -380,6 +380,8 @@ public class GestorRegistrarResultadoDeRevisionManual {
                 // Por ejemplo: pantalla.mostrarDatosEventoSismico(datosDelEvento);
                 // Y dentro de Pantalla: public void mostrarDatosEventoSismico(List<String> datos) { ... }
                 pantalla.mostrarDatosEventoSismico(datosDelEvento);
+                System.out.println("Gestor: Ejecutando getSerieTemporal() en el evento sísmico seleccionado.");
+                List<Object[]> datosSeriesTemporales = this.eventoSeleccionado.getSerieTemporal();
                 pantalla.actualizarEstadoPantalla("Datos del evento sísmico obtenidos y listos para mostrar.");
             }
         } else {

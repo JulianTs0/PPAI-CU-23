@@ -102,27 +102,95 @@ public class SerieTemporal {
 
     // --- Métodos solicitados (void y vacíos) ---
 
-    public String getDatos() {
-        String datos = "SerieTemporal {" + 
-            "CondicionAlarma: " + this.condicionAlarma + 
-            "FechaHoraRegistroMuestras: " + this.fechaHoraIncioRegistroMuestras + 
-            "fechaHoraRegistro: " + this.fechaHoraRegistro + 
-            "frecuenciaMuestreo: " + this.frecuenciaMuestreo + 
-            "Estado: " + this.estado.toString() + 
-            "[";
-        for (MuestraSismica muestra : muestrasSismicas){
-            datos += muestra.getDatos();
+    public List<Object[]> getDatos() {
+        System.out.println("SerieTemporal: Método getDatos() ejecutado para serie con número: " + this.fechaHoraRegistro);
+        List<Object[]> datosSerie = new ArrayList<>();
+
+        // Delega en obtenerDatosMuestraSismica para recolectar los datos de las muestras
+        // Estos datos ya vienen con {fechaHoraMuestra, valor, denominacion, nombreUnidadMedida}
+        List<Object[]> datosMuestras = this.obtenerDatosMuestraSismica();
+
+        if (datosMuestras != null && !datosMuestras.isEmpty()) {
+            datosSerie.addAll(datosMuestras);
+            System.out.println("SerieTemporal: Añadidos " + datosMuestras.size() + " datos de las muestras sísmicas a la colección de la serie.");
+        } else {
+            System.out.println("SerieTemporal: No se obtuvieron datos de las muestras sísmicas para esta serie.");
         }
-        datos += "]}";
-        return datos;
+        System.out.println("SerieTemporal: Finalizada recolección de datos. Total de entradas: " + datosSerie.size());
+        return datosSerie;
     }
 
-    public String obtenerDatosMuestraSismica() {
-        return this.getDatos();    
+    /**
+     * Itera por cada elemento que posee de MuestraSismica.
+     * Por cada muestra, ejecuta el método `getDatos()` de la muestra
+     * para obtener la fechaHoraMuestra, valor, denominación y unidad de medida.
+     *
+     * @return Una lista de Object[] donde cada Object[] contiene
+     * {fechaHoraMuestra, valor, denominacion, nombreUnidadMedida}.
+     */
+    public List<Object[]> obtenerDatosMuestraSismica() {
+        System.out.println("SerieTemporal: Método obtenerDatosMuestraSismica() ejecutado.");
+        List<Object[]> datosMuestras = new ArrayList<>();
+
+        if (this.muestrasSismicas == null || this.muestrasSismicas.isEmpty()) {
+            System.out.println("SerieTemporal: No hay muestras sísmicas asociadas a esta serie.");
+            return datosMuestras;
+        }
+
+        for (MuestraSismica muestra : this.muestrasSismicas) {
+            System.out.println("SerieTemporal: Procesando muestra sísmica de fecha: " + muestra.getFechaHoraMuestra());
+            // El método getDatos() de MuestraSismica devuelve una lista de
+            // {fechaHoraMuestra, valor, denominacion, nombreUnidadMedida}
+            List<Object[]> datosDeUnaMuestra = muestra.getDatos();
+            if (datosDeUnaMuestra != null && !datosDeUnaMuestra.isEmpty()) {
+                datosMuestras.addAll(datosDeUnaMuestra);
+                System.out.println("SerieTemporal: Añadidos " + datosDeUnaMuestra.size() + " datos de la muestra a la colección general.");
+            }
+        }
+
+        // Una vez que se han obtenido todos los datos de las muestras,
+        // se busca la estación sismológica y se añade su nombre.
+        String nombreEstacion = this.buscarSismografo();
+        if (nombreEstacion != null) {
+            System.out.println("SerieTemporal: Nombre de la estación sismológica encontrada: " + nombreEstacion);
+            // Iterar sobre los datos recolectados y añadir el nombre de la estación
+            List<Object[]> datosCompletos = new ArrayList<>();
+            for (Object[] datoExistente : datosMuestras) {
+                // Crear un nuevo Object[] con un espacio adicional para el nombre de la estación
+                Object[] nuevoDato = new Object[datoExistente.length + 1];
+                System.arraycopy(datoExistente, 0, nuevoDato, 0, datoExistente.length);
+                nuevoDato[datoExistente.length] = nombreEstacion; // Añadir el nombre de la estación al final
+                datosCompletos.add(nuevoDato);
+            }
+            datosMuestras = datosCompletos; // Actualizar la lista con los datos extendidos
+            System.out.println("SerieTemporal: Nombre de la estación '" + nombreEstacion + "' añadido a " + datosMuestras.size() + " registros.");
+        } else {
+            System.out.println("SerieTemporal: No se pudo encontrar el nombre de la estación para esta serie temporal.");
+        }
+
+        System.out.println("SerieTemporal: Finalizada recolección de datos de muestras. Total de datos: " + datosMuestras.size());
+        return datosMuestras;
     }
 
-    public void buscarSismografo() {
-        
+    /**
+     * Itera sobre todos los sismógrafos en la DataBase
+     * y llama a `soyTuSerieTemporal()` para encontrar el nombre de la estación
+     * sismológica a la que pertenece el sismógrafo asociado a esta serie temporal.
+     *
+     * @return El nombre de la estación sismológica o `null` si no se encuentra.
+     */
+    public String buscarSismografo() {
+        System.out.println("SerieTemporal: Método buscarSismografo() ejecutado.");
+        for (Sismografo sismografo : DataBase.sismografos) { // Asumo que existe una lista 'sismografos' en DataBase
+            System.out.println("SerieTemporal: Preguntando a Sismografo " + sismografo.getIdentificadorSismografo() + " si es su serie.");
+            String nombreEstacion = sismografo.soyTuSerieTemporal(this);
+            if (nombreEstacion != null) {
+                System.out.println("SerieTemporal: Sismografo " + sismografo.getIdentificadorSismografo() + " confirmó la serie. Estación: " + nombreEstacion);
+                return nombreEstacion;
+            }
+        }
+        System.out.println("SerieTemporal: No se encontró ningún sismógrafo asociado a esta serie temporal.");
+        return null; // Si no se encuentra ningún sismógrafo asociado
     }
 
     // --- Método toString() ---
