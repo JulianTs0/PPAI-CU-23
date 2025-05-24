@@ -19,6 +19,7 @@ import javax.swing.BorderFactory; // Importar para bordes
 import javax.swing.BoxLayout; // Importar para BoxLayout
 import javax.swing.Box; // Importar para Box.createVerticalStrut
 import java.awt.Dimension;
+import java.util.Map; // ¡NUEVA IMPORTACIÓN NECESARIA!
 
 public class PantallaRegistrarResultadoDeRevisionManual extends JFrame {
 
@@ -332,8 +333,21 @@ public class PantallaRegistrarResultadoDeRevisionManual extends JFrame {
 
     }
 
-    public void mostrarOpcionVisualizarMapa() {
-        // Lógica para mostrar el botón de visualizar mapa
+    public void mostrarOpcionVisualizarMapa(Map<String, String> rutasSismogramas) {
+        System.out.println("\n--- Pantalla: Método mostrarOpcionVisualizarMapa() ejecutado ---");
+        System.out.println("Pantalla: Recibidas las siguientes rutas de sismogramas para visualizar:");
+
+        if (rutasSismogramas != null && !rutasSismogramas.isEmpty()) {
+            for (Map.Entry<String, String> entry : rutasSismogramas.entrySet()) {
+                System.out.println("  - Estación: '" + entry.getKey() + "' -> Ruta Sismograma: '" + entry.getValue() + "'");
+            }
+            // En el futuro, aquí habilitarías un botón o componente visual para mostrar las imágenes.
+            actualizarEstadoPantalla("Rutas de sismogramas recibidas. Opción para visualizar mapa/sismogramas disponible.");
+        } else {
+            System.out.println("  - No se recibieron rutas de sismogramas para mostrar.");
+            actualizarEstadoPantalla("No hay sismogramas para visualizar.");
+        }
+        System.out.println("--- Fin del método mostrarOpcionVisualizarMapa() en Pantalla ---");
     }
 
     public void tomarOpcionVisualizarmMapa() {

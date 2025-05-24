@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Collections; // Necesario para Collections.sort
 import java.util.Comparator;  // Necesario para Comparator
+import java.util.Map; // Para clasificar los datos por estación
+import java.util.HashMap; // Implementación de Map
 
 public class GestorRegistrarResultadoDeRevisionManual {
 
@@ -27,6 +29,9 @@ public class GestorRegistrarResultadoDeRevisionManual {
     private PantallaRegistrarResultadoDeRevisionManual pantalla;
     private List<EventoSismico> todosLosEventosDelSistema; // NUEVO: Atributo para almacenar todos los eventos
 
+    // ¡NUEVO ATRIBUTO para guardar los datos de las series temporales!
+    private List<Object[]> datosSeriesTemporales;
+
 
     // Constructor
     public GestorRegistrarResultadoDeRevisionManual(
@@ -44,6 +49,9 @@ public class GestorRegistrarResultadoDeRevisionManual {
         this.fechaHoraRevision = fechaHoraRevision;
 
         this.eventosParaGrilla = new ArrayList<>();
+        // Inicializa la nueva lista de datos de series temporales
+        this.datosSeriesTemporales = new ArrayList<>(); // ¡Inicialización del nuevo atributo!
+
 
         this.pantalla = pantalla;
         this.todosLosEventosDelSistema = todosLosEventosDelSistema; // Asigna la lista de eventos
@@ -92,6 +100,10 @@ public class GestorRegistrarResultadoDeRevisionManual {
 
     public Sesion getSesionActual() {
         return sesionActual;
+    }
+
+    public List<Object[]> getDatosSeriesTemporales() {
+        return new ArrayList<>(this.datosSeriesTemporales); // Retorna una copia defensiva
     }
 
     // --- Métodos del Gestor (vacíos) ---
@@ -256,6 +268,8 @@ public class GestorRegistrarResultadoDeRevisionManual {
 
             this.buscarDatosDelEventoSismicoSeleccionado();
 
+            this.clasificarDatosPorEstacionSismologica();
+
         } else {
             System.err.println("Gestor: ERROR - El objeto EventoSismico en el índice [6] era nulo.");
             pantalla.actualizarEstadoPantalla("Error: Evento no recuperado correctamente.");
@@ -381,7 +395,9 @@ public class GestorRegistrarResultadoDeRevisionManual {
                 // Y dentro de Pantalla: public void mostrarDatosEventoSismico(List<String> datos) { ... }
                 pantalla.mostrarDatosEventoSismico(datosDelEvento);
                 System.out.println("Gestor: Ejecutando getSerieTemporal() en el evento sísmico seleccionado.");
-                List<Object[]> datosSeriesTemporales = this.eventoSeleccionado.getSerieTemporal();
+
+                this.datosSeriesTemporales = this.eventoSeleccionado.getSerieTemporal();
+
                 pantalla.actualizarEstadoPantalla("Datos del evento sísmico obtenidos y listos para mostrar.");
             }
         } else {
@@ -393,7 +409,94 @@ public class GestorRegistrarResultadoDeRevisionManual {
         System.out.println("--- Fin del método buscarDatosDelEventoSismicoSeleccionado() ---");
     }
 
-    public void clasificarDatosPorEstacionSismologica() {}
+    /**
+     * Clasifica los datos de las series temporales por estación sismológica
+     * y luego invoca el método para generar los sismogramas.
+     */
+    public void clasificarDatosPorEstacionSismologica() {
+        System.out.println("\n--- Gestor: Método clasificarDatosPorEstacionSismologica() ejecutado ---");
+
+        if (this.datosSeriesTemporales == null || this.datosSeriesTemporales.isEmpty()) {
+            System.out.println("Gestor: No hay datos de series temporales para clasificar.");
+            if (pantalla != null) {
+                pantalla.actualizarEstadoPantalla("No hay datos de series temporales para generar sismogramas.");
+            }
+            return;
+        }
+
+        Map<String, List<Object[]>> datosClasificadosPorEstacion = new HashMap<>();
+
+        for (Object[] muestra : this.datosSeriesTemporales) {
+            String nombreEstacion = (String) muestra[4]; // El nombre de la estación está en el índice [4]
+
+            datosClasificadosPorEstacion.computeIfAbsent(nombreEstacion, k -> new ArrayList<>()).add(muestra);
+        }
+
+        System.out.println("Gestor: Datos de series temporales clasificados por estación.");
+        System.out.println("Gestor: Se encontraron " + datosClasificadosPorEstacion.size() + " estaciones distintas.");
+
+        for (Map.Entry<String, List<Object[]>> entry : datosClasificadosPorEstacion.entrySet()) {
+            System.out.println("  - Estación: '" + entry.getKey() + "' con " + entry.getValue().size() + " muestras.");
+        }
+
+        System.out.println("Gestor: Invocando casoDeUsoGenerarSismograma() con los datos clasificados.");
+        Map<String, String> rutasSismogramasGenerados = this.casoDeUsoGenerarSismograma(datosClasificadosPorEstacion);
+
+        if (pantalla != null) {
+            pantalla.actualizarEstadoPantalla("Datos clasificados por estación. Sismogramas simulados generados.");
+            // *** MODIFICACIÓN CLAVE: Invocar mostrarOpcionVisualizarMapa con las rutas ***
+            this.pantalla.mostrarOpcionVisualizarMapa(rutasSismogramasGenerados);
+        }
+        System.out.println("--- Fin del método clasificarDatosPorEstacionSismologica() ---");
+    }
+
+    /**
+     * STUB: Este método simula la generación de sismogramas y devuelve
+     * un mapa con las rutas de las imágenes de sismogramas asociadas a cada estación.
+     *
+     * @param datosClasificadosPorEstacion Un mapa con los datos de las series temporales clasificados por estación.
+     * @return Un Map donde la clave es el nombre de la estación (String) y el valor
+     * es la ruta del archivo de imagen simulado (String) para esa estación.
+     */
+    public Map<String, String> casoDeUsoGenerarSismograma(Map<String, List<Object[]>> datosClasificadosPorEstacion) {
+        System.out.println("\n--- Gestor: STUB del método casoDeUsoGenerarSismograma() ejecutado ---");
+        System.out.println("Gestor: Recibidos datos clasificados para simular la generación de sismogramas.");
+
+        Map<String, String> rutasSismogramasPorEstacion = new HashMap<>();
+
+        // Iterar sobre las estaciones que tienen datos
+        for (String nombreEstacion : datosClasificadosPorEstacion.keySet()) {
+            String rutaImagen = "";
+            // Asignar una ruta de imagen simulada basada en el nombre exacto de la estación
+            switch (nombreEstacion) {
+                case "Estación Salta":
+                    rutaImagen = "images/sismograma_salta.png";
+                    break;
+                case "Estación Córdoba":
+                    rutaImagen = "images/sismograma_cordoba.png";
+                    break;
+                case "Estación Buenos Aires":
+                    rutaImagen = "images/sismograma_buenos_aires.png";
+                    break;
+                default:
+                    System.err.println("Gestor: Estación desconocida para sismograma simulado: '" + nombreEstacion + "'. Asignando imagen por defecto.");
+                    rutaImagen = "images/sismograma_default.png"; // O una imagen por defecto
+                    break;
+            }
+            rutasSismogramasPorEstacion.put(nombreEstacion, rutaImagen);
+            System.out.println("  - Simulado sismograma para '" + nombreEstacion + "': " + rutaImagen);
+        }
+
+        if (pantalla != null) {
+            pantalla.actualizarEstadoPantalla("STUB: Rutas de sismogramas simuladas generadas.");
+            // Aquí, el Gestor podría llamar a un nuevo método en la Pantalla
+            // para mostrar estos sismogramas. Por ejemplo:
+            // pantalla.mostrarSismogramas(rutasSismogramasPorEstacion);
+        }
+        System.out.println("--- Fin del STUB del método casoDeUsoGenerarSismograma() ---");
+        return rutasSismogramasPorEstacion;
+    }
+
     public void tomarOpcionVisualizarMapa() {}
     public void tomarOpcionModificarDatos() {}
     public void tomarOpcionesDeEvento() {}
