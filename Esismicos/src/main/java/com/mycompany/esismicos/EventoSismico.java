@@ -1,24 +1,24 @@
 package com.mycompany.esismicos;
 
 import com.mycompany.esismicos.ClasificacionSismo;
-import java.time.LocalDateTime; // Importa la clase LocalDateTime
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 public class EventoSismico {
 
     // Atributos
-    private LocalDateTime fechaHoraFin;       // Cambiado a LocalDateTime
-    private LocalDateTime fechaHoraOcurrencia; // Cambiado a LocalDateTime
+    private LocalDateTime fechaHoraFin;
+    private LocalDateTime fechaHoraOcurrencia;
     private double latitudHipocentro;
     private double latitudEpicentro;
     private double longitudEpicentro;
     private double longitudHipocentro;
     private double valorMagnitud;
-    //eventosParagrilla ?
-    private String nombreAlcance;
-    private String nombreClasificacion;
-    private String nombreOrigen;
+    // MODIFICACIÓN: Se eliminan estos atributos directos
+    // private String nombreAlcance;
+    // private String nombreClasificacion;
+    // private String nombreOrigen;
 
     // --- Asociaciones 1:1 ---
     private ClasificacionSismo clasificacionSismo;
@@ -30,12 +30,11 @@ public class EventoSismico {
     private List<SerieTemporal> seriesTemporales;
     private List<CambioDeEstado> cambiosDeEstado;
 
-    // Constructor
-    public EventoSismico(LocalDateTime fechaHoraFin, LocalDateTime fechaHoraOcurrencia, // Cambiados los tipos
+    // Constructor - MODIFICACIÓN: Se removieron los parámetros de los nombres de las asociaciones
+    public EventoSismico(LocalDateTime fechaHoraFin, LocalDateTime fechaHoraOcurrencia,
                          double latitudHipocentro, double latitudEpicentro,
                          double longitudEpicentro, double longitudHipocentro,
-                         double valorMagnitud, String nombreAlcance,
-                         String nombreClasificacion, String nombreOrigen,
+                         double valorMagnitud, // REMOVIDOS: String nombreAlcance, String nombreClasificacion, String nombreOrigen,
                          ClasificacionSismo clasificacionSismo, OrigenDeGeneracion origenSismo,
                          AlcanceSismo alcanceSismo, Estado estadoActual) {
         this.fechaHoraFin = fechaHoraFin;
@@ -45,9 +44,10 @@ public class EventoSismico {
         this.longitudEpicentro = longitudEpicentro;
         this.longitudHipocentro = longitudHipocentro;
         this.valorMagnitud = valorMagnitud;
-        this.nombreAlcance = nombreAlcance;
-        this.nombreClasificacion = nombreClasificacion;
-        this.nombreOrigen = nombreOrigen;
+        // MODIFICACIÓN: Eliminadas las asignaciones de los atributos de nombre
+        // this.nombreAlcance = nombreAlcance;
+        // this.nombreClasificacion = nombreClasificacion;
+        // this.nombreOrigen = nombreOrigen;
         this.clasificacionSismo = clasificacionSismo;
         this.origenSismo = origenSismo;
         this.alcanceSismo = alcanceSismo;
@@ -114,6 +114,8 @@ public class EventoSismico {
         this.valorMagnitud = valorMagnitud;
     }
 
+    // MODIFICACIÓN: Se eliminan estos getters y setters
+    /*
     public String getNombreAlcance() {
         return nombreAlcance;
     }
@@ -137,6 +139,7 @@ public class EventoSismico {
     public void setNombreOrigen(String nombreOrigen) {
         this.nombreOrigen = nombreOrigen;
     }
+    */
 
     // --- Getters y Setters de Asociaciones 1:1 ---
 
@@ -196,7 +199,7 @@ public class EventoSismico {
 
     // --- Métodos solicitados (void y vacíos) ---
 
-   public boolean esPendienteDeRevision() {
+    public boolean esPendienteDeRevision() {
         // Ejecuta el método esPendienteDeRevision() de su instancia de Estado
         if (estadoActual != null) {
             return estadoActual.esPendienteDeRevision();
@@ -206,10 +209,10 @@ public class EventoSismico {
 
     public double[] obtenerUbicacion() {
         return new double[]{
-            this.latitudEpicentro,
-            this.longitudEpicentro,
-            this.latitudHipocentro,
-            this.longitudHipocentro
+                this.latitudEpicentro,
+                this.longitudEpicentro,
+                this.latitudHipocentro,
+                this.longitudHipocentro
         };
     }
 
@@ -246,35 +249,38 @@ public class EventoSismico {
     /**
      * Este método es llamado por el gestor para obtener los datos específicos
      * del evento sísmico seleccionado, retornando solo los nombres de sus asociaciones.
+     * MODIFICACIÓN: Ahora obtiene los nombres directamente de los objetos de asociación.
      * @return Una lista de cadenas con los nombres de las asociaciones del evento sísmico.
      */
     public List<String> tomarDatosDelEventoSismicoSeleccionado() {
         System.out.println("\n--- EventoSismico: Método tomarDatosDelEventoSismicoSeleccionado() ejecutado ---");
         List<String> datosEvento = new ArrayList<>();
 
-        // Solo se añaden los nombres de las asociaciones
-        if (this.alcanceSismo != null) {
-            datosEvento.add(this.alcanceSismo.getNombre());
-            System.out.println("EventoSismico: Obtenido nombre de AlcanceSismo: " + this.alcanceSismo.getNombre());
-        } else {
-            datosEvento.add("No especificado"); // O una cadena vacía, según lo que prefieras para "no especificado"
-            System.out.println("EventoSismico: AlcanceSismo es nulo.");
-        }
-
+        // MODIFICACIÓN: Se obtiene el nombre directamente de la asociación
         if (this.clasificacionSismo != null) {
             datosEvento.add(this.clasificacionSismo.getNombre());
             System.out.println("EventoSismico: Obtenido nombre de ClasificacionSismo: " + this.clasificacionSismo.getNombre());
         } else {
-            datosEvento.add("No especificado");
+            datosEvento.add("No especificado"); // O una cadena vacía, según lo que prefieras para "no especificado"
             System.out.println("EventoSismico: ClasificacionSismo es nulo.");
         }
 
+        // MODIFICACIÓN: Se obtiene el nombre directamente de la asociación
         if (this.origenSismo != null) {
             datosEvento.add(this.origenSismo.getNombre());
             System.out.println("EventoSismico: Obtenido nombre de OrigenDeGeneracion: " + this.origenSismo.getNombre());
         } else {
             datosEvento.add("No especificado");
             System.out.println("EventoSismico: OrigenDeGeneracion es nulo.");
+        }
+
+        // MODIFICACIÓN: Se obtiene el nombre directamente de la asociación
+        if (this.alcanceSismo != null) {
+            datosEvento.add(this.alcanceSismo.getNombre());
+            System.out.println("EventoSismico: Obtenido nombre de AlcanceSismo: " + this.alcanceSismo.getNombre());
+        } else {
+            datosEvento.add("No especificado");
+            System.out.println("EventoSismico: AlcanceSismo es nulo.");
         }
 
         System.out.println("EventoSismico: Datos de asociaciones recopilados para el evento sísmico seleccionado: " + datosEvento);
@@ -362,26 +368,27 @@ public class EventoSismico {
         System.out.println("EventoSismico: Nuevo CambioDeEstado creado y añadido. Evento ahora en estado: " + this.getEstadoActual().getNombreEstado());
     }
 
-    // --- Método toString() ---
+    // --- Método toString() - MODIFICACIÓN: Se removieron las referencias a los atributos de nombre
     @Override
     public String toString() {
         return "EventoSismico{" +
-               "fechaHoraFin=" + fechaHoraFin +
-               ", fechaHoraOcurrencia=" + fechaHoraOcurrencia +
-               ", latitudHipocentro=" + latitudHipocentro +
-               ", latitudEpicentro=" + latitudEpicentro +
-               ", longitudEpicentro=" + longitudEpicentro +
-               ", longitudHipocentro=" + longitudHipocentro +
-               ", valorMagnitud=" + valorMagnitud +
-               ", nombreAlcance='" + nombreAlcance + '\'' +
-               ", nombreClasificacion='" + nombreClasificacion + '\'' +
-               ", nombreOrigen='" + nombreOrigen + '\'' +
-               ", clasificacionSismo=" + (clasificacionSismo != null ? clasificacionSismo.getNombre() : "N/A") +
-               ", origenSismo=" + (origenSismo != null ? origenSismo.getNombre() : "N/A") +
-               ", alcanceSismo=" + (alcanceSismo != null ? alcanceSismo.getNombre() : "N/A") +
-               ", estadoActual=" + (estadoActual != null ? estadoActual.getNombreEstado() : "N/A") +
-               ", numSeriesTemporales=" + seriesTemporales.size() +
-               ", numCambiosDeEstado=" + cambiosDeEstado.size() +
-               '}';
+                "fechaHoraFin=" + fechaHoraFin +
+                ", fechaHoraOcurrencia=" + fechaHoraOcurrencia +
+                ", latitudHipocentro=" + latitudHipocentro +
+                ", latitudEpicentro=" + latitudEpicentro +
+                ", longitudEpicentro=" + longitudEpicentro +
+                ", longitudHipocentro=" + longitudHipocentro +
+                ", valorMagnitud=" + valorMagnitud +
+                // REMOVIDOS:
+                // ", nombreAlcance='" + nombreAlcance + '\'' +
+                // ", nombreClasificacion='" + nombreClasificacion + '\'' +
+                // ", nombreOrigen='" + nombreOrigen + '\'' +
+                ", clasificacionSismo=" + (clasificacionSismo != null ? clasificacionSismo.getNombre() : "N/A") +
+                ", origenSismo=" + (origenSismo != null ? origenSismo.getNombre() : "N/A") +
+                ", alcanceSismo=" + (alcanceSismo != null ? alcanceSismo.getNombre() : "N/A") +
+                ", estadoActual=" + (estadoActual != null ? estadoActual.getNombreEstado() : "N/A") +
+                ", numSeriesTemporales=" + seriesTemporales.size() +
+                ", numCambiosDeEstado=" + cambiosDeEstado.size() +
+                '}';
     }
 }

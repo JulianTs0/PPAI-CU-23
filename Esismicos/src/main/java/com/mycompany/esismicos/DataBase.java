@@ -20,14 +20,13 @@ public class DataBase {
     // Estados
     public static Estado
             estadoPendiente = new Estado("EventoSismico", "Pendiente de Revisión"),
-    // estadoEnRevision ya no se usará directamente para eventos sísmicos según el dominio
             estadoRechazado = new Estado("EventoSismico", "Rechazado"),
             estadoValidado = new Estado("EventoSismico", "Validado"),
             estadoActivoSismografo = new Estado("Sismografo", "Activo"),
             estadoInactivoSismografo = new Estado("Sismografo", "Inactivo"),
             estadoNormalSerie = new Estado("SerieTemporal", "Normal"),
             estadoAlertaSerie = new Estado("SerieTemporal", "Alerta"),
-            estadoBloqueadoRevision = new Estado("EventoSismico", "Bloqueado A Revisar"), // Este reemplaza "En Revisión" para eventos
+            estadoBloqueadoRevision = new Estado("EventoSismico", "Bloqueado A Revisar"),
             estadoAutoDetectado = new Estado("EventoSismico", "Auto Detectado"),
             estadoAutoConfirmado = new Estado("EventoSismico", "Auto Confirmado"),
             estadoAnulado = new Estado("EventoSismico", "Anulado"),
@@ -38,7 +37,6 @@ public class DataBase {
     // --- BLOQUE STATIC PARA POBLAR LA LISTA 'estados' ---
     static {
         estados.add(estadoPendiente);
-        // estados.add(estadoEnRevision); // No se añade, ya que el estado funcional es Bloqueado A Revisar
         estados.add(estadoRechazado);
         estados.add(estadoValidado);
         estados.add(estadoActivoSismografo);
@@ -92,7 +90,7 @@ public class DataBase {
     public static EventoSismico evento1 = new EventoSismico(
             fechaHoraOcurrencia1.plusHours(1), fechaHoraOcurrencia1,
             -33.5, -33.4, -69.5, -69.4,
-            6.2, "Regional", "Moderado", "Tectónico",
+            6.2, // MODIFICADO: Eliminados "Regional", "Moderado", "Tectónico"
             clasifModerado, origenTectonico, alcanceRegional, estadoPendienteDeCierre
     );
 
@@ -122,7 +120,7 @@ public class DataBase {
     public static EventoSismico evento2 = new EventoSismico(
             fechaHoraOcurrencia2.plusHours(2), fechaHoraOcurrencia2,
             -20.0, -20.1, -70.0, -70.1,
-            7.1, "Global", "Profundo", "Tectónico",
+            7.1, // MODIFICADO: Eliminados "Global", "Profundo", "Tectónico"
             clasifProfundo, origenTectonico, alcanceGlobal, estadoCerrado
     );
 
@@ -152,7 +150,7 @@ public class DataBase {
     public static EventoSismico evento3 = new EventoSismico(
             fechaHoraOcurrencia3.plusMinutes(45), fechaHoraOcurrencia3,
             -30.0, -30.0, -60.0, -60.0,
-            4.5, "Local", "Leve", "Antrópico",
+            4.5, // MODIFICADO: Eliminados "Local", "Leve", "Antrópico"
             clasifLeve, origenAntropico, alcanceLocal, estadoRechazado
     );
     static{
@@ -170,7 +168,7 @@ public class DataBase {
     public static EventoSismico evento4 = new EventoSismico(
             fechaHoraOcurrencia4.plusHours(1), fechaHoraOcurrencia4,
             -40.0, -40.0, -70.0, -70.0,
-            5.8, "Regional", "Moderado", "Volcánico",
+            5.8, // MODIFICADO: Eliminados "Regional", "Moderado", "Volcánico"
             clasifModerado, origenVolcanico, alcanceRegional, estadoValidado
     );
 
@@ -198,8 +196,8 @@ public class DataBase {
     public static EventoSismico evento5 = new EventoSismico(
             fechaHoraOcurrencia5.plusMinutes(30), fechaHoraOcurrencia5,
             -25.0, -25.1, -65.0, -65.2,
-            3.1, "Local", "Leve", "Tectónico",
-            clasifLeve, origenTectonico, alcanceLocal, estadoBloqueadoRevision // Estado final coherente
+            3.1, // MODIFICADO: Eliminados "Local", "Leve", "Tectónico"
+            clasifLeve, origenTectonico, alcanceLocal, estadoBloqueadoRevision
     );
     static{
         // Simulamos un flujo: Auto Detectado -> Pendiente de Revisión -> Bloqueado A Revisar
@@ -214,9 +212,9 @@ public class DataBase {
 
     public static EventoSismico evento6 = new EventoSismico(
             fechaHoraOcurrencia6.plusMinutes(10), fechaHoraOcurrencia6,
-            -31.5, -31.6, -64.2, -64.3,
-            2.9, "Local", "Leve", "Tectónico",
-            clasifLeve, origenTectonico, alcanceLocal, estadoPendiente
+            -71.5, -11.6, -61.2, -34.3,
+            3.5, // MODIFICADO: Eliminados "Local", "Leve", "Tectónico"
+            clasifModerado, origenVolcanico, alcanceRegional, estadoPendiente
     );
 
     static{
@@ -232,7 +230,7 @@ public class DataBase {
     public static EventoSismico evento7 = new EventoSismico(
             fechaHoraOcurrencia7.plusMinutes(10), fechaHoraOcurrencia7,
             -31.5, -31.6, -64.2, -64.3,
-            2.9, "Local", "Leve", "Tectónico",
+            2.9, // MODIFICADO: Eliminados "Local", "Leve", "Tectónico"
             clasifLeve, origenTectonico, alcanceLocal, estadoAnulado
     );
 
@@ -251,7 +249,7 @@ public class DataBase {
             fechaHoraOcurrencia8.plusMinutes(10), fechaHoraOcurrencia8,
             -31.5, -31.6,
             -64.2, -64.3,
-            2.9, "Local", "Leve", "Tectónico",
+            2.9, // MODIFICADO: Eliminados "Local", "Leve", "Tectónico"
             clasifLeve, origenTectonico, alcanceLocal, estadoPendiente
     );
 
