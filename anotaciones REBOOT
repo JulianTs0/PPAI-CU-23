@@ -1,0 +1,55 @@
+25/05/2025
+
+MagnitudRichter
+
+*creada
+
+
+EventoSismico
+
+*borrado atributo valorMagnitud
+*creada asociacion con MagnitudRichter
+(se usa en pasos 6, 12, 16)
+(es Asociacion, no atributo, porque verifica que exista)
+
+*Asociacion con ClasificacionSismo
+(se usa? SI, en el paso 9.1)
+
+*metodo bloquearEnRevision(Estado bloqueadoEnRevision, Empleado empleado)
+(la clase EventoSismico conoce a Estado)
+(no hace falta pasarselo como parametro, que lo busque en el mismo metodo)
+
+*estados de EventoSismico:
+    en CursoNormal
+        6. Auto_Detectado
+        8. Bloqueado_En_Revision
+        17. Rechazado
+    en CursoAlternativo
+        A6. Confirmado
+
+
+[SECUENCIA]
+
+* Gestor pregunta 2 estados a EventoSismico (elijamos uno solo)
+esAutoDetectado()
+esPendienteDeRevision()
+
+26/05/2025
+
+[SECUENCIA]
+
+*agregar un 4to getNombre() a Magnitud
+en el EventoSismico.obtenerDatosEventoSismico()
+lo usa en el paso 12
+
+[JULIAN]
+
+Pantalla
+implementar mostrar valorMagnitud y no el puntero a Magnitud
+
+el estado autodetectado es PendienteDeRevision
+
+
+fechaHoraMuestra - Velocidad - frecuencia - longitud - nombreEstacionSismologica
+
+

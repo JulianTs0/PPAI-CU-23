@@ -1,1 +1,18 @@
-bin
+# Archivos de configuración de IDEs (como IntelliJ IDEA o WebStorm)
+.idea/
+
+# Directorios de configuración de otros IDEs o herramientas (como Eclipse)
+.settings/
+
+# Opcional: Ignorar todos los archivos que terminan en .settings
+# (por si algún archivo suelto usa esa extensión)
+*.settings
+
+# Directorio de salida de compilación de Maven/Gradle
+target/
+
+# Directorio de pruebas (si está separado y no es necesario para la ejecución)
+tests/
+
+# Opcional: Ignorar cualquier directorio llamado 'test' (en minúsculas) también.
+test/
