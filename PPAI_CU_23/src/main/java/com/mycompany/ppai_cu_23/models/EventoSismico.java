@@ -72,6 +72,10 @@ public class EventoSismico {
         return this.estadoActual.esAutoDetectado();
     }
 
+    public boolean esPendienteRevision(){
+        return this.estadoActual.esPendienteDeRevision();
+    }
+
     public void bloquearEnRevision(Estado bloqueadoEnRevision, Usuario usuario, LocalDateTime fechaHoraActual){
         
         // DEBUGGER  antes

@@ -46,8 +46,11 @@ public class DataBase {
         Auto_Detectado,
         Auto_Confirmado,
         Bloqueado_En_Revision,
+        Pendiente_De_Revision,
         Rechazado,
-        Validado,
+        Anulado,
+        Derivado_A_Experto,
+        Confirmado,
         Pendiente_de_Cierre,
         Cerrado,
         //Sismografo
@@ -129,7 +132,7 @@ public class DataBase {
         new Estado(nombresAmbito.Evento_Sismico.name(), nombresEstado.Auto_Confirmado.name()),
         new Estado(nombresAmbito.Evento_Sismico.name(), nombresEstado.Bloqueado_En_Revision.name()),
         new Estado(nombresAmbito.Evento_Sismico.name(), nombresEstado.Rechazado.name()),
-        new Estado(nombresAmbito.Evento_Sismico.name(), nombresEstado.Validado.name()),
+        new Estado(nombresAmbito.Evento_Sismico.name(), nombresEstado.Confirmado.name()),
         new Estado(nombresAmbito.Evento_Sismico.name(), nombresEstado.Pendiente_de_Cierre.name()),
         new Estado(nombresAmbito.Evento_Sismico.name(), nombresEstado.Cerrado.name()),
         //Sismografo

@@ -70,7 +70,7 @@ public class GestorRegistrarResultadoDeRevisionManual {
         // LOOP eventos sismicos (TODOS)
         List<EventoSismico> autoDetectados = new ArrayList<>();
         for (EventoSismico evento : DataBase.eventosSismicos) {
-            if (evento.esAutoDetectado()) {
+            if (evento.esAutoDetectado() || evento.esPendienteRevision()) {
                 autoDetectados.add(evento);
             }
         }

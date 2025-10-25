@@ -19,8 +19,7 @@ public class Estado {
     
     // COMPARACION ESTADOS
     public boolean esPendienteDeRevision(){
-        //return (this.nombreEstado.equals(DataBase.nombresEstado.Pendiente_de_Revision.name()));
-        return false;
+        return (this.nombreEstado.equals(DataBase.nombresEstado.Pendiente_De_Revision.name()));
     }
     
     public boolean esBloqueadoARevisar(){
