@@ -12,7 +12,12 @@ import javax.swing.table.DefaultTableModel;
 public class PantallaRegistrarResultadoRevisionManual extends javax.swing.JFrame {
     
     // ATRIBUTO
-    private DefaultTableModel modeloTabla = new DefaultTableModel();
+    private DefaultTableModel modeloTabla = new DefaultTableModel(){
+        @Override
+        public boolean isCellEditable(int row, int column) {
+            return false;
+        }
+    };
         
     // DEPENDENCIA
     private GestorRegistrarResultadoDeRevisionManual gestor;
