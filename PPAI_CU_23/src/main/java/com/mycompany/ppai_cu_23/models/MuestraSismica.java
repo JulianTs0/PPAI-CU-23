@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -28,54 +29,38 @@ public class MuestraSismica {
     // METODOS DOMINIO
 
     // devuelve String[n][5]
-    public String[] obtenerDatosDetallesMuestras() {
-        // LOOP 1 velocidad:Detalle
-        DetalleMuestraSismica velocidadDetalle = this.buscarDetalleVelocidadOnda();
-        String velocidadValor = "" + velocidadDetalle.getValor();
-        // LOOP 2 frecuencia:Detalle
-        DetalleMuestraSismica frecuenciaDetalle = this.buscarDetalleFrecuenciaOnda();
-        String frecuenciaValor = "" + frecuenciaDetalle.getValor();
-        // LOOP 3 longutud:Detalle
-        DetalleMuestraSismica longutudDetalle = this.buscarDetalleLongitudOnda();
-        String longitudValor = "" + longutudDetalle.getValor();
-        // geFechaHoraMuestra()
-        String[] res = {
-            "" + this.getFechaHoraMuestra(),
-            velocidadValor,
-            frecuenciaValor,
-            longitudValor,
-            ""};
-        return res;
+    public List<String[]> obtenerDatosDetallesMuestras() {
+
+        List<String[]> datosDetalleMuestra = new ArrayList<>();
+
+        List<DetalleMuestraSismica> detalles = this.buscarDetallesMuestra();
+
+        for(DetalleMuestraSismica detalle : detalles){
+            String[] res = {
+                "" + this.getFechaHoraMuestra(),
+                "" + detalle.getTipoDeDato().getDenominacion(),
+                "" + detalle.getValor(),
+                ""};
+            datosDetalleMuestra.add(res);
+        }
+
+        return datosDetalleMuestra;
     }
-    
-    // LOOP 1 velocidad:Detalle
-    public DetalleMuestraSismica buscarDetalleVelocidadOnda(){
+
+    public List<DetalleMuestraSismica> buscarDetallesMuestra(){
+
+        List<DetalleMuestraSismica> detalles = new ArrayList<>();
+
         for (DetalleMuestraSismica detalle : this.detalleMuestraSismicas) {
-            if (detalle.esDenominacionVelocidadOnda()) {
-                return detalle;
+            if (detalle.esDenominacionVelocidadOnda() ||
+                detalle.esDenominacionFrecuenciaOnda() ||
+                detalle.esDenominacionLongitudOnda()
+            ) {
+                detalles.add(detalle);
             }
         }
-        return null;
-    }
-    
-    // LOOP 2 frecuencia:Detalle
-    public DetalleMuestraSismica buscarDetalleFrecuenciaOnda(){
-        for (DetalleMuestraSismica detalle : this.detalleMuestraSismicas) {
-            if (detalle.esDenominacionFrecuenciaOnda()) {
-                return detalle;
-            }
-        }
-        return null;
-    }
-    
-    // LOOP 3 longutud:Detalle
-    public DetalleMuestraSismica buscarDetalleLongitudOnda(){
-        for (DetalleMuestraSismica detalle : this.detalleMuestraSismicas) {
-            if (detalle.esDenominacionLongitudOnda()) {
-                return detalle;
-            }
-        }
-        return null;
+
+        return detalles;
     }
     
     public String getDatos(){

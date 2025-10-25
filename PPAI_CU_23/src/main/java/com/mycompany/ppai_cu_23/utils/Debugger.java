@@ -66,7 +66,7 @@ public class Debugger {
     }
     
     public static void mostrarDatosPorSerieTemporal(String[][] datos){
-        String matriz= "| fechaHoraMuestra | Velocidad | frecuencia | longitud | nombreEstacionSismologica |\n";
+        String matriz= "| fechaHoraMuestra | Denominacion | Dato | nombreEstacionSismologica |\n";
         for (String [] fila : datos) {
             matriz += "| ";
             for (String celda : fila) {

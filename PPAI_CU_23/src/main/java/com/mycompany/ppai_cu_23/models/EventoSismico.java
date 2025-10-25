@@ -157,7 +157,7 @@ public class EventoSismico {
             // las n filas obtenidas de cada obtenerDatosMuestraSismica()
             datosPorSerieTemporal.addAll(Arrays.asList(serie.obtenerDatosMuestraSismica())); 
         }
-        // esto devuelvio String[n][5]
+        // esto devuelvio String[n][4]
         
         return datosPorSerieTemporal.toArray(new String[0][]);
     }

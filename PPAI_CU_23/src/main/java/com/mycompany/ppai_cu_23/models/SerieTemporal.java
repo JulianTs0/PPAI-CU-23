@@ -59,16 +59,17 @@ public class SerieTemporal {
         for (MuestraSismica muestra : this.muestraSismicas) {
             // por cada MuestraSismica apendea las n filas que tenga cada muestra
             // las n filas obtenidas de cada obtenerDatosDetallesMuestras()
-            datosPorMuestraSismica.add(muestra.obtenerDatosDetallesMuestras()); 
+            List<String[]> datosDetalle = muestra.obtenerDatosDetallesMuestras();
+            datosPorMuestraSismica.addAll(datosDetalle);
         }
-        // esto devuelvio String[n][5]
+        // esto devuelvio String[n][4]
         
         // monbre EstacionSismologica
-        String nombreEstacionSismologica = obtenerNombreEstacionSismologica();
+        String nombreEstacionSismologica = this.obtenerNombreEstacionSismologica();
         
-        // asignar a la 5 columnna (nombreEstacion) en cada fila
+        // asignar a la 4 columnna (nombreEstacion) en cada fila
         for (String[] fila : datosPorMuestraSismica) {
-            fila[4] = nombreEstacionSismologica;
+            fila[3] = nombreEstacionSismologica;
         }
         
         return datosPorMuestraSismica.toArray(new String[0][]);
