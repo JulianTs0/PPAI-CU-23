@@ -10,9 +10,10 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Estado {
+public class Estado_Viejo {
     
     private String ambito;
+
     private String nombreEstado;
     
     // METODOS DOMINIO

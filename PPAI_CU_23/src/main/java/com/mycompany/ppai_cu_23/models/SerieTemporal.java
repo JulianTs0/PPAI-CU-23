@@ -1,5 +1,6 @@
 package com.mycompany.ppai_cu_23.models;
 
+import com.mycompany.ppai_cu_23.refactor.Estado;
 import com.mycompany.ppai_cu_23.utils.DataBase;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -33,8 +34,8 @@ public class SerieTemporal {
     public SerieTemporal(String condicionAlarma, 
             LocalDateTime fechaHoraIncioRegistroMuestras,
             LocalDateTime fechaHoraRegistro, 
-            float frecuenciaMuestreo, 
-            Estado estadoActual, 
+            float frecuenciaMuestreo,
+            Estado estadoActual,
             List<MuestraSismica> muestraSismicas) {
         this.condicionAlarma = condicionAlarma;
         this.fechaHoraIncioRegistroMuestras = fechaHoraIncioRegistroMuestras;

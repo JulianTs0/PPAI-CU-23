@@ -1,5 +1,6 @@
 package com.mycompany.ppai_cu_23.models;
 
+import com.mycompany.ppai_cu_23.refactor.Estado;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

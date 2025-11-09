@@ -1,6 +1,9 @@
 package com.mycompany.ppai_cu_23.utils;
 
 import com.mycompany.ppai_cu_23.models.*;
+import com.mycompany.ppai_cu_23.refactor.AutoConfirmado;
+import com.mycompany.ppai_cu_23.refactor.AutoDetectado;
+import com.mycompany.ppai_cu_23.refactor.PendienteDeRevision;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -23,24 +26,26 @@ public class DataBase {
         return eventosSismicos.toArray(new EventoSismico[0]);
     }
     
-    public static Estado[] cargarEstados(){
-        return estados.toArray(Estado[]::new);
-    }
-    
     public static Sesion cargarSesionActual(){
-        return new Sesion(LocalDateTime.now(),null,usuarios.get(2));
+        return new Sesion(LocalDateTime.now(),null, usuarios.get(2));
     }
     
-    //nombres
+    // CARGAR NOMBRES
+
     public static String[] cargarNombresAlcanceSismo(){
-        return Arrays.stream(nombresAlcanceSismo.values()).map(Enum::name).toArray(String[]::new);
+        return Arrays.stream(nombresAlcanceSismo.values())
+            .map(Enum::name)
+            .toArray(String[]::new);
     }
     
     public static String[] cargarNombresOrigenDeGeneracion(){
-        return Arrays.stream(nombresOrigenDeGeneracion.values()).map(Enum::name).toArray(String[]::new);
+        return Arrays.stream(nombresOrigenDeGeneracion.values())
+            .map(Enum::name)
+            .toArray(String[]::new);
     }
      
-    //NOMBRES
+    // CONSTANTES
+
     public static enum nombresEstado {
         //EventoSismico
         Auto_Detectado,
@@ -79,16 +84,33 @@ public class DataBase {
         Hz,
         m
     }
+
+    public static enum nombresAlcanceSismo {
+        Local,
+        Regional,
+        Global
+    }
+
+    public static enum nombresClasificacionSismo {
+        Leve,
+        Moderado,
+        Profundo
+    }
+
+    public static enum nombresOrigenDeGeneracion {
+        Tectónico,
+        Volcánico,
+        Antrópico
+    }
+
+    // COLUMNAS FRONTEND
     
     public static String[] nombresAccion = {
         "Confirmar evento",
         "Rechazar evento",
         "Solicitar revisión a experto"
     };
-    
-    
-    
-    // COLUMNAS TABLA tbl_eventosAutoDetectados
+
     public static String[] columnasTablaAutoDetectados = {
         "FechaHora Ocurrencia",
         "Ubicacion Epicentro",
@@ -96,14 +118,16 @@ public class DataBase {
         "Valor de Magnitud"
     };
     
-    // [DATA BASE] EMPLEADOS  
+    // [DATA BASE] EMPLEADOS
+
     static List<Empleado> empleados = new ArrayList<>(List.of(
         new Empleado("Juan", "Pérez"),
         new Empleado("María", "González"),
         new Empleado("Carlos", "Rodríguez")
     ));    
 
-    // [DATA BASE] USUARIOS 
+    // [DATA BASE] USUARIOS
+
     static List<Usuario> usuarios = new ArrayList<>(List.of(
         new Usuario("juancete", "123456", empleados.get(0)),
         new Usuario("ks", "123456", empleados.get(1)),
@@ -111,6 +135,7 @@ public class DataBase {
     ));
     
     // [DATA BASE] TIPOS DE DATO
+
     static List<TipoDeDato> tiposDeDato = new ArrayList<>(List.of(
         new TipoDeDato(
             nombresDenominacion.Velocidad_De_Onda.name(),
@@ -125,31 +150,9 @@ public class DataBase {
             nombresUnidadMedida.m.name())
     
     ));
-
-    // [DATA BASE] ESTADOS
-    static List<Estado> estados = new ArrayList<>(List.of(
-        new Estado(nombresAmbito.Evento_Sismico.name(), nombresEstado.Auto_Detectado.name()),
-        new Estado(nombresAmbito.Evento_Sismico.name(), nombresEstado.Auto_Confirmado.name()),
-        new Estado(nombresAmbito.Evento_Sismico.name(), nombresEstado.Bloqueado_En_Revision.name()),
-        new Estado(nombresAmbito.Evento_Sismico.name(), nombresEstado.Rechazado.name()),
-        new Estado(nombresAmbito.Evento_Sismico.name(), nombresEstado.Confirmado.name()),
-        new Estado(nombresAmbito.Evento_Sismico.name(), nombresEstado.Pendiente_de_Cierre.name()),
-        new Estado(nombresAmbito.Evento_Sismico.name(), nombresEstado.Cerrado.name()),
-        //Sismografo
-        new Estado(nombresAmbito.Sismografo.name(), nombresEstado.Activo.name()),
-        new Estado(nombresAmbito.Sismografo.name(), nombresEstado.Inactivo.name()),
-        //SerieTemporal
-        new Estado(nombresAmbito.SerieTemporal.name(), nombresEstado.Normal.name()),
-        new Estado(nombresAmbito.SerieTemporal.name(), nombresEstado.Alerta.name())
-    ));
     
     // [DATA BASE] ALCANCES
-    public static enum nombresAlcanceSismo {
-        Local,
-        Regional,
-        Global
-    }
-    
+
     static List<AlcanceSismo> alcances = new ArrayList<>(List.of(
         new AlcanceSismo(nombresAlcanceSismo.Local.name(),null),
         new AlcanceSismo(nombresAlcanceSismo.Regional.name(),null),
@@ -157,11 +160,6 @@ public class DataBase {
     ));
     
     // [DATA BASE] CLASIFICACIONES
-    public static enum nombresClasificacionSismo {
-        Leve,
-        Moderado,
-        Profundo
-    }
     
     static List<ClasificacionSismo> clasificaciones = new ArrayList<>(List.of(
         new ClasificacionSismo(nombresClasificacionSismo.Leve.name()),
@@ -170,11 +168,6 @@ public class DataBase {
     ));
     
     // [DATA BASE] ORIGENES
-    public static enum nombresOrigenDeGeneracion {
-        Tectónico,
-        Volcánico,
-        Antrópico
-    }
     
     static List<OrigenDeGeneracion> origenes = new ArrayList<>(List.of(
         new OrigenDeGeneracion(nombresOrigenDeGeneracion.Tectónico.name()),
@@ -183,6 +176,7 @@ public class DataBase {
     ));
     
     // [DATA BASE] MAGNITUDES RITCHER
+
     static List<MagnitudRichter> magnitudes = new ArrayList<>(List.of(
         new MagnitudRichter(1),
         new MagnitudRichter(2),
@@ -194,15 +188,16 @@ public class DataBase {
     ));
 
     // [DATA BASE] SERIES TEMPORALES
+
     static List<SerieTemporal> seriesTemporales = new ArrayList<>(List.of(
         new SerieTemporal(
             new ArrayList<>(List.of(
                 new MuestraSismica(
                     LocalDateTime.of(2024, 5, 20, 14, 30, 1),
                     new ArrayList<>(List.of(
-                        new DetalleMuestraSismica(6.2f, tiposDeDato.get(0)),
+                        new DetalleMuestraSismica(5.2f, tiposDeDato.get(0)),
                         new DetalleMuestraSismica(20.0f, tiposDeDato.get(1)),
-                        new DetalleMuestraSismica(500f, tiposDeDato.get(2))
+                        new DetalleMuestraSismica(520f, tiposDeDato.get(2))
                     ))
                 ),
                 new MuestraSismica(
@@ -210,7 +205,7 @@ public class DataBase {
                     new ArrayList<>(List.of(
                         new DetalleMuestraSismica(6.3f, tiposDeDato.get(0)),
                         new DetalleMuestraSismica(22.3f, tiposDeDato.get(1)),
-                        new DetalleMuestraSismica(400f, tiposDeDato.get(2))
+                        new DetalleMuestraSismica(370f, tiposDeDato.get(2))
                     ))
                 )
             ))
@@ -294,7 +289,9 @@ public class DataBase {
     ));
     
     // [DATA BASE] EVENTOS SISMICOS
-    public static List<EventoSismico> eventosSismicos = new ArrayList<>(List.of(new EventoSismico(
+    public static List<EventoSismico> eventosSismicos = new ArrayList<>(List.of(
+
+        new EventoSismico(
             LocalDateTime.of(2024, 5, 20, 14, 30, 1),
             -30.5f, -31.2f,
             -64.5f, -59.4f,
@@ -302,18 +299,21 @@ public class DataBase {
             clasificaciones.get(0),
             origenes.get(0),
             alcances.get(0),
-            estados.get(0),
+            new AutoDetectado(nombresAmbito.Evento_Sismico.name(), nombresEstado.Auto_Detectado.name()),
             magnitudes.get(2), 
             new ArrayList<>(List.of(
                 new CambioDeEstado(
                     LocalDateTime.of(2024, 5, 20, 14, 30, 1),
                     null,
-                    estados.get(0),
+                    new AutoDetectado(nombresAmbito.Evento_Sismico.name(), nombresEstado.Auto_Detectado.name()),
                     empleados.get(0)
                 )
             )),
-            new ArrayList<>(List.of( seriesTemporales.get(0) ))
+            new ArrayList<>(List.of(
+                seriesTemporales.get(0)
+            ))
         ),
+
         new EventoSismico(
             LocalDateTime.of(2024, 5, 18, 14, 30, 1),
             21.9f, 23.4f, 
@@ -322,18 +322,21 @@ public class DataBase {
             clasificaciones.get(1),
             origenes.get(1),
             alcances.get(1),
-            estados.get(0),
+            new AutoDetectado(nombresAmbito.Evento_Sismico.name(), nombresEstado.Auto_Detectado.name()),
             magnitudes.get(1), 
             new ArrayList<>(List.of(
                 new CambioDeEstado(
                     LocalDateTime.of(2024, 5, 18, 14, 30, 1),
                     null,
-                    estados.get(0),
+                    new AutoDetectado(nombresAmbito.Evento_Sismico.name(), nombresEstado.Auto_Detectado.name()),
                     empleados.get(1)
                 )
             )),
-            new ArrayList<>(List.of( seriesTemporales.get(1) ))
+            new ArrayList<>(List.of(
+                seriesTemporales.get(1)
+            ))
         ),
+
         new EventoSismico(
             LocalDateTime.of(2024, 5, 25, 14, 30, 1),
             -103.6f, -104.9f, 
@@ -341,20 +344,24 @@ public class DataBase {
             0.6f,
             clasificaciones.get(2),
             origenes.get(2),
-            alcances.get(2), 
-            estados.get(0),
+            alcances.get(2),
+            new AutoDetectado(nombresAmbito.Evento_Sismico.name(), nombresEstado.Auto_Detectado.name()),
             magnitudes.get(0), 
             new ArrayList<>(List.of(
                 new CambioDeEstado(
                     LocalDateTime.of(2024, 5, 25, 14, 30, 1),
                     null,
-                    estados.get(0),
+                    new AutoDetectado(nombresAmbito.Evento_Sismico.name(), nombresEstado.Auto_Detectado.name()),
                     empleados.get(2)
                 )
             )),
-            new ArrayList<>(List.of( seriesTemporales.get(2) ))
+            new ArrayList<>(List.of(
+                seriesTemporales.get(2)
+            ))
         ),
-        //autodetectado, no se muestra
+
+        // autoConfirmado, no se muestra
+
         new EventoSismico(
             LocalDateTime.of(2023, 8, 12, 0, 0, 1),
             -33.5f, -33.4f, 
@@ -362,20 +369,66 @@ public class DataBase {
             0.6f,
             clasificaciones.get(2),
             origenes.get(2),
-            alcances.get(2), 
-            estados.get(1),
+            alcances.get(2),
+            new AutoConfirmado(nombresAmbito.Evento_Sismico.name(), nombresEstado.Auto_Confirmado.name()),
             magnitudes.get(0), 
             new ArrayList<>(List.of(
                 new CambioDeEstado(
                     LocalDateTime.of(2023, 8, 12, 0, 0, 1),
                     null,
-                    estados.get(0),
+                    new AutoConfirmado(nombresAmbito.Evento_Sismico.name(), nombresEstado.Auto_Confirmado.name()),
                     empleados.get(2)
                 )
             )),
-            new ArrayList<>(List.of( seriesTemporales.get(3) ))
+            new ArrayList<>(List.of(
+                seriesTemporales.get(3)
+            ))
+        ),
+        new EventoSismico(
+            LocalDateTime.of(2024, 5, 20, 14, 30, 0),
+            -18.5f, -18.0f,
+            -71.0f, -70.5f,
+            35.5f,
+            clasificaciones.get(0),
+            origenes.get(1),
+            alcances.get(0),
+            new PendienteDeRevision(nombresAmbito.Evento_Sismico.name(), nombresEstado.Pendiente_De_Revision.name()),
+            magnitudes.get(1),
+            new ArrayList<>(List.of(
+                new CambioDeEstado(
+                    LocalDateTime.of(2024, 5, 20, 14, 30, 0),
+                    null,
+                    new PendienteDeRevision(nombresAmbito.Evento_Sismico.name(), nombresEstado.Pendiente_De_Revision.name()),
+                    empleados.get(2)
+                )
+            )),
+            new ArrayList<>(List.of(
+                seriesTemporales.get(4)
+            ))
         )
+
     ));
 
+    /* public static Estado[] cargarEstados(){
+        return estados.toArray(Estado[]::new);
+    }*/
+
+    // [DATA BASE] ESTADOS
+
+    /*static List<Estado> estados = new ArrayList<>(List.of(
+        new Estado(nombresAmbito.Evento_Sismico.name(), nombresEstado.Auto_Detectado.name()),
+        new Estado(nombresAmbito.Evento_Sismico.name(), nombresEstado.Auto_Confirmado.name()),
+        new Estado(nombresAmbito.Evento_Sismico.name(), nombresEstado.Bloqueado_En_Revision.name()),
+        new Estado(nombresAmbito.Evento_Sismico.name(), nombresEstado.Rechazado.name()),
+        new Estado(nombresAmbito.Evento_Sismico.name(), nombresEstado.Confirmado.name()),
+        new Estado(nombresAmbito.Evento_Sismico.name(), nombresEstado.Pendiente_de_Cierre.name()),
+        new Estado(nombresAmbito.Evento_Sismico.name(), nombresEstado.Cerrado.name()),
+        //Sismografo
+        new Estado(nombresAmbito.Sismografo.name(), nombresEstado.Activo.name()),
+        new Estado(nombresAmbito.Sismografo.name(), nombresEstado.Inactivo.name()),
+        //SerieTemporal
+        new Estado(nombresAmbito.SerieTemporal.name(), nombresEstado.Normal.name()),
+        new Estado(nombresAmbito.SerieTemporal.name(), nombresEstado.Alerta.name())
+    ));*/
     
 }

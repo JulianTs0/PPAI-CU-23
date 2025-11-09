@@ -1,9 +1,10 @@
 package com.mycompany.ppai_cu_23.services;
 
-import com.mycompany.ppai_cu_23.models.Estado;
+import com.mycompany.ppai_cu_23.models.Estado_Viejo;
 import com.mycompany.ppai_cu_23.models.EventoSismico;
 import com.mycompany.ppai_cu_23.models.Sesion;
 import com.mycompany.ppai_cu_23.models.Usuario;
+import com.mycompany.ppai_cu_23.refactor.BloqueadoEnRevision;
 import com.mycompany.ppai_cu_23.utils.DataBase;
 import com.mycompany.ppai_cu_23.utils.Debugger;
 
@@ -17,8 +18,6 @@ public class GestorRegistrarResultadoDeRevisionManual {
     // ATRIBUTO
     private EventoSismico[] eventosAutoDetectados;
     private EventoSismico eventoSeleccionado;
-    private Estado estadoBloqueadoARevisar;
-    private Estado estadoRechazado;
     private String[] datosEventoSismico;
     private String rutaImagenSismograma;
     private String[][] datosPorSerieTemporal;
@@ -125,7 +124,7 @@ public class GestorRegistrarResultadoDeRevisionManual {
     }
     
     // buscar el puntero a ESTADO-BLOQUEADO
-    public Estado buscarEstadoBloqueadoARevisar(){
+    /*public Estado buscarEstadoBloqueadoARevisar(){
         Estado[] estadosCargados = DataBase.cargarEstados();
         for (Estado elemEstado : estadosCargados) {
             if (elemEstado.esAmbitoEventoSismico() 
@@ -134,9 +133,9 @@ public class GestorRegistrarResultadoDeRevisionManual {
             }
         }
         return null;
-    }
+    }*/
     
-    public Estado buscarEstadoRechazado(){
+    /* public Estado buscarEstadoRechazado(){
         Estado[] estadosCargados = DataBase.cargarEstados();
         for (Estado elemEstado : estadosCargados) {
             if (elemEstado.esAmbitoEventoSismico() 
@@ -145,7 +144,7 @@ public class GestorRegistrarResultadoDeRevisionManual {
             }
         }
         return null;
-    }
+    } */
     
     // bloquear el EVENTO-SELECCIONADO
     public void bloquearEventoSelecionado(){
@@ -155,12 +154,9 @@ public class GestorRegistrarResultadoDeRevisionManual {
         
         // buscar puntero a LOGEADO-USUARIO
         this.logeadoUsuario = this.getUsuarioLogeado();
-        
-        // buscar el puntero a ESTADO-BLOQUEADO
-        this.estadoBloqueadoARevisar = this.buscarEstadoBloqueadoARevisar();
-        
+
         // bloquear el EVENTO-SELECCIONADO
-        this.eventoSeleccionado.bloquearEnRevision(this.estadoBloqueadoARevisar, this.logeadoUsuario, this.fechaHoraActual);
+        this.eventoSeleccionado.revisar(this.logeadoUsuario, this.fechaHoraActual);
         
         // DEBUGGER datos del EVENTO-SELECCIONADO-BLOQUEADO
         Debugger.datosEventoSeleccionado(this.eventoSeleccionado);  
@@ -210,16 +206,18 @@ public class GestorRegistrarResultadoDeRevisionManual {
         // validar ALCANCE
         // validar ORIGEN
         // validar ACCION-SELECCIONADA
-        if (this.validarExistenciaMagnitud(datosSelecionados[0]) 
-                && this.validarExistenciaAlcance(datosSelecionados[1]) 
-                && this.validarExistenciaOrigen(datosSelecionados[2])) {
+        if (
+            this.validarExistenciaMagnitud(datosSelecionados[0]) &&
+            this.validarExistenciaAlcance(datosSelecionados[1]) &&
+            this.validarExistenciaOrigen(datosSelecionados[2])
+        ) {
             if (this.validarAccionSeleccionada(datosSelecionados[3])) {
                 // rechazar EVENTO-SELECCIONADO
                 this.rechazarEventoSeleccionado();
             }
             else{
                 Debugger.mensajeGestor("La accion " + datosSelecionados[3] + " excede del Caso de Uso 23");
-            }  
+            }
         }
         
         // termina el CASO-DE-USO 23
@@ -233,12 +231,11 @@ public class GestorRegistrarResultadoDeRevisionManual {
         
         // buscar puntero a LOGEADO-USUARIO
         this.logeadoUsuario = this.getUsuarioLogeado();
-        
-        // buscar el puntero a ESTADO-RECHAZADO
-        this.estadoRechazado = this.buscarEstadoRechazado();
-        
+
         /// rechazar el EVENTO-SELECCIONADO
-        this.eventoSeleccionado.rechazar(this.estadoRechazado, this.logeadoUsuario, this.fechaHoraActual);
+        this.eventoSeleccionado.rechazar(this.logeadoUsuario, this.fechaHoraActual);
+
+        Debugger.datosEventoSeleccionado(this.eventoSeleccionado);
     }
     
     // validar MAGNITUD
@@ -267,7 +264,7 @@ public class GestorRegistrarResultadoDeRevisionManual {
     
     // termina el CASO-DE-USO 23
     public void fin_casoDeUso_23(){
-        Debugger.mensajeGestor("fin_casoDeUso_23()");
+        Debugger.mensajeGestor("fin_casoDeUso_23()\n");
         this.pantalla.cambiarPanel(0);
         //System.exit(0);
     }

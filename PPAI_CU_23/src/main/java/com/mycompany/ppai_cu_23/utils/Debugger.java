@@ -52,8 +52,8 @@ public class Debugger {
             evento.getClasificacionSismo().getNombre()  + " | " +
             evento.getOrigenDeGeneracion().getNombre()  + " | " +
                 
-            evento.buscarCambioDeEstadoActual().getEstado().getNombreEstado() + " | " +
-            evento.getEstadoActual().getNombreEstado()
+            evento.buscarCambioDeEstadoActual().getEstado().getNombre() + " | " +
+            evento.getEstadoActual().getNombre()
         );
     }
     
@@ -86,7 +86,7 @@ public class Debugger {
                     ("" + formatFechaHora(cambio.getFechaHoraInicio())) + " | " +
                     ("" + formatFechaHora(cambio.getFechaHoraFin())) + " | " +
                     cambio.getEmpleado().getNombre()  + " | " +
-                    cambio.getEstado().getNombreEstado()+ " | "
+                    cambio.getEstado().getNombre()+ " | "
                     + "\n"
             );
         }

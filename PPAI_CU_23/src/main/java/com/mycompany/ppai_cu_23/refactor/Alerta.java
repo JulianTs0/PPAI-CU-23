@@ -7,9 +7,9 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class AutoConfirmado extends Estado {
+public class Alerta extends Estado{
 
-    public AutoConfirmado(String ambito, String nombre) {
+    public Alerta(String ambito, String nombre) {
         super(ambito, nombre);
     }
 

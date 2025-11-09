@@ -5,9 +5,9 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class PendienteDeCierre extends Estado {
+public class Activo extends Estado{
 
-    public PendienteDeCierre(String ambito, String nombre) {
+    public Activo(String ambito, String nombre) {
         super(ambito, nombre);
     }
 

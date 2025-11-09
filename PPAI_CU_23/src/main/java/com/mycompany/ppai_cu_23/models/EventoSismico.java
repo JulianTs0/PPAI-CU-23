@@ -1,10 +1,11 @@
 package com.mycompany.ppai_cu_23.models;
 
+import com.mycompany.ppai_cu_23.refactor.BloqueadoEnRevision;
+import com.mycompany.ppai_cu_23.refactor.Estado;
+import com.mycompany.ppai_cu_23.refactor.Rechazado;
+import com.mycompany.ppai_cu_23.utils.DataBase;
 import com.mycompany.ppai_cu_23.utils.Debugger;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -46,8 +47,8 @@ public class EventoSismico {
             float valorMagnitud,
             ClasificacionSismo clasificacionSismo, 
             OrigenDeGeneracion origenDeGeneracion, 
-            AlcanceSismo alcanceSismo, 
-            Estado estadoActual, 
+            AlcanceSismo alcanceSismo,
+            Estado estadoActual,
             MagnitudRichter magnitud, 
             List<CambioDeEstado> cambioDeEstados, 
             List<SerieTemporal> serieTemporals) {
@@ -76,11 +77,14 @@ public class EventoSismico {
         return this.estadoActual.esPendienteDeRevision();
     }
 
-    public void bloquearEnRevision(Estado bloqueadoEnRevision, Usuario usuario, LocalDateTime fechaHoraActual){
+    public void revisar(Usuario usuario, LocalDateTime fechaHoraActual){
         
         // DEBUGGER  antes
         Debugger.ptrintCambiosDeEstadoDeEvento(this);
-        
+
+        this.estadoActual.revisar(usuario, fechaHoraActual, this , this.cambioDeEstados);
+
+        /*
         // buscar CAMBIO-ACTUAL
         CambioDeEstado cambioDeEstadoActual = buscarCambioDeEstadoActual();
         // fechahorafin al CAMBIO-ACTUAL
@@ -89,16 +93,20 @@ public class EventoSismico {
         this.crearCamioDeEstado(bloqueadoEnRevision, usuario, fechaHoraActual);
         // actualizar estado actual
         this.setEstadoActual(bloqueadoEnRevision);
-        
+        */
+
         // DEBUGGER  despues
         Debugger.ptrintCambiosDeEstadoDeEvento(this);
     }
     
-    public void rechazar(Estado rechazado, Usuario usuario, LocalDateTime fechaHoraActual){
+    public void rechazar(Usuario usuario, LocalDateTime fechaHoraActual){
         
         // DEBUGGER  antes
         Debugger.ptrintCambiosDeEstadoDeEvento(this);
-        
+
+        this.estadoActual.rechazar(usuario, fechaHoraActual, this, this.cambioDeEstados);
+
+        /*
         // buscar CAMBIO-ACTUAL
         CambioDeEstado cambioDeEstadoActual = buscarCambioDeEstadoActual();
         // fechahorafin al CAMBIO-ACTUAL
@@ -107,22 +115,23 @@ public class EventoSismico {
         this.crearCamioDeEstado(rechazado, usuario, fechaHoraActual);
         // actualizar estado actual
         this.setEstadoActual(rechazado);
-        
+        */
+
         // DEBUGGER  despues
         Debugger.ptrintCambiosDeEstadoDeEvento(this);
     }
 
-    public CambioDeEstado buscarCambioDeEstadoActual(){
+    /* public CambioDeEstado buscarCambioDeEstadoActual(){
         for (CambioDeEstado cambio : this.cambioDeEstados) {
             if (cambio.esEstadoActual()) {
                 return cambio;
             }
         }
         return null;
-    }
+    } */
 
     //crear un nuevo CambioDeEstado añadirlo a los cambiosDeEstados 
-    public void crearCamioDeEstado(Estado nuevoEstado, Usuario usuario, LocalDateTime fechaHoraActual){
+    /* public void crearCamioDeEstado(Estado_Viejo nuevoEstado, Usuario usuario, LocalDateTime fechaHoraActual){
         CambioDeEstado nuevo = new CambioDeEstado(
             fechaHoraActual, 
             null, //fec hahora fin
@@ -130,7 +139,7 @@ public class EventoSismico {
             usuario.getEmpleado()
         );
         this.cambioDeEstados.add(nuevo);
-    }
+    }*/
 
     //devuelve un vector ordenado con los 3 nombres 
     //[alcance, clasificación, origen, magnitud]
@@ -169,5 +178,32 @@ public class EventoSismico {
     public String obtenerUbicacionHipocentro(){
         return (this.latitudHipocentro + " : " + this.longitudHipocentro);
     }
-    
+
+    public CambioDeEstado buscarCambioDeEstadoActual(){
+        for (CambioDeEstado cambio : this.cambioDeEstados) {
+            if (cambio.esEstadoActual()) {
+                return cambio;
+            }
+        }
+        return null;
+    }
+
+    public void adquirirDatos(){
+        System.out.println("Metodo de delegacion no implementado");
+    }
+    public void cerrar(){
+        System.out.println("Metodo de delegacion no implementado");
+    }
+    public void confirmar(){
+        System.out.println("Metodo de delegacion no implementado");
+    }
+    public void derivar(){
+        System.out.println("Metodo de delegacion no implementado");
+    }
+    public void controlarTiempo(){
+        System.out.println("Metodo de delegacion no implementado");
+    }
+    public void anular(){
+        System.out.println("Metodo de delegacion no implementado");
+    }
 }

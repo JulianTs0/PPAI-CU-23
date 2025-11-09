@@ -1,5 +1,14 @@
 package com.mycompany.ppai_cu_23.refactor;
 
-public class PendienteDeRevision extends EstadoEventoSismico {
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+public class PendienteDeRevision extends Estado {
+
+    public PendienteDeRevision(String ambito, String nombre) {
+        super(ambito, nombre);
+    }
 
 }
