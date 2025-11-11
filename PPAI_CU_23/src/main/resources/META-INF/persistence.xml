@@ -1,0 +1,73 @@
+<persistence xmlns="https://jakarta.ee/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd"
+             version="3.0">
+
+    <!-- Define la "Unidad de Persistencia". Usarás este nombre en tu código Java -->
+    <!-- para crear el EntityManagerFactory. -->
+    <persistence-unit name="sismos-pu" transaction-type="RESOURCE_LOCAL">
+
+        <!-- Le dice a Hibernate que es el proveedor de JPA -->
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+
+        <!-- Aquí listamos todas tus clases @Entity para que Hibernate las encuentre. -->
+        <!-- Si añades más entidades, debes listarlas aquí también. -->
+        <class>com.mycompany.ppai_cu_23.models.AlcanceSismo</class>
+        <class>com.mycompany.ppai_cu_23.models.CambioDeEstado</class>
+        <class>com.mycompany.ppai_cu_23.models.ClasificacionSismo</class>
+        <class>com.mycompany.ppai_cu_23.models.DetalleMuestraSismica</class>
+        <class>com.mycompany.ppai_cu_23.models.Empleado</class>
+        <class>com.mycompany.ppai_cu_23.models.EstacionSismologica</class>
+        <class>com.mycompany.ppai_cu_23.models.EventoSismico</class>
+        <class>com.mycompany.ppai_cu_23.models.MagnitudRichter</class>
+        <class>com.mycompany.ppai_cu_23.models.MuestraSismica</class>
+        <class>com.mycompany.ppai_cu_23.models.OrigenDeGeneracion</class>
+        <class>com.mycompany.ppai_cu_23.models.SerieTemporal</class>
+        <class>com.mycompany.ppai_cu_23.models.Sesion</class>
+        <class>com.mycompany.ppai_cu_23.models.Sismografo</class>
+        <class>com.mycompany.ppai_cu_23.models.TipoDeDato</class>
+        <class>com.mycompany.ppai_cu_23.models.Usuario</class>
+
+        <!-- Jerarquía de Estados -->
+        <class>com.mycompany.ppai_cu_23.refactor.Estado</class>
+        <class>com.mycompany.ppai_cu_23.refactor.Activo</class>
+        <class>com.mycompany.ppai_cu_23.refactor.Alerta</class>
+        <class>com.mycompany.ppai_cu_23.refactor.Anulado</class>
+        <class>com.mycompany.ppai_cu_23.refactor.AutoConfirmado</class>
+        <class>com.mycompany.ppai_cu_23.refactor.AutoDetectado</class>
+        <class>com.mycompany.ppai_cu_23.refactor.BloqueadoEnRevision</class>
+        <class>com.mycompany.ppai_cu_23.refactor.Cerrado</class>
+        <class>com.mycompany.ppai_cu_23.refactor.Confirmado</class>
+        <class>com.mycompany.ppai_cu_23.refactor.DerivadoAExperto</class>
+        <!-- <class>com.mycompany.ppai_cu_23.refactor.Rechazado</class> --> <!-- (Faltaba en los archivos, pero la listo por si acaso) -->
+
+
+        <properties>
+            <!-- ===== Configuración de la Conexión a PostgreSQL (de tu Docker) ===== -->
+            <property name="jakarta.persistence.jdbc.driver" value="org.postgresql.Driver" />
+            <property name="jakarta.persistence.jdbc.url" value="jdbc:postgresql://localhost:7435/sismos-db" />
+            <property name="jakarta.persistence.jdbc.user" value="sismos" />
+            <property name="jakarta.persistence.jdbc.password" value="sismos" />
+
+            <!-- ===== Configuración de Hibernate ===== -->
+
+            <!-- El "dialecto" que usa Hibernate para "hablar" PostgreSQL -->
+            <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" />
+
+            <!-- Muestra el SQL que Hibernate genera en la consola (muy útil para debug) -->
+            <property name="hibernate.show_sql" value="true" />
+            <property name="hibernate.format_sql" value="true" />
+
+            <!--
+                Estrategia de generación de esquema (IMPORTANTE):
+                - 'create': Borra y crea las tablas cada vez. Pierdes todos los datos.
+                - 'create-drop': Crea las tablas al inicio y las borra al final.
+                - 'update': Intenta actualizar las tablas para que coincidan con tus @Entity. Bueno para desarrollo.
+                - 'validate': Comprueba que las tablas coincidan, si no, lanza un error.
+                - 'none': No hace nada. (Usar en producción)
+            -->
+            <property name="hibernate.hbm2ddl.auto" value="update" />
+
+        </properties>
+    </persistence-unit>
+</persistence>

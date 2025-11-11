@@ -1,6 +1,7 @@
 package com.mycompany.ppai_cu_23.models;
 
 import com.mycompany.ppai_cu_23.refactor.Estado;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,13 +13,30 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
+@Table(name = "cambios_de_estado")
 public class CambioDeEstado {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     //ATRIBUTO
+
+    @Column(name = "fecha_hora_inicio", nullable = false)
     private LocalDateTime fechaHoraInicio;
+
+    @Column(name = "fecha_hora_fin")
     private LocalDateTime fechaHoraFin;
+
     //ASOCIACION
+
+    @ManyToOne(fetch = FetchType.EAGER,  cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @JoinColumn(name = "estado_id", nullable = false)
     private Estado estado;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "empleado_id")
     private Empleado empleado;
 
     // METODOS DOMINIO

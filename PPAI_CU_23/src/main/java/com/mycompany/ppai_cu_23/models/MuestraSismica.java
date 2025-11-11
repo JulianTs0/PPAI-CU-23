@@ -1,5 +1,6 @@
 package com.mycompany.ppai_cu_23.models;
 
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,18 +14,24 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
+@Table(name = "muestras_sismicas")
 public class MuestraSismica {
-    
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     // ATRIBUTO
+
+    @Column(name = "fecha_hora_muestra", nullable = false)
     private LocalDateTime fechaHoraMuestra;
-    //COMPOSICION
+
+    // COMPOSICION
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @JoinColumn(name = "muestra_sismica_id")
     private List<DetalleMuestraSismica> detalleMuestraSismicas;
-
-    // SETTERS
-
-    public void crearDetalleMuestra(float valor, TipoDeDato tipoDeDato){
-        this.detalleMuestraSismicas.add(new DetalleMuestraSismica(valor, tipoDeDato));
-    }
     
     // METODOS DOMINIO
 

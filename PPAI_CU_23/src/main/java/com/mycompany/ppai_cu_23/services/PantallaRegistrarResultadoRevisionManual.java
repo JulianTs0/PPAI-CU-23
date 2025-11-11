@@ -1,7 +1,7 @@
 package com.mycompany.ppai_cu_23.services;
 
 //import java.net.URL;
-import com.mycompany.ppai_cu_23.utils.DataBase;
+import com.mycompany.ppai_cu_23.persistance.DataBaseService;
 import com.mycompany.ppai_cu_23.utils.Debugger;
 
 import javax.swing.DefaultComboBoxModel;
@@ -112,9 +112,9 @@ public class PantallaRegistrarResultadoRevisionManual extends javax.swing.JFrame
         //magnitud
         rellenarComboBox(this.cbx_magnitud,new String[] {"1","2","3","4","5","6","7"});
         // alcance
-        rellenarComboBox(this.cbx_alcance, DataBase.cargarNombresAlcanceSismo());
+        rellenarComboBox(this.cbx_alcance, DataBaseService.cargarNombresAlcanceSismo());
         //origen
-        rellenarComboBox(this.cbx_origen,DataBase.cargarNombresOrigenDeGeneracion());
+        rellenarComboBox(this.cbx_origen, DataBaseService.cargarNombresOrigenDeGeneracion());
         
         // setear los datos del selecionado Evento a los CBX
         //datosEventoSismico = [alcance,clasificacion, origen, magnitud ]
@@ -128,10 +128,10 @@ public class PantallaRegistrarResultadoRevisionManual extends javax.swing.JFrame
          
         // rellenar cbx acciones
         
-        rellenarComboBox(this.cbx_accion, DataBase.nombresAccion);
+        rellenarComboBox(this.cbx_accion, DataBaseService.nombresAccion);
         
         // setear la accion Rechazar
-        this.cbx_accion.setSelectedItem(DataBase.nombresAccion[1]);
+        this.cbx_accion.setSelectedItem(DataBaseService.nombresAccion[1]);
         
         // redundante: el BOTON VisualizarMapa ya estaba visible
         this.btn_confirmarAccion.setVisible(true);
@@ -189,7 +189,7 @@ public class PantallaRegistrarResultadoRevisionManual extends javax.swing.JFrame
     private void generarModeloTablaRellena(){
         // ASIGNAR MODELO A LA TABLA (CANTIDAD Y NOMBRES DE COLUMNAS)
         // buscar CABECERAS (nombres de columnas) en Database y asignarlas al MODELO
-        this.modeloTabla.setColumnIdentifiers(DataBase.columnasTablaAutoDetectados);
+        this.modeloTabla.setColumnIdentifiers(DataBaseService.columnasTablaAutoDetectados);
         // asignar el MODELO a la TABLA
         this.tbl_eventosAutoDetectados.setModel(modeloTabla);
         this.modeloTabla.setRowCount(0);

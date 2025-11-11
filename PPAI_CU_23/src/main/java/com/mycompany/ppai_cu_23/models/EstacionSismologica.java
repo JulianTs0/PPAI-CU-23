@@ -1,5 +1,6 @@
 package com.mycompany.ppai_cu_23.models;
 
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,21 +12,31 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
+@Table(name = "estaciones_sismologicas")
 public class EstacionSismologica {
 
-    private String documentoCertificacionAdquirido;
-    private String codigoEstacion;
-    private LocalDateTime fechaSolicitudCertificacion; 
-    private double latitud;
-    private double longitud;
-    private String nroCertificacionAdquisicion;
-    private String nombre; //NO SE USA NINGUNA VARIEBLE EN EL CU
-    
-    //CONSTRUCTOR
-    
-    public EstacionSismologica(String nombre) {
-        this.nombre = nombre;
-    }
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
+    @Column(name = "documento_certificacion")
+    private String documentoCertificacionAdquirido;
+
+    @Column(name = "codigo_estacion", unique = true)
+    private String codigoEstacion;
+
+    @Column(name = "fecha_solicitud_certificacion")
+    private LocalDateTime fechaSolicitudCertificacion;
+
+    private double latitud;
+
+    private double longitud;
+
+    @Column(name = "nro_certificacion")
+    private String nroCertificacionAdquisicion;
+
+    @Column(nullable = false)
+    private String nombre;
 
 }

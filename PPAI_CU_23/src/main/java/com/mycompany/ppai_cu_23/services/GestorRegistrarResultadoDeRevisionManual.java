@@ -1,11 +1,9 @@
 package com.mycompany.ppai_cu_23.services;
 
-import com.mycompany.ppai_cu_23.models.Estado_Viejo;
 import com.mycompany.ppai_cu_23.models.EventoSismico;
 import com.mycompany.ppai_cu_23.models.Sesion;
 import com.mycompany.ppai_cu_23.models.Usuario;
-import com.mycompany.ppai_cu_23.refactor.BloqueadoEnRevision;
-import com.mycompany.ppai_cu_23.utils.DataBase;
+import com.mycompany.ppai_cu_23.persistance.DataBaseService;
 import com.mycompany.ppai_cu_23.utils.Debugger;
 
 import java.time.LocalDateTime;
@@ -16,23 +14,34 @@ import java.util.List;
 public class GestorRegistrarResultadoDeRevisionManual {
     
     // ATRIBUTO
+
     private EventoSismico[] eventosAutoDetectados;
+
     private EventoSismico eventoSeleccionado;
+
     private String[] datosEventoSismico;
+
     private String rutaImagenSismograma;
+
     private String[][] datosPorSerieTemporal;
+
     private String[][] datosPorSerieClasificados;
+
     private LocalDateTime fechaHoraActual;
+
     // DEPENDENCIA
+
     private PantallaRegistrarResultadoRevisionManual pantalla;
+
     private Sesion sesionActual;
+
     private Usuario logeadoUsuario;
     
     // CONSTRUCTOR
     public GestorRegistrarResultadoDeRevisionManual(PantallaRegistrarResultadoRevisionManual pantalla) {
         //cargar a sesion actual
         this.pantalla = pantalla;
-        this.sesionActual = DataBase.cargarSesionActual();
+        this.sesionActual = DataBaseService.getSesionActual();
     }
     
     // METODOS_DOMINIO
@@ -68,7 +77,7 @@ public class GestorRegistrarResultadoDeRevisionManual {
     public EventoSismico[] buscarEventosSismicosAutodetectados(){
         // LOOP eventos sismicos (TODOS)
         List<EventoSismico> autoDetectados = new ArrayList<>();
-        for (EventoSismico evento : DataBase.eventosSismicos) {
+        for (EventoSismico evento : DataBaseService.getEventosSismicos()) {
             if (evento.esAutoDetectado() || evento.esPendienteRevision()) {
                 autoDetectados.add(evento);
             }
@@ -157,7 +166,10 @@ public class GestorRegistrarResultadoDeRevisionManual {
 
         // bloquear el EVENTO-SELECCIONADO
         this.eventoSeleccionado.revisar(this.logeadoUsuario, this.fechaHoraActual);
-        
+
+        // Update en la BDD
+        DataBaseService.actualizarEventoSismico(this.eventoSeleccionado);
+
         // DEBUGGER datos del EVENTO-SELECCIONADO-BLOQUEADO
         Debugger.datosEventoSeleccionado(this.eventoSeleccionado);  
         
@@ -235,6 +247,9 @@ public class GestorRegistrarResultadoDeRevisionManual {
         /// rechazar el EVENTO-SELECCIONADO
         this.eventoSeleccionado.rechazar(this.logeadoUsuario, this.fechaHoraActual);
 
+        // Update en la BDD
+        DataBaseService.actualizarEventoSismico(this.eventoSeleccionado);
+
         Debugger.datosEventoSeleccionado(this.eventoSeleccionado);
     }
     
@@ -259,7 +274,7 @@ public class GestorRegistrarResultadoDeRevisionManual {
     // validar ACCION-SELECCIONADA
     public boolean validarAccionSeleccionada(String nombre){
         Debugger.mensajeGestor("Accion-" + nombre);
-        return (nombre.equals(DataBase.nombresAccion[1]));
+        return (nombre.equals(DataBaseService.nombresAccion[1]));
     }
     
     // termina el CASO-DE-USO 23

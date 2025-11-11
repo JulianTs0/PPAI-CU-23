@@ -1,10 +1,8 @@
 package com.mycompany.ppai_cu_23.models;
 
-import com.mycompany.ppai_cu_23.refactor.BloqueadoEnRevision;
 import com.mycompany.ppai_cu_23.refactor.Estado;
-import com.mycompany.ppai_cu_23.refactor.Rechazado;
-import com.mycompany.ppai_cu_23.utils.DataBase;
 import com.mycompany.ppai_cu_23.utils.Debugger;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -16,56 +14,72 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
+@Table(name = "eventos_sismicos")
 public class EventoSismico {
-    
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     //ATRIBUTO
+
+    @Column(name = "fecha_hora_ocurrencia", nullable = false)
     private LocalDateTime fechaHoraOcurrencia;
+
+    @Column(name = "fecha_hora_fin")
     private LocalDateTime fechaHoraFin;
+
+    @Column(name = "latitud_hipocentro")
     private float latitudHipocentro;
+
+    @Column(name = "longitud_hipocentro")
     private float longitudHipocentro;
+
+    @Column(name = "latitud_epicentro")
     private float latitudEpicentro;
+
+    @Column(name = "longitud_epicentro")
     private float longitudEpicentro;
+
+    @Column(name = "valor_magnitud")
     private float valorMagnitud;
+
     //ASOCIACION
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "clasificacion_sismo_id")
     private ClasificacionSismo clasificacionSismo;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "origen_de_generacion_id")
     private OrigenDeGeneracion origenDeGeneracion;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "alcance_sismo_id")
     private AlcanceSismo alcanceSismo;
+
+    @ManyToOne(fetch = FetchType.EAGER,  cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @JoinColumn(name = "estado_id")
     private Estado estadoActual;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "magnitud_richter_id")
     private MagnitudRichter magnitud;
+
     //AGREGACION
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @JoinColumn(name = "evento_sismico_id") // FK en la tabla 'cambios_de_estado'
     private List<CambioDeEstado> cambioDeEstados;
+
+    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.EAGER)
+    @JoinTable(
+        name = "evento_sismico_series",
+        joinColumns = @JoinColumn(name = "evento_sismico_id"),
+        inverseJoinColumns = @JoinColumn(name = "serie_temporal_id")
+    )
     private List<SerieTemporal> serieTemporals;
-
-    //CONSTRUCTOR (pendiente)
-
-    public EventoSismico(
-            LocalDateTime fechaHoraOcurrencia,
-            float latitudHipocentro, 
-            float longitudHipocentro, 
-            float latitudEpicentro, 
-            float longitudEpicentro,
-            float valorMagnitud,
-            ClasificacionSismo clasificacionSismo, 
-            OrigenDeGeneracion origenDeGeneracion, 
-            AlcanceSismo alcanceSismo,
-            Estado estadoActual,
-            MagnitudRichter magnitud, 
-            List<CambioDeEstado> cambioDeEstados, 
-            List<SerieTemporal> serieTemporals) {
-        this.fechaHoraOcurrencia = fechaHoraOcurrencia;
-        this.latitudHipocentro = latitudHipocentro;
-        this.longitudHipocentro = longitudHipocentro;
-        this.latitudEpicentro = latitudEpicentro;
-        this.longitudEpicentro = longitudEpicentro;
-        this.valorMagnitud = valorMagnitud;
-        this.clasificacionSismo = clasificacionSismo;
-        this.origenDeGeneracion = origenDeGeneracion;
-        this.alcanceSismo = alcanceSismo;
-        this.estadoActual = estadoActual;
-        this.magnitud = magnitud;
-        this.cambioDeEstados = cambioDeEstados;
-        this.serieTemporals = serieTemporals;
-    }
 
     // METODOS DOMINIO
 
@@ -84,17 +98,6 @@ public class EventoSismico {
 
         this.estadoActual.revisar(usuario, fechaHoraActual, this , this.cambioDeEstados);
 
-        /*
-        // buscar CAMBIO-ACTUAL
-        CambioDeEstado cambioDeEstadoActual = buscarCambioDeEstadoActual();
-        // fechahorafin al CAMBIO-ACTUAL
-        cambioDeEstadoActual.setFechaHoraFin(fechaHoraActual);
-        // crear CAMBIO-NUEVO
-        this.crearCamioDeEstado(bloqueadoEnRevision, usuario, fechaHoraActual);
-        // actualizar estado actual
-        this.setEstadoActual(bloqueadoEnRevision);
-        */
-
         // DEBUGGER  despues
         Debugger.ptrintCambiosDeEstadoDeEvento(this);
     }
@@ -106,43 +109,10 @@ public class EventoSismico {
 
         this.estadoActual.rechazar(usuario, fechaHoraActual, this, this.cambioDeEstados);
 
-        /*
-        // buscar CAMBIO-ACTUAL
-        CambioDeEstado cambioDeEstadoActual = buscarCambioDeEstadoActual();
-        // fechahorafin al CAMBIO-ACTUAL
-        cambioDeEstadoActual.setFechaHoraFin(fechaHoraActual);
-        // crear CAMBIO-NUEVO
-        this.crearCamioDeEstado(rechazado, usuario, fechaHoraActual);
-        // actualizar estado actual
-        this.setEstadoActual(rechazado);
-        */
-
         // DEBUGGER  despues
         Debugger.ptrintCambiosDeEstadoDeEvento(this);
     }
 
-    /* public CambioDeEstado buscarCambioDeEstadoActual(){
-        for (CambioDeEstado cambio : this.cambioDeEstados) {
-            if (cambio.esEstadoActual()) {
-                return cambio;
-            }
-        }
-        return null;
-    } */
-
-    //crear un nuevo CambioDeEstado añadirlo a los cambiosDeEstados 
-    /* public void crearCamioDeEstado(Estado_Viejo nuevoEstado, Usuario usuario, LocalDateTime fechaHoraActual){
-        CambioDeEstado nuevo = new CambioDeEstado(
-            fechaHoraActual, 
-            null, //fec hahora fin
-            nuevoEstado, 
-            usuario.getEmpleado()
-        );
-        this.cambioDeEstados.add(nuevo);
-    }*/
-
-    //devuelve un vector ordenado con los 3 nombres 
-    //[alcance, clasificación, origen, magnitud]
     public String[] obtenerDatosEventoSismico(){
         String[] datosSismicos = {
                 this.alcanceSismo.getNombre(),
@@ -191,18 +161,23 @@ public class EventoSismico {
     public void adquirirDatos(){
         System.out.println("Metodo de delegacion no implementado");
     }
+
     public void cerrar(){
         System.out.println("Metodo de delegacion no implementado");
     }
+
     public void confirmar(){
         System.out.println("Metodo de delegacion no implementado");
     }
+
     public void derivar(){
         System.out.println("Metodo de delegacion no implementado");
     }
+
     public void controlarTiempo(){
         System.out.println("Metodo de delegacion no implementado");
     }
+
     public void anular(){
         System.out.println("Metodo de delegacion no implementado");
     }

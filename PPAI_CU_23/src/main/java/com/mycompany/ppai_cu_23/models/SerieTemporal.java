@@ -1,7 +1,8 @@
 package com.mycompany.ppai_cu_23.models;
 
 import com.mycompany.ppai_cu_23.refactor.Estado;
-import com.mycompany.ppai_cu_23.utils.DataBase;
+import com.mycompany.ppai_cu_23.persistance.DataBaseService;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,39 +16,44 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
+@Table(name = "series_temporales")
 public class SerieTemporal {
-    
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     //ATRIBUTOS
+
+    @Column(name = "condicion_alarma")
     private String condicionAlarma;
+
+    @Column(name = "fecha_hora_inicio_registro")
     private LocalDateTime fechaHoraIncioRegistroMuestras;
+
+    @Column(name = "fecha_hora_registro")
     private LocalDateTime fechaHoraRegistro;
+
+    @Column(name = "frecuencia_muestreo")
     private float frecuenciaMuestreo;
+
     //ASOCIACION
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "estado_id")
     private Estado estado;
+
     //AGREGACION
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @JoinColumn(name = "serie_temporal_id") // FK en 'muestras_sismicas'
     private List<MuestraSismica> muestraSismicas;
+
     // DEPENDENCIA
+
+    @Transient // Se usa para la lógica de búsqueda, no es una columna de BBDD
     private Sismografo seleccionadoSismografo;
-    
-    //CONSTRUCTOR
-
-    public SerieTemporal(String condicionAlarma, 
-            LocalDateTime fechaHoraIncioRegistroMuestras,
-            LocalDateTime fechaHoraRegistro, 
-            float frecuenciaMuestreo,
-            Estado estadoActual,
-            List<MuestraSismica> muestraSismicas) {
-        this.condicionAlarma = condicionAlarma;
-        this.fechaHoraIncioRegistroMuestras = fechaHoraIncioRegistroMuestras;
-        this.fechaHoraRegistro = fechaHoraRegistro;
-        this.frecuenciaMuestreo = frecuenciaMuestreo;
-        this.estado = estadoActual;
-        this.muestraSismicas = muestraSismicas;
-    }
-
-    public SerieTemporal(List<MuestraSismica> muestraSismicas) {
-        this.muestraSismicas = muestraSismicas;
-    }
 
     // METODOS DOMINIO
     
@@ -87,7 +93,7 @@ public class SerieTemporal {
     
     // buscar entre todos los Sismografos con *soyTuSerieTemporal()
     public Sismografo buscarSismografo(){
-        Sismografo[] todosSismografos = DataBase.cargarSismografos();
+        Sismografo[] todosSismografos = DataBaseService.getSismografos();
         for (Sismografo elemSismografo : todosSismografos) {
             if (elemSismografo.soyTuSerieTemporal(this)) {
                 return elemSismografo;

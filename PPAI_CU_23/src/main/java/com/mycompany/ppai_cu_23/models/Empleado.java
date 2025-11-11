@@ -1,5 +1,6 @@
 package com.mycompany.ppai_cu_23.models;
 
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,21 +10,24 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
+@Table(name = "empleados")
 public class Empleado {
 
-    //ATRIBUTO
-    // el CU no usa ATRIBUTOS
-    private String nombre;
-    private String apellido;
-    private String mail;
-    private String telefono;
-    
-    // CONSTRUCTOR
-    
-    public Empleado(String nombre, String apellido) {
-        this.nombre = nombre;
-        this.apellido = apellido;
-    }
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
+    //ATRIBUTO
+    @Column(nullable = false)
+    private String nombre;
+
+    @Column(nullable = false)
+    private String apellido;
+
+    @Column(unique = true)
+    private String mail;
+
+    private String telefono;
 
 }

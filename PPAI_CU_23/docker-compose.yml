@@ -1,0 +1,13 @@
+services:
+    sismos-db:
+        image: postgres:15.3
+        restart: always
+        environment:
+            POSTGRES_DB: 'sismos-db'
+            POSTGRES_USER: 'sismos'
+            POSTGRES_PASSWORD: 'sismos'
+            POSTGRES_HOST_AUTH_METHOD: md5
+        volumes:
+            - ./sismos-db:/var/lib/postgresql/data
+        ports:
+            - 7435:5432
