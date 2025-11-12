@@ -5,6 +5,7 @@ import com.mycompany.ppai_cu_23.models.Sesion;
 import com.mycompany.ppai_cu_23.models.Usuario;
 import com.mycompany.ppai_cu_23.persistance.DataBaseService;
 import com.mycompany.ppai_cu_23.utils.Debugger;
+import com.mycompany.ppai_cu_23.utils.Enums;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -38,6 +39,7 @@ public class GestorRegistrarResultadoDeRevisionManual {
     private Usuario logeadoUsuario;
     
     // CONSTRUCTOR
+
     public GestorRegistrarResultadoDeRevisionManual(PantallaRegistrarResultadoRevisionManual pantalla) {
         //cargar a sesion actual
         this.pantalla = pantalla;
@@ -132,29 +134,6 @@ public class GestorRegistrarResultadoDeRevisionManual {
         
     }
     
-    // buscar el puntero a ESTADO-BLOQUEADO
-    /*public Estado buscarEstadoBloqueadoARevisar(){
-        Estado[] estadosCargados = DataBase.cargarEstados();
-        for (Estado elemEstado : estadosCargados) {
-            if (elemEstado.esAmbitoEventoSismico() 
-                    && elemEstado.esBloqueadoARevisar()) {
-                return elemEstado;
-            }
-        }
-        return null;
-    }*/
-    
-    /* public Estado buscarEstadoRechazado(){
-        Estado[] estadosCargados = DataBase.cargarEstados();
-        for (Estado elemEstado : estadosCargados) {
-            if (elemEstado.esAmbitoEventoSismico() 
-                    && elemEstado.esRechazado()) {
-                return elemEstado;
-            }
-        }
-        return null;
-    } */
-    
     // bloquear el EVENTO-SELECCIONADO
     public void bloquearEventoSelecionado(){
         
@@ -166,9 +145,6 @@ public class GestorRegistrarResultadoDeRevisionManual {
 
         // bloquear el EVENTO-SELECCIONADO
         this.eventoSeleccionado.revisar(this.logeadoUsuario, this.fechaHoraActual);
-
-        // Update en la BDD
-        DataBaseService.actualizarEventoSismico(this.eventoSeleccionado);
 
         // DEBUGGER datos del EVENTO-SELECCIONADO-BLOQUEADO
         Debugger.datosEventoSeleccionado(this.eventoSeleccionado);  
@@ -244,11 +220,8 @@ public class GestorRegistrarResultadoDeRevisionManual {
         // buscar puntero a LOGEADO-USUARIO
         this.logeadoUsuario = this.getUsuarioLogeado();
 
-        /// rechazar el EVENTO-SELECCIONADO
+        // rechazar el EVENTO-SELECCIONADO
         this.eventoSeleccionado.rechazar(this.logeadoUsuario, this.fechaHoraActual);
-
-        // Update en la BDD
-        DataBaseService.actualizarEventoSismico(this.eventoSeleccionado);
 
         Debugger.datosEventoSeleccionado(this.eventoSeleccionado);
     }
@@ -274,7 +247,7 @@ public class GestorRegistrarResultadoDeRevisionManual {
     // validar ACCION-SELECCIONADA
     public boolean validarAccionSeleccionada(String nombre){
         Debugger.mensajeGestor("Accion-" + nombre);
-        return (nombre.equals(DataBaseService.nombresAccion[1]));
+        return (nombre.equals(Enums.nombresAccion[1]));
     }
     
     // termina el CASO-DE-USO 23

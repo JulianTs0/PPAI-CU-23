@@ -1,13 +1,13 @@
 package com.mycompany.ppai_cu_23.services;
 
-//import java.net.URL;
-import com.mycompany.ppai_cu_23.persistance.DataBaseService;
 import com.mycompany.ppai_cu_23.utils.Debugger;
+import com.mycompany.ppai_cu_23.utils.Enums;
 
 import java.awt.*;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
@@ -29,7 +29,7 @@ public class PantallaRegistrarResultadoRevisionManual extends javax.swing.JFrame
     private GestorRegistrarResultadoDeRevisionManual gestor;
     
     // CONSTRUCTOR
-    
+
     // PASO 0
     // MAIN -> PANTALLA
     public PantallaRegistrarResultadoRevisionManual() {
@@ -45,26 +45,19 @@ public class PantallaRegistrarResultadoRevisionManual extends javax.swing.JFrame
         this.cargarImagenEscalada(lbl_clima, "/images/clima.jpeg");
 
     }
-    
-    // SETTERS
-    
-    // dependencia a Gestor
-    public void setGestor(GestorRegistrarResultadoDeRevisionManual gestor) {
-        this.gestor = gestor;
-    }
-    
-    // METODOS DOMINIO 
+
+    // METODOS DOMINIO
     
     public void seleccionOpcionRegistrarResultadoManual(){
         
         Debugger.mensajePantalla("seleccionOpcionRegistrarResultadoManual()");
         
-        this.habilitarVentanaRegistrar();
-        
         // asignar dependencia PANTALLA-GESTOR
         this.gestor = new GestorRegistrarResultadoDeRevisionManual(this);
         
         this.gestor.registrarNuevaRevisionManual();
+
+        this.habilitarVentanaRegistrar();
     }
     
     public void habilitarVentanaRegistrar(){
@@ -107,7 +100,7 @@ public class PantallaRegistrarResultadoRevisionManual extends javax.swing.JFrame
             "Alcance: " + datosEventoSismico[0] + "\n" + 
             "Clasificacion: " + datosEventoSismico[1] + "\n" + 
             "Origen: " + datosEventoSismico[2] + "\n" 
-            //+ "Magnitud: " + datosEventoSismico[3]
+            + "Magnitud: " + datosEventoSismico[3]
         );
         
         //mostrar SISMOGRAMA
@@ -125,9 +118,9 @@ public class PantallaRegistrarResultadoRevisionManual extends javax.swing.JFrame
         //magnitud
         rellenarComboBox(this.cbx_magnitud,new String[] {"1","2","3","4","5","6","7"});
         // alcance
-        rellenarComboBox(this.cbx_alcance, DataBaseService.cargarNombresAlcanceSismo());
+        rellenarComboBox(this.cbx_alcance, Enums.cargarNombresAlcanceSismo());
         //origen
-        rellenarComboBox(this.cbx_origen, DataBaseService.cargarNombresOrigenDeGeneracion());
+        rellenarComboBox(this.cbx_origen, Enums.cargarNombresOrigenDeGeneracion());
         
         // setear los datos del selecionado Evento a los CBX
         //datosEventoSismico = [alcance,clasificacion, origen, magnitud ]
@@ -141,10 +134,10 @@ public class PantallaRegistrarResultadoRevisionManual extends javax.swing.JFrame
          
         // rellenar cbx acciones
         
-        rellenarComboBox(this.cbx_accion, DataBaseService.nombresAccion);
+        rellenarComboBox(this.cbx_accion, Enums.nombresAccion);
         
         // setear la accion Rechazar
-        this.cbx_accion.setSelectedItem(DataBaseService.nombresAccion[1]);
+        this.cbx_accion.setSelectedItem(Enums.nombresAccion[1]);
         
         // redundante: el BOTON VisualizarMapa ya estaba visible
         this.btn_confirmarAccion.setVisible(true);
@@ -202,7 +195,7 @@ public class PantallaRegistrarResultadoRevisionManual extends javax.swing.JFrame
     private void generarModeloTablaRellena(){
         // ASIGNAR MODELO A LA TABLA (CANTIDAD Y NOMBRES DE COLUMNAS)
         // buscar CABECERAS (nombres de columnas) en Database y asignarlas al MODELO
-        this.modeloTabla.setColumnIdentifiers(DataBaseService.columnasTablaAutoDetectados);
+        this.modeloTabla.setColumnIdentifiers(Enums.columnasTablaAutoDetectados);
         // asignar el MODELO a la TABLA
         this.tbl_eventosAutoDetectados.setModel(modeloTabla);
         this.modeloTabla.setRowCount(0);
@@ -216,7 +209,7 @@ public class PantallaRegistrarResultadoRevisionManual extends javax.swing.JFrame
     }
     
     private void initComponents2(){
-        
+
         // ocultar pestañas        
         this.jtp_pestañas.setUI(new javax.swing.plaf.basic.BasicTabbedPaneUI() {
             @Override
@@ -229,6 +222,14 @@ public class PantallaRegistrarResultadoRevisionManual extends javax.swing.JFrame
         
         this.cambiarPanel(0);
 
+        JTableHeader header = tbl_eventosAutoDetectados.getTableHeader();
+
+        header.setFont(new Font("Cantarell", Font.BOLD, 15));
+
+        header.setPreferredSize(new Dimension(100, 25));
+
+        header.setBackground(new Color(234,247,234));
+        header.setForeground(new Color(18,50,18));
     }
     
     public void cambiarPanel(int indice){
@@ -370,6 +371,60 @@ public class PantallaRegistrarResultadoRevisionManual extends javax.swing.JFrame
             tipoDeIcono
         );
     }
+
+    private void ejecutarConModalCarga(Runnable tarea, String mensajeCarga) {
+        // CREAMOS EL MODAL
+        final JDialog dialog = new JDialog(this, "Cargando", true);
+
+        // PANEL PRINCIPAL
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.setBorder(BorderFactory.createEmptyBorder(30, 40, 30, 40));
+        panel.setBackground(new Color(234, 247, 234));
+
+        // TEXTO
+        JLabel labelTexto = new JLabel(mensajeCarga);
+        labelTexto.setAlignmentX(Component.CENTER_ALIGNMENT);
+        labelTexto.setFont(new Font("Cantarell", Font.PLAIN, 14));
+        labelTexto.setForeground(new Color(18, 50, 18));
+
+        // BARRA DE PROGRESO INDETERMINADA
+        JProgressBar progressBar = new JProgressBar();
+        progressBar.setIndeterminate(true);
+        progressBar.setPreferredSize(new Dimension(300, 25));
+        progressBar.setMaximumSize(new Dimension(300, 25));
+        progressBar.setBackground(new Color(169, 217, 169));
+        progressBar.setForeground(new Color(90, 138, 90));
+
+        // AGREGAR COMPONENTES
+        panel.add(labelTexto);
+        panel.add(Box.createVerticalStrut(20));
+        panel.add(progressBar);
+
+        // CONFIGURAR DIALOG
+        dialog.setContentPane(panel);
+        dialog.pack();
+        dialog.setLocationRelativeTo(this);
+        dialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+        dialog.setResizable(false);
+
+        // CREAMOS UN TRABAJO EN OTRO HILO
+        SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
+            @Override
+            protected Void doInBackground() throws Exception {
+                tarea.run();
+                return null;
+            }
+
+            @Override
+            protected void done() {
+                dialog.dispose();
+            }
+        };
+
+        worker.execute();
+        dialog.setVisible(true);
+    }
     
     
     // CODIGO GENERADO
@@ -502,13 +557,15 @@ public class PantallaRegistrarResultadoRevisionManual extends javax.swing.JFrame
 
         pnl_registrar.setBackground(new java.awt.Color(234, 247, 234));
 
+        lbl_tituloTablaEventos.setFont(new java.awt.Font("Cantarell", 0, 18)); // NOI18N
         lbl_tituloTablaEventos.setForeground(new java.awt.Color(18, 50, 18));
         lbl_tituloTablaEventos.setText("Eventos Sismicos AutoDetectados pendientes de Revision:");
 
         scrl_tablaEventos.setBackground(new java.awt.Color(169, 217, 169));
 
         tbl_eventosAutoDetectados.setBackground(new java.awt.Color(169, 217, 169));
-        tbl_eventosAutoDetectados.setForeground(new java.awt.Color(58, 90, 58));
+        tbl_eventosAutoDetectados.setFont(new java.awt.Font("Cantarell", 0, 17)); // NOI18N
+        tbl_eventosAutoDetectados.setForeground(new java.awt.Color(8, 40, 8));
         tbl_eventosAutoDetectados.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -521,6 +578,7 @@ public class PantallaRegistrarResultadoRevisionManual extends javax.swing.JFrame
             }
         ));
         tbl_eventosAutoDetectados.setGridColor(new java.awt.Color(169, 217, 169));
+        tbl_eventosAutoDetectados.setRowHeight(30);
         tbl_eventosAutoDetectados.setSelectionBackground(new java.awt.Color(148, 174, 192));
         tbl_eventosAutoDetectados.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         tbl_eventosAutoDetectados.getTableHeader().setReorderingAllowed(false);
@@ -575,7 +633,7 @@ public class PantallaRegistrarResultadoRevisionManual extends javax.swing.JFrame
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lbl_tituloTablaEventos)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(scrl_tablaEventos, javax.swing.GroupLayout.DEFAULT_SIZE, 275, Short.MAX_VALUE)
+                .addComponent(scrl_tablaEventos, javax.swing.GroupLayout.DEFAULT_SIZE, 272, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnl_registrarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btn_cancelarEnListaEventos)
@@ -596,6 +654,7 @@ public class PantallaRegistrarResultadoRevisionManual extends javax.swing.JFrame
         txa_valoresDatos.setEditable(false);
         txa_valoresDatos.setBackground(new java.awt.Color(234, 247, 234));
         txa_valoresDatos.setColumns(20);
+        txa_valoresDatos.setFont(new java.awt.Font("Cantarell", 0, 19)); // NOI18N
         txa_valoresDatos.setForeground(new java.awt.Color(18, 50, 18));
         txa_valoresDatos.setRows(5);
         txa_valoresDatos.setText("alcance_clacif_origen");
@@ -613,15 +672,19 @@ public class PantallaRegistrarResultadoRevisionManual extends javax.swing.JFrame
         btn_visualizarMapa.setBackground(new java.awt.Color(139, 195, 139));
         btn_visualizarMapa.setText("Visualizar Mapa del Evento Sismico");
 
+        lbl_tituloModificarEvento.setFont(new java.awt.Font("Cantarell", 0, 19)); // NOI18N
         lbl_tituloModificarEvento.setForeground(new java.awt.Color(18, 50, 18));
         lbl_tituloModificarEvento.setText("Modificar Evento Sismico:");
 
+        lvl_magnitud.setFont(new java.awt.Font("Cantarell", 0, 16)); // NOI18N
         lvl_magnitud.setForeground(new java.awt.Color(28, 60, 28));
         lvl_magnitud.setText("Magnitud:");
 
+        lvl_alcance.setFont(new java.awt.Font("Cantarell", 0, 16)); // NOI18N
         lvl_alcance.setForeground(new java.awt.Color(28, 60, 28));
         lvl_alcance.setText("Alcance:");
 
+        lvl_origen.setFont(new java.awt.Font("Cantarell", 0, 16)); // NOI18N
         lvl_origen.setForeground(new java.awt.Color(28, 60, 28));
         lvl_origen.setText("Origen:");
 
@@ -639,6 +702,7 @@ public class PantallaRegistrarResultadoRevisionManual extends javax.swing.JFrame
         cbx_origen.setBackground(new java.awt.Color(148, 174, 192));
         cbx_origen.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1" }));
 
+        lvl_accion.setFont(new java.awt.Font("Cantarell", 0, 16)); // NOI18N
         lvl_accion.setForeground(new java.awt.Color(58, 90, 58));
         lvl_accion.setText("Accion:");
 
@@ -674,22 +738,6 @@ public class PantallaRegistrarResultadoRevisionManual extends javax.swing.JFrame
                     .addComponent(jSeparator3, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jSeparator2)
                     .addGroup(pnl_modificarEventoLayout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane3))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_modificarEventoLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(pnl_modificarEventoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_modificarEventoLayout.createSequentialGroup()
-                                .addComponent(btn_cancelarEnDetalles)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btn_confirmarAccion))
-                            .addComponent(btn_visualizarMapa, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_modificarEventoLayout.createSequentialGroup()
-                                .addComponent(lvl_accion)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(cbx_accion, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(pnl_modificarEventoLayout.createSequentialGroup()
                         .addGroup(pnl_modificarEventoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lbl_tituloDetalleEvento)
                             .addGroup(pnl_modificarEventoLayout.createSequentialGroup()
@@ -705,8 +753,24 @@ public class PantallaRegistrarResultadoRevisionManual extends javax.swing.JFrame
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(lvl_origen, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(lbl_tituloModificarEvento))
-                        .addGap(0, 210, Short.MAX_VALUE)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
+            .addGroup(pnl_modificarEventoLayout.createSequentialGroup()
+                .addGap(0, 331, Short.MAX_VALUE)
+                .addGroup(pnl_modificarEventoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_modificarEventoLayout.createSequentialGroup()
+                        .addComponent(btn_cancelarEnDetalles)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btn_confirmarAccion))
+                    .addComponent(btn_visualizarMapa, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_modificarEventoLayout.createSequentialGroup()
+                        .addComponent(lvl_accion)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cbx_accion, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE))))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_modificarEventoLayout.createSequentialGroup()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 402, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         pnl_modificarEventoLayout.setVerticalGroup(
             pnl_modificarEventoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -715,7 +779,7 @@ public class PantallaRegistrarResultadoRevisionManual extends javax.swing.JFrame
                 .addComponent(lbl_tituloDetalleEvento)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnl_modificarEventoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 243, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 237, Short.MAX_VALUE)
                     .addComponent(jScrollPane3))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btn_visualizarMapa)
@@ -777,20 +841,26 @@ public class PantallaRegistrarResultadoRevisionManual extends javax.swing.JFrame
         int respuesta = dialogoConfirmacion(titulo, mensaje);
 
         if (respuesta == JOptionPane.OK_OPTION) {
-            this.tomarSeleccionEventoSismico();
+            ejecutarConModalCarga(
+                () -> this.tomarSeleccionEventoSismico(),
+                "Bloqueando evento sismico..."
+            );
         }
 
     }//GEN-LAST:event_btn_seleccionarEventoActionPerformed
 
     private void btn_confirmarAccionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_confirmarAccionActionPerformed
 
-        String mensaje = "¿Estás seguro de que deseas rechazar el evento sismico? Esto es una accion permanente";
+        String mensaje = "¿Estás seguro de que deseas aceptar la accion el evento sismico? Esto es una accion permanente";
         String titulo = "Accion";
 
         int respuesta = dialogoConfirmacion(titulo, mensaje);
 
         if (respuesta == JOptionPane.OK_OPTION) {
-            this.tomarOpcionRechazarEventoSeleccionado();
+            ejecutarConModalCarga(
+                () -> this.tomarOpcionRechazarEventoSeleccionado(),
+                "Cambiando de estado..."
+            );
         }
 
     }//GEN-LAST:event_btn_confirmarAccionActionPerformed
@@ -811,7 +881,10 @@ public class PantallaRegistrarResultadoRevisionManual extends javax.swing.JFrame
     }//GEN-LAST:event_btn_cancelarEnDetallesActionPerformed
 
     private void btn_registrarResultadoRevisiónManualActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_registrarResultadoRevisiónManualActionPerformed
-        this.seleccionOpcionRegistrarResultadoManual();
+        ejecutarConModalCarga(
+            () -> seleccionOpcionRegistrarResultadoManual(),
+            "Buscando eventos pendientes de revisión..."
+        );
     }//GEN-LAST:event_btn_registrarResultadoRevisiónManualActionPerformed
 
     private void cbx_magnitudActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbx_magnitudActionPerformed

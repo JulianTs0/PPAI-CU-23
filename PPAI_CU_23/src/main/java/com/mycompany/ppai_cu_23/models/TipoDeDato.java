@@ -1,6 +1,7 @@
 package com.mycompany.ppai_cu_23.models;
 
 import com.mycompany.ppai_cu_23.persistance.DataBaseService;
+import com.mycompany.ppai_cu_23.utils.Enums;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -31,15 +32,15 @@ public class TipoDeDato {
     // METODOS DOMINIO
 
     public boolean esDenominacionVelocidadOnda(){
-        return this.denominacion.equals(DataBaseService.nombresDenominacion.Velocidad_De_Onda.name());
+        return this.denominacion.equals(Enums.nombresDenominacion.Velocidad_De_Onda.name());
     }
     
     public boolean esDenominacionFrecuenciaOnda(){
-        return this.denominacion.equals(DataBaseService.nombresDenominacion.Frecuencia_De_Onda.name());
+        return this.denominacion.equals(Enums.nombresDenominacion.Frecuencia_De_Onda.name());
     }
     
     public boolean esDenominacionLongitudOnda(){
-        return this.denominacion.equals(DataBaseService.nombresDenominacion.Longitud_De_Onda.name());
+        return this.denominacion.equals(Enums.nombresDenominacion.Longitud_De_Onda.name());
     }
     
 }

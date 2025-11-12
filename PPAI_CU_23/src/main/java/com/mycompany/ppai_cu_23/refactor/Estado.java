@@ -4,6 +4,7 @@ import com.mycompany.ppai_cu_23.models.CambioDeEstado;
 import com.mycompany.ppai_cu_23.models.EventoSismico;
 import com.mycompany.ppai_cu_23.models.Usuario;
 import com.mycompany.ppai_cu_23.persistance.DataBaseService;
+import com.mycompany.ppai_cu_23.utils.Enums;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -50,18 +51,21 @@ public abstract class Estado {
     }
 
     public void rechazar(Usuario usuario, LocalDateTime fechaHoraActual, EventoSismico evento, List<CambioDeEstado> cambiosDeEstado){
+
         // buscar CAMBIO-ACTUAL
         CambioDeEstado cambioDeEstadoActual = this.buscarCambioDeEstadoActual(cambiosDeEstado);
         // fechahorafin al CAMBIO-ACTUAL
         cambioDeEstadoActual.setFechaHoraFin(fechaHoraActual);
         // Crear estado
-        Estado estadoRechazado = new Rechazado(DataBaseService.nombresAmbito.Evento_Sismico.name(), DataBaseService.nombresEstado.Rechazado.name());
+        Estado estadoRechazado = new Rechazado(Enums.nombresAmbito.Evento_Sismico.name(), Enums.nombresEstado.Rechazado.name());
         // crear CAMBIO-NUEVO
         CambioDeEstado cambioRechazado = this.crearCambioDeEstado(estadoRechazado, usuario, fechaHoraActual);
         // actualizar estado actual
         evento.setEstadoActual(estadoRechazado);
         // actualizar cambio de estado actual
         evento.getCambioDeEstados().add(cambioRechazado);
+        // actualizar la BDD
+        DataBaseService.actualizarEventoSismico(evento);
     }
 
     public void derivar(){
@@ -78,13 +82,15 @@ public abstract class Estado {
         // fechahorafin al CAMBIO-ACTUAL
         cambioDeEstadoActual.setFechaHoraFin(fechaHoraActual);
         // Crear estado
-        Estado estadoBloqueadoEnRevision = new BloqueadoEnRevision(DataBaseService.nombresAmbito.Evento_Sismico.name(), DataBaseService.nombresEstado.Bloqueado_En_Revision.name());
+        Estado estadoBloqueadoEnRevision = new BloqueadoEnRevision(Enums.nombresAmbito.Evento_Sismico.name(), Enums.nombresEstado.Bloqueado_En_Revision.name());
         // crear CAMBIO-NUEVO
         CambioDeEstado cambioBloqueadoEnRevision = this.crearCambioDeEstado(estadoBloqueadoEnRevision, usuario, fechaHoraActual);
         // actualizar estado actual
         evento.setEstadoActual(estadoBloqueadoEnRevision);
         // actualizar cambio de estado actual
         evento.getCambioDeEstados().add(cambioBloqueadoEnRevision);
+        // actualizar la BDD
+        DataBaseService.actualizarEventoSismico(evento);
     }
 
     public void anular(){
@@ -94,25 +100,25 @@ public abstract class Estado {
     // Verificaciones
 
     public boolean esPendienteDeRevision(){
-        return (this.nombre.equals(DataBaseService.nombresEstado.Pendiente_De_Revision.name()));
+        return (this.nombre.equals(Enums.nombresEstado.Pendiente_De_Revision.name()));
     }
 
     public boolean esAutoDetectado(){
-        return (this.nombre.equals(DataBaseService.nombresEstado.Auto_Detectado.name()));
+        return (this.nombre.equals(Enums.nombresEstado.Auto_Detectado.name()));
     }
 
     public boolean esBloqueadoARevisar(){
-        return (this.nombre.equals(DataBaseService.nombresEstado.Bloqueado_En_Revision.name()));
+        return (this.nombre.equals(Enums.nombresEstado.Bloqueado_En_Revision.name()));
     }
 
     public boolean esRechazado(){
-        return (this.nombre.equals(DataBaseService.nombresEstado.Rechazado.name()));
+        return (this.nombre.equals(Enums.nombresEstado.Rechazado.name()));
     }
 
     // Ambito
 
     public boolean esAmbitoEventoSismico(){
-        return (this.ambito.equals(DataBaseService.nombresAmbito.Evento_Sismico.name()));
+        return (this.ambito.equals(Enums.nombresAmbito.Evento_Sismico.name()));
     }
 
     public CambioDeEstado buscarCambioDeEstadoActual(List<CambioDeEstado> cambiosDeEstado){
