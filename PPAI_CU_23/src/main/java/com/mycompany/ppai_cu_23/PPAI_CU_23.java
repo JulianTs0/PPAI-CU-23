@@ -19,15 +19,8 @@ public class PPAI_CU_23 {
         } catch (Exception e) {
             System.err.println("Error fatal al iniciar la aplicación.");
             e.printStackTrace();
-            // Aquí podrías mostrar un JOptionPane de error
         } finally {
-            // 3. REGISTRAR UN "SHUTDOWN HOOK"
-            // Esto asegura que el pool de conexiones de JPA se cierre
-            // cuando el usuario cierra la aplicación.
-            Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-                System.out.println("Cerrando la fábrica de EntityManager...");
-                JpaUtil.shutdown();
-            }));
+            Runtime.getRuntime().addShutdownHook(new Thread(JpaUtil::shutdown));
         }
 
     }
