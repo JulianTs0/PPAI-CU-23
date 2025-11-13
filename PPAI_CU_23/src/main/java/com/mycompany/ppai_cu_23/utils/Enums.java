@@ -43,6 +43,14 @@ public class Enums {
 
     // COLUMNAS FRONTEND
 
+    public static final int TIEMPO_CARRUSEL_MS = 7000;
+
+    public static String[] rutasImagenesCarrusel = {
+        "/images/fuji.jpg",
+        "/images/sanjuan.jpg",
+        "/images/mendoza.jpg",
+    };
+
     public static String[] nombresAccion = {
         "Confirmar evento",
         "Rechazar evento",

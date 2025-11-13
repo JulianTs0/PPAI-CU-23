@@ -24,7 +24,11 @@ public class PantallaRegistrarResultadoRevisionManual extends javax.swing.JFrame
             return false;
         }
     };
-        
+
+    private int indiceCarrusel = 0;
+
+    private javax.swing.Timer timerCarrusel;
+
     // DEPENDENCIA
     private GestorRegistrarResultadoDeRevisionManual gestor;
     
@@ -40,7 +44,7 @@ public class PantallaRegistrarResultadoRevisionManual extends javax.swing.JFrame
 
         configurarAtajosDeTeclado();
 
-        this.cargarImagenEscalada(lbl_imagenfuji, "/images/fuji.jpg");
+        this.iniciarCarrusel();
 
         this.cargarImagenEscalada(lbl_clima, "/images/clima.jpeg");
 
@@ -425,6 +429,28 @@ public class PantallaRegistrarResultadoRevisionManual extends javax.swing.JFrame
         worker.execute();
         dialog.setVisible(true);
     }
+
+    private void iniciarCarrusel() {
+
+        if (Enums.rutasImagenesCarrusel == null || Enums.rutasImagenesCarrusel.length == 0) {
+            return;
+        }
+
+        this.cargarImagenEscalada(lbl_imagenfuji, Enums.rutasImagenesCarrusel[indiceCarrusel]);
+
+        timerCarrusel = new javax.swing.Timer(Enums.TIEMPO_CARRUSEL_MS, e -> {
+
+            indiceCarrusel++;
+
+            if (indiceCarrusel >= Enums.rutasImagenesCarrusel.length) {
+                indiceCarrusel = 0;
+            }
+
+            this.cargarImagenEscalada(lbl_imagenfuji, Enums.rutasImagenesCarrusel[indiceCarrusel]);
+        });
+
+        timerCarrusel.start();
+    }
     
     
     // CODIGO GENERADO
@@ -446,13 +472,13 @@ public class PantallaRegistrarResultadoRevisionManual extends javax.swing.JFrame
         lbl_clima = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        lbl_imagenfuji = new javax.swing.JLabel();
         pnl_registrar = new javax.swing.JPanel();
         lbl_tituloTablaEventos = new javax.swing.JLabel();
         scrl_tablaEventos = new javax.swing.JScrollPane();
         tbl_eventosAutoDetectados = new javax.swing.JTable();
         btn_cancelarEnListaEventos = new javax.swing.JButton();
         btn_seleccionarEvento = new javax.swing.JButton();
-        lbl_imagenfuji = new javax.swing.JLabel();
         pnl_modificarEvento = new javax.swing.JPanel();
         lbl_tituloDetalleEvento = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -500,6 +526,9 @@ public class PantallaRegistrarResultadoRevisionManual extends javax.swing.JFrame
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setBackground(new java.awt.Color(108, 134, 192));
+
+        jtp_pestañas.setBackground(new java.awt.Color(108, 134, 192));
 
         pnl_main.setBackground(new java.awt.Color(234, 247, 234));
         pnl_main.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 125, 255), 2, true));
@@ -513,42 +542,51 @@ public class PantallaRegistrarResultadoRevisionManual extends javax.swing.JFrame
             }
         });
 
-        lbl_clima.setPreferredSize(new java.awt.Dimension(325, 155));
+        lbl_clima.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lbl_clima.setPreferredSize(new java.awt.Dimension(300, 130));
 
-        jLabel1.setFont(new java.awt.Font("Cantarell", 0, 24)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Cantarell", 1, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(58, 90, 58));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("ProtEarth System");
 
+        jLabel2.setFont(new java.awt.Font("Cantarell", 3, 15)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(121, 148, 121));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setText("Todo es mas seguro con un Sismografo");
+
+        lbl_imagenfuji.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lbl_imagenfuji.setPreferredSize(new java.awt.Dimension(625, 154));
+        lbl_imagenfuji.setRequestFocusEnabled(false);
 
         javax.swing.GroupLayout pnl_mainLayout = new javax.swing.GroupLayout(pnl_main);
         pnl_main.setLayout(pnl_mainLayout);
         pnl_mainLayout.setHorizontalGroup(
             pnl_mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_mainLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(pnl_mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_mainLayout.createSequentialGroup()
-                        .addGap(0, 277, Short.MAX_VALUE)
-                        .addGroup(pnl_mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lbl_clima, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 325, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btn_registrarResultadoRevisiónManual, javax.swing.GroupLayout.Alignment.TRAILING))))
+                .addGroup(pnl_mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lbl_imagenfuji, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 699, Short.MAX_VALUE)
+                    .addGroup(pnl_mainLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(pnl_mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(btn_registrarResultadoRevisiónManual)
+                            .addComponent(lbl_clima, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap())
         );
         pnl_mainLayout.setVerticalGroup(
             pnl_mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_mainLayout.createSequentialGroup()
+                .addComponent(lbl_imagenfuji, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel2)
-                .addGap(27, 27, 27)
-                .addComponent(lbl_clima, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 225, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lbl_clima, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 130, Short.MAX_VALUE)
                 .addComponent(btn_registrarResultadoRevisiónManual)
                 .addContainerGap())
         );
@@ -557,7 +595,7 @@ public class PantallaRegistrarResultadoRevisionManual extends javax.swing.JFrame
 
         pnl_registrar.setBackground(new java.awt.Color(234, 247, 234));
 
-        lbl_tituloTablaEventos.setFont(new java.awt.Font("Cantarell", 0, 18)); // NOI18N
+        lbl_tituloTablaEventos.setFont(new java.awt.Font("Cantarell", 1, 18)); // NOI18N
         lbl_tituloTablaEventos.setForeground(new java.awt.Color(18, 50, 18));
         lbl_tituloTablaEventos.setText("Eventos Sismicos AutoDetectados pendientes de Revision:");
 
@@ -602,10 +640,6 @@ public class PantallaRegistrarResultadoRevisionManual extends javax.swing.JFrame
             }
         });
 
-        lbl_imagenfuji.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lbl_imagenfuji.setPreferredSize(new java.awt.Dimension(605, 154));
-        lbl_imagenfuji.setRequestFocusEnabled(false);
-
         javax.swing.GroupLayout pnl_registrarLayout = new javax.swing.GroupLayout(pnl_registrar);
         pnl_registrar.setLayout(pnl_registrarLayout);
         pnl_registrarLayout.setHorizontalGroup(
@@ -616,24 +650,20 @@ public class PantallaRegistrarResultadoRevisionManual extends javax.swing.JFrame
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btn_seleccionarEvento)
                 .addGap(7, 7, 7))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_registrarLayout.createSequentialGroup()
+            .addGroup(pnl_registrarLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(pnl_registrarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(lbl_imagenfuji, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(scrl_tablaEventos, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 606, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pnl_registrarLayout.createSequentialGroup()
-                        .addComponent(lbl_tituloTablaEventos)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addGroup(pnl_registrarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(scrl_tablaEventos, javax.swing.GroupLayout.DEFAULT_SIZE, 703, Short.MAX_VALUE)
+                    .addComponent(lbl_tituloTablaEventos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         pnl_registrarLayout.setVerticalGroup(
             pnl_registrarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnl_registrarLayout.createSequentialGroup()
-                .addComponent(lbl_imagenfuji, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addContainerGap()
                 .addComponent(lbl_tituloTablaEventos)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(scrl_tablaEventos, javax.swing.GroupLayout.DEFAULT_SIZE, 272, Short.MAX_VALUE)
+                .addComponent(scrl_tablaEventos, javax.swing.GroupLayout.DEFAULT_SIZE, 445, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnl_registrarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btn_cancelarEnListaEventos)
@@ -645,6 +675,7 @@ public class PantallaRegistrarResultadoRevisionManual extends javax.swing.JFrame
 
         pnl_modificarEvento.setBackground(new java.awt.Color(234, 247, 234));
 
+        lbl_tituloDetalleEvento.setFont(new java.awt.Font("Cantarell", 1, 15)); // NOI18N
         lbl_tituloDetalleEvento.setForeground(new java.awt.Color(28, 60, 28));
         lbl_tituloDetalleEvento.setText("Detalles del Evento Sismico Seleccionado:");
 
@@ -664,9 +695,9 @@ public class PantallaRegistrarResultadoRevisionManual extends javax.swing.JFrame
         jScrollPane1.setViewportView(txa_valoresDatos);
 
         lbl_imagen.setBackground(new java.awt.Color(139, 195, 139));
-        lbl_imagen.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        lbl_imagen.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lbl_imagen.setText("imagen_sismograma");
-        lbl_imagen.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        lbl_imagen.setToolTipText("");
         jScrollPane3.setViewportView(lbl_imagen);
 
         btn_visualizarMapa.setBackground(new java.awt.Color(139, 195, 139));
@@ -702,7 +733,7 @@ public class PantallaRegistrarResultadoRevisionManual extends javax.swing.JFrame
         cbx_origen.setBackground(new java.awt.Color(148, 174, 192));
         cbx_origen.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1" }));
 
-        lvl_accion.setFont(new java.awt.Font("Cantarell", 0, 16)); // NOI18N
+        lvl_accion.setFont(new java.awt.Font("Cantarell", 1, 16)); // NOI18N
         lvl_accion.setForeground(new java.awt.Color(58, 90, 58));
         lvl_accion.setText("Accion:");
 
@@ -732,11 +763,26 @@ public class PantallaRegistrarResultadoRevisionManual extends javax.swing.JFrame
         pnl_modificarEventoLayout.setHorizontalGroup(
             pnl_modificarEventoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_modificarEventoLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addGroup(pnl_modificarEventoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_modificarEventoLayout.createSequentialGroup()
+                        .addComponent(btn_cancelarEnDetalles)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btn_confirmarAccion))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_modificarEventoLayout.createSequentialGroup()
+                        .addComponent(lvl_accion)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cbx_accion, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_modificarEventoLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(pnl_modificarEventoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jSeparator4, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jSeparator3, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jSeparator2)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_modificarEventoLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btn_visualizarMapa))
                     .addGroup(pnl_modificarEventoLayout.createSequentialGroup()
                         .addGroup(pnl_modificarEventoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lbl_tituloDetalleEvento)
@@ -753,24 +799,12 @@ public class PantallaRegistrarResultadoRevisionManual extends javax.swing.JFrame
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(lvl_origen, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(lbl_tituloModificarEvento))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(0, 307, Short.MAX_VALUE))
+                    .addGroup(pnl_modificarEventoLayout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane3)))
                 .addContainerGap())
-            .addGroup(pnl_modificarEventoLayout.createSequentialGroup()
-                .addGap(0, 331, Short.MAX_VALUE)
-                .addGroup(pnl_modificarEventoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_modificarEventoLayout.createSequentialGroup()
-                        .addComponent(btn_cancelarEnDetalles)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btn_confirmarAccion))
-                    .addComponent(btn_visualizarMapa, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_modificarEventoLayout.createSequentialGroup()
-                        .addComponent(lvl_accion)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cbx_accion, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE))))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_modificarEventoLayout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 402, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         pnl_modificarEventoLayout.setVerticalGroup(
             pnl_modificarEventoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -779,7 +813,7 @@ public class PantallaRegistrarResultadoRevisionManual extends javax.swing.JFrame
                 .addComponent(lbl_tituloDetalleEvento)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnl_modificarEventoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 237, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE)
                     .addComponent(jScrollPane3))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btn_visualizarMapa)
