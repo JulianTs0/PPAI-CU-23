@@ -34,7 +34,7 @@ public class Sismografo {
 
     //ASOCIACION
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "estacion_sismologica_id")
     private EstacionSismologica estacionSismologica;
 
@@ -43,7 +43,7 @@ public class Sismografo {
     @JoinColumn(name = "sismografo_id")
     private List<SerieTemporal> serieTemporals;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JoinColumn(name = "sismografo_id")
     private List<CambioDeEstado> cambioDeEstados;
 

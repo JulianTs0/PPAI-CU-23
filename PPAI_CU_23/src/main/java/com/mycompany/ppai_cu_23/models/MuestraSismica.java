@@ -29,7 +29,7 @@ public class MuestraSismica {
 
     // COMPOSICION
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JoinColumn(name = "muestra_sismica_id")
     private List<DetalleMuestraSismica> detalleMuestraSismicas;
     

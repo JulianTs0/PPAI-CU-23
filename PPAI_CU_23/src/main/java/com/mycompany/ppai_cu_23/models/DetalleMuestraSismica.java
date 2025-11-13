@@ -21,7 +21,7 @@ public class DetalleMuestraSismica {
     @Column(name = "valor", nullable = false)
     private float valor;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tipo_de_dato_id", nullable = false)
     private TipoDeDato tipoDeDato;
     

@@ -47,33 +47,33 @@ public class EventoSismico {
 
     //ASOCIACION
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "clasificacion_sismo_id")
     private ClasificacionSismo clasificacionSismo;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "origen_de_generacion_id")
     private OrigenDeGeneracion origenDeGeneracion;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "alcance_sismo_id")
     private AlcanceSismo alcanceSismo;
 
-    @ManyToOne(fetch = FetchType.EAGER,  cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @ManyToOne(fetch = FetchType.LAZY,  cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name = "estado_id")
     private Estado estadoActual;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "magnitud_richter_id")
     private MagnitudRichter magnitud;
 
     //AGREGACION
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    @JoinColumn(name = "evento_sismico_id") // FK en la tabla 'cambios_de_estado'
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @JoinColumn(name = "evento_sismico_id")
     private List<CambioDeEstado> cambioDeEstados;
 
-    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.LAZY)
     @JoinTable(
         name = "evento_sismico_series",
         joinColumns = @JoinColumn(name = "evento_sismico_id"),

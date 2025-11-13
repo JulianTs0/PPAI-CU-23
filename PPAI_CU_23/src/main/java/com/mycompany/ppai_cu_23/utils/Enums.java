@@ -11,12 +11,16 @@ public class Enums {
         Auto_Detectado,
         Bloqueado_En_Revision,
         Pendiente_De_Revision,
-        Rechazado
+        Rechazado,
+        Transmitida,
+        Disponible
 
     }
 
     public static enum nombresAmbito {
         Evento_Sismico,
+        Serie_Temporal,
+        Sismografo
     }
 
     public static enum nombresDenominacion {

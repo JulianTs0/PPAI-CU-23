@@ -3,7 +3,6 @@ package com.mycompany.ppai_cu_23.refactor;
 import com.mycompany.ppai_cu_23.models.CambioDeEstado;
 import com.mycompany.ppai_cu_23.models.EventoSismico;
 import com.mycompany.ppai_cu_23.models.Usuario;
-import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.Getter;
@@ -17,16 +16,20 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "estado_pendiente_de_revision")
-public class PendienteDeRevision extends Estado {
+@Table(name = "estado_sin_revision")
+public class SinRevision extends Estado{
 
-    public PendienteDeRevision(String ambito, String nombre) {
+    public SinRevision(String ambito, String nombre) {
         super(ambito, nombre);
+    }
+
+    @Override
+    public void revisar(Usuario usuario, LocalDateTime fechaHoraActual, EventoSismico evento, List<CambioDeEstado> cambiosDeEstado){
+        return;
     }
 
     @Override
     public void rechazar(Usuario usuario, LocalDateTime fechaHoraActual, EventoSismico evento, List<CambioDeEstado> cambiosDeEstado){
         return;
     }
-
 }

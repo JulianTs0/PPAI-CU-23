@@ -2,6 +2,7 @@ package com.mycompany.ppai_cu_23.models;
 
 import com.mycompany.ppai_cu_23.refactor.Estado;
 import com.mycompany.ppai_cu_23.persistance.DataBaseService;
+import com.mycompany.ppai_cu_23.utils.Debugger;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -52,7 +53,7 @@ public class SerieTemporal {
 
     // DEPENDENCIA
 
-    @Transient // Se usa para la lógica de búsqueda, no es una columna de BBDD
+    @Transient
     private Sismografo seleccionadoSismografo;
 
     // METODOS DOMINIO

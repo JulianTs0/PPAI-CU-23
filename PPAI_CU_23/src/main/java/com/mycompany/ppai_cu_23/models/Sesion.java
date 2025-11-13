@@ -30,7 +30,7 @@ public class Sesion {
 
     // ASOCIACION
 
-    @ManyToOne(fetch = FetchType.EAGER) // Muchas sesiones pueden ser de 1 usuario
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuarioLogeado;
 }

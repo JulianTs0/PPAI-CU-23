@@ -128,7 +128,9 @@ public class GestorRegistrarResultadoDeRevisionManual {
         
         // buscar el puntero al EVENTO-SELECCIONADO
         this.eventoSeleccionado = this.eventosAutoDetectados[indiceFilaSeleccionada];
-        
+
+        this.eventoSeleccionado = DataBaseService.getEventoSeleccionado(this.eventoSeleccionado.getId());
+
         // bloquear el EVENTO-SELECCIONADO
         this.bloquearEventoSelecionado();
         

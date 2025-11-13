@@ -1,5 +1,8 @@
 package com.mycompany.ppai_cu_23.refactor;
 
+import com.mycompany.ppai_cu_23.models.CambioDeEstado;
+import com.mycompany.ppai_cu_23.models.EventoSismico;
+import com.mycompany.ppai_cu_23.models.Usuario;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
@@ -7,6 +10,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -17,6 +23,16 @@ public class AutoConfirmado extends Estado {
 
     public AutoConfirmado(String ambito, String nombre) {
         super(ambito, nombre);
+    }
+
+    @Override
+    public void revisar(Usuario usuario, LocalDateTime fechaHoraActual, EventoSismico evento, List<CambioDeEstado> cambiosDeEstado){
+        return;
+    }
+
+    @Override
+    public void rechazar(Usuario usuario, LocalDateTime fechaHoraActual, EventoSismico evento, List<CambioDeEstado> cambiosDeEstado){
+        return;
     }
 
 }
